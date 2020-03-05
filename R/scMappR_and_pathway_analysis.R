@@ -220,6 +220,9 @@ scMappR_and_pathway_analysis <- function(  count_file,signature_matrix, DEG_list
   }
   
   colnames(DEGs) <- c("gene_name", "padj", "log2fc")
+  DEGs$gene_name <- tochr(DEGs$gene_name)
+  DEGs$padj <- toNum(DEGs$padj)
+  DEGs$log2fc <- toNum(DEGs$log2fc)
   rownames(DEGs) <- DEGs$gene_name
   if(number_genes == -9) {
     number_genes <- as.numeric(nrow(DEGs))
@@ -304,11 +307,15 @@ scMappR_and_pathway_analysis <- function(  count_file,signature_matrix, DEG_list
   signature_matrix <- signature_matrix[rownames(signature_matrix) %in% rownames(count_file),]
   signature_vars <- apply(signature_matrix, 2, stats::var)
   signature_rowvars <- apply(signature_matrix, 1, stats::var)
-  signature_matrix <- signature_matrix[signature_rowvars > 0,signature_vars > 0]
+  signature_matrix <- signature_matrix[signature_rowvars > 0,]
+  signature_matrix <- signature_matrix[,signature_vars > 0]
   message("cell-types with markers that overlap with inputted count matrix")
   message(colnames(signature_matrix))
   
-  
+  if((length(unique(colnames(signature_matrix))) < length(colnames(signature_matrix)))[1]) {
+    warning("cell-type naming is not unique, appending unique identifier (1:ncol(signature))")
+    colnames(signature_matrix) <- paste0(colnames(signature_matrix), "_", 1:ncol(signature_matrix))
+  }
   
   cellWeighted_Foldchanges <- deconvolute_and_contextualize(count_file, signature_matrix, DEG_list, case_grep , control_grep, max_proportion_change = max_proportion_change, print_plots = print_plots, plot_names = plot_names, theSpecies = theSpecies, sig_matrix_size = sig_matrix_size, drop_unknown_celltype = drop_unknown_celltype, toSave = toSave, path = path)
 

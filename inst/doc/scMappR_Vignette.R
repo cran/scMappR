@@ -1,4 +1,4 @@
-## ----install_developter, eval=FALSE-------------------------------------------
+## ----install_developter, eval=FALSE--------------------------------------
 #  
 #  if (!requireNamespace("BiocManager", quietly = TRUE))
 #      install.packages("BiocManager")
@@ -13,7 +13,7 @@
 #  
 #  
 
-## ----install_cran, eval=FALSE-------------------------------------------------
+## ----install_cran, eval=FALSE--------------------------------------------
 #  
 #  if (!requireNamespace("BiocManager", quietly = TRUE))
 #      install.packages("BiocManager")
@@ -26,12 +26,12 @@
 #  install.packages("scMappR")
 #  
 
-## ----library_scMappR, warning=FALSE, echo = FALSE-----------------------------
+## ----library_scMappR, warning=FALSE, echo = FALSE------------------------
 
 library(scMappR)
 
 
-## ----scMappR_internal_example, eval = FALSE-----------------------------------
+## ----scMappR_internal_example, eval = FALSE------------------------------
 #  
 #  data(POA_example) # region to preoptic area
 #  
@@ -55,7 +55,7 @@ library(scMappR)
 #  
 #  
 
-## ----scMappR_custom_example, eval = FALSE-------------------------------------
+## ----scMappR_custom_example, eval = FALSE--------------------------------
 #  
 #  # Acquiring the gene list
 #  data(POA_example)
@@ -73,7 +73,7 @@ library(scMappR)
 #  
 #  
 
-## ----scMappR_and_pathway_analysis, eval=FALSE---------------------------------
+## ----scMappR_and_pathway_analysis, eval=FALSE----------------------------
 #  
 #  data(PBMC_scMappR) # load data example of PBMC bulk- and cell-sorted RNA-seq data
 #  
@@ -103,7 +103,7 @@ library(scMappR)
 #  
 #  
 
-## ----tissue_ct_enrichment_example, fig.show='hide', eval=FALSE----------------
+## ----tissue_ct_enrichment_example, fig.show='hide', eval=FALSE-----------
 #  
 #  data(POA_example)
 #  POA_generes <- POA_example$POA_generes
@@ -121,7 +121,7 @@ library(scMappR)
 #  
 #  
 
-## ----process_scRNAseq_count, eval = FALSE-------------------------------------
+## ----process_scRNAseq_count, eval = FALSE--------------------------------
 #  
 #  data(sm)
 #  
@@ -134,7 +134,7 @@ library(scMappR)
 #  
 #  
 
-## ----Seurat_Object_Generation, eval = FALSE-----------------------------------
+## ----Seurat_Object_Generation, eval = FALSE------------------------------
 #  
 #  
 #  data(sm)
@@ -146,14 +146,14 @@ library(scMappR)
 #  levels(seurat_example@active.ident) <- c("Myoblast", "Neutrophil", "cardiomyoblast", "Mesothelial")
 #  
 
-## ----from_seurat_object, eval = FALSE-----------------------------------------
+## ----from_seurat_object, eval = FALSE------------------------------------
 #  
 #      generes <- seurat_to_generes(pbmc = seurat_example, test = "wilcox")
 #  
 #      gene_out <- generes_to_heatmap(generes, make_names = FALSE)
 #  
 
-## ----from_count_and_genes, eval = FALSE---------------------------------------
+## ----from_count_and_genes, eval = FALSE----------------------------------
 #  
 #  #Create the cell-type ids and matrix
 #  Cell_type_id <- seurat_example@active.ident
@@ -184,7 +184,7 @@ library(scMappR)
 #      gene_out <- generes_to_heatmap(generes, make_names = FALSE)
 #  
 
-## ----plot_barplot, eval=FALSE-------------------------------------------------
+## ----plot_barplot, eval=FALSE--------------------------------------------
 #  
 #  # making an example matrix
 #  term_name <- c("one", "two", "three")
@@ -205,7 +205,7 @@ library(scMappR)
 #  print(y)
 #  
 
-## ----heatmap_identification, eval=FALSE---------------------------------------
+## ----heatmap_identification, eval=FALSE----------------------------------
 #  
 #  # Generating a heatmap
 #  
