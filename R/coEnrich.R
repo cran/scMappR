@@ -32,6 +32,7 @@
 #' @importFrom gProfileR gprofiler
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
+#' @importFrom pbapply pblapply
 #'
 #' @examples 
 #' \donttest{
@@ -88,7 +89,7 @@ coEnrich <- function(sig, gene_list_heatmap, background_heatmap, study_name, out
   multi_comps <- c()
   for(y in 2:l) {
     # for combinations of 2-# enriched cell types (max= 5)
-    if(y < l) {
+    if(y <= l) {
       comps <- utils::combn(sig$cell_type, y)
       # find combinations of cell-types
       co_up <- function(x) return(length(x[x>=1])==y)

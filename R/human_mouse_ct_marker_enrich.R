@@ -31,6 +31,7 @@
 #' @importFrom gProfileR gprofiler
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
+#' @importFrom pbapply pblapply
 #'
 #' @examples 
 #' \donttest{
@@ -119,7 +120,7 @@ human_mouse_ct_marker_enrich <- function(gene_lists, theSpecies = "human",cell_m
         #
         datafile <- "mouse_cell_markers.rda"
         metafile <- paste0(datafile)
-        url <- paste0("https://github.com/DustinSokolowski/scMappR_Data/blob/master/", 
+        url <- paste0("https://github.com/wilsonlabgroup/scMappR_Data/blob/master/", 
                       metafile, "?raw=true")
         destfile <- file.path(tempdir(), metafile)
         downloader::download(url, destfile = destfile, mode = "wb")
@@ -166,7 +167,7 @@ human_mouse_ct_marker_enrich <- function(gene_lists, theSpecies = "human",cell_m
           #
           datafile <- "cell_preferences_categorized.rda"
           metafile <- paste0(datafile)
-          url <- paste0("https://github.com/DustinSokolowski/scMappR_Data/blob/master/", 
+          url <- paste0("https://github.com/wilsonlabgroup/scMappR_Data/blob/master/", 
                         metafile, "?raw=true")
           destfile <- file.path(tempdir(), metafile)
           downloader::download(url, destfile = destfile, mode = "wb")
@@ -234,7 +235,7 @@ human_mouse_ct_marker_enrich <- function(gene_lists, theSpecies = "human",cell_m
         #
         datafile <- "human_cell_markers.rda"
         metafile <- paste0(datafile)
-        url <- paste0("https://github.com/DustinSokolowski/scMappR_Data/blob/master/", 
+        url <- paste0("https://github.com/wilsonlabgroup/scMappR_Data/blob/master/", 
                       metafile, "?raw=true")
         destfile <- file.path(tempdir(), metafile)
         downloader::download(url, destfile = destfile, mode = "wb")
@@ -272,7 +273,7 @@ human_mouse_ct_marker_enrich <- function(gene_lists, theSpecies = "human",cell_m
           #
           datafile <- "cell_preferences_categorized.rda"
           metafile <- paste0(datafile)
-          url <- paste0("https://github.com/DustinSokolowski/scMappR_Data/blob/master/", 
+          url <- paste0("https://github.com/wilsonlabgroup/scMappR_Data/blob/master/", 
                         metafile, "?raw=true")
           destfile <- file.path(tempdir(), metafile)
           downloader::download(url, destfile = destfile, mode = "wb")

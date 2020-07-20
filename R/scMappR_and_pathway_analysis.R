@@ -49,6 +49,7 @@
 #' @importFrom gProfileR gprofiler
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
+#' @importFrom pbapply pblapply
 #'
 #' @examples 
 #' 
@@ -277,7 +278,7 @@ scMappR_and_pathway_analysis <- function(  count_file,signature_matrix, DEG_list
         #
         datafile <- "bioMart_ortholog_human_mouse.rda"
         metafile <- paste0(datafile)
-        url <- paste0("https://github.com/DustinSokolowski/scMappR_Data/blob/master/", 
+        url <- paste0("https://github.com/wilsonlabgroup/scMappR_Data/blob/master/", 
                       metafile, "?raw=true")
         destfile <- file.path(tempdir(), metafile)
         downloader::download(url, destfile = destfile, mode = "wb")
@@ -294,7 +295,10 @@ scMappR_and_pathway_analysis <- function(  count_file,signature_matrix, DEG_list
       signature_matrix1 <- signature_matrix[intersected_genes,]
       bioMart_orthologs1 <- bioMart_orthologs[intersected_genes,]
       rownames(signature_matrix1) <- bioMart_orthologs1[,theSpecies] # replacing rownames with the species you want
-      message(dim(signature_matrix1))
+      message("Number of genes: ")
+      message(nrow(signature_matrix1))
+      message("Number of cell-types: ")
+      message(ncol(signature_matrix1))
       signature_matrix <- signature_matrix1
     }
   }
@@ -353,7 +357,7 @@ scMappR_and_pathway_analysis <- function(  count_file,signature_matrix, DEG_list
   message("Writing summary of cell-type proportion changes between case and control.")
   utils::write.table(T_test_outs, file = paste0(path,"/",output_directory, "/", plot_names, "_cell_proportion_changes_summary.tsv"), quote = FALSE, row.names = TRUE, col.names = TRUE, sep = "\t")
   
-  message(scMappR_vals)
+  #message(scMappR_vals)
   save(scMappR_vals, file = paste0(path,"/",output_directory, "/",plot_names, "_cellWeighted_Foldchanges.RData"))
   
   cell_proportions_all <- cellWeighted_Foldchanges$cellType_Proportions # all gene CT proportion
@@ -387,12 +391,17 @@ scMappR_and_pathway_analysis <- function(  count_file,signature_matrix, DEG_list
   scMappR_intersect <- scMappR_vals[inter,]
   scMappR_pref <- scMappR_vals[inter,]
   
-  grDevices::pdf(paste0(path,"/",output_directory,"/",plot_names,"_cwFC_absoluteVals_heatmap.pdf")) 
+  
+  grDevices::pdf(paste0(path,"/",output_directory,"/",plot_names,"_cwFC_absoluteVals_signature_overlap.pdf")) 
   pl_abs <- pheatmap::pheatmap(abs(as.matrix(scMappR_intersect)), color = myheatcol, scale = "row", fontsize_row = cex, fontsize_col = 10)
   dev.off()
   
+  grDevices::pdf(paste0(path,"/",output_directory,"/",plot_names,"cwFC_absoluteVals_all.pdf"))
+  pheatmap::pheatmap(abs(as.matrix(scMappR_vals[,pl_abs$tree_col$order])), color = myheatcol, scale = "row", fontsize_row = cex, fontsize_col = 10, cluster_cols = FALSE)
+  dev.off()
+  
   grDevices::pdf(paste0(path,"/",output_directory,"/",plot_names,"_DEG_preferences_heatmap.pdf")) 
-  pheatmap::pheatmap(as.matrix(scMappR_pref[pl_abs$tree_row$order,pl_abs$tree_col$order]), color = myheatcol, scale = "row", fontsize_row = cex, fontsize_col = 10)
+  pheatmap::pheatmap(as.matrix(scMappR_pref[pl_abs$tree_row$order,pl_abs$tree_col$order]), color = myheatcol, scale = "row", fontsize_row = cex, fontsize_col = 10, cluster_rows = FALSE, cluster_cols = FALSE)
   dev.off()
   
 
@@ -415,7 +424,10 @@ scMappR_and_pathway_analysis <- function(  count_file,signature_matrix, DEG_list
     message("There were fewer than two upregulated DEGs, therefore a heatmap could not be made.")
     
   }
-  message(dim(scMappR_vals_down))
+  message("Number of genes: ")
+  message(nrow(scMappR_vals_down))
+  message("Number of cell-types: ")
+  message(ncol(scMappR_vals_down))
   if((nrow(scMappR_vals_down) > 2 & ncol(scMappR_vals_down) > 2)[1]) {
   grDevices::pdf(paste0(path,"/",output_directory, "/", plot_names,"_cellWeighted_Foldchanges_downregulated_DEGs_heatmap.pdf"))
   #gplots::heatmap.2(as.matrix(abs(scMappR_vals_down)), Rowv = TRUE, dendrogram = "column", col = myheatcol, scale = "row", trace = "none", margins = c(7,7),cexRow = cex, cexCol = 0.3 )

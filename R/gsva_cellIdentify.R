@@ -31,6 +31,7 @@
 #' @importFrom gProfileR gprofiler
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
+#' @importFrom pbapply pblapply
 #'
 #' @examples 
 #' \donttest{
@@ -96,7 +97,7 @@ gsva_cellIdentify <- function(pbmc, theSpecies, naming_preference = -9, rda_path
       #
       datafile <- "human_cell_markers.rda"
       metafile <- paste0(datafile)
-      url <- paste0("https://github.com/DustinSokolowski/scMappR_Data/blob/master/", 
+      url <- paste0("https://github.com/wilsonlabgroup/scMappR_Data/blob/master/", 
                     metafile, "?raw=true")
       destfile <- file.path(tempdir(), metafile)
       downloader::download(url, destfile = destfile, mode = "wb")
@@ -121,7 +122,7 @@ gsva_cellIdentify <- function(pbmc, theSpecies, naming_preference = -9, rda_path
       #
       datafile <- "mouse_cell_markers.rda"
       metafile <- paste0(datafile)
-      url <- paste0("https://github.com/DustinSokolowski/scMappR_Data/blob/master/", 
+      url <- paste0("https://github.com/wilsonlabgroup/scMappR_Data/blob/master/", 
                     metafile, "?raw=true")
       destfile <- file.path(tempdir(), metafile)
       downloader::download(url, destfile = destfile, mode = "wb")
@@ -160,7 +161,7 @@ gsva_cellIdentify <- function(pbmc, theSpecies, naming_preference = -9, rda_path
     #
     datafile <- "cell_preferences_categorized.rda"
     metafile <- paste0(datafile)
-    url <- paste0("https://github.com/DustinSokolowski/scMappR_Data/blob/master/", 
+    url <- paste0("https://github.com/wilsonlabgroup/scMappR_Data/blob/master/", 
                   metafile, "?raw=true")
     destfile <- file.path(tempdir(), metafile)
     downloader::download(url, destfile = destfile, mode = "wb")

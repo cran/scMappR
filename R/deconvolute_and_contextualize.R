@@ -53,6 +53,7 @@
 #' @importFrom gProfileR gprofiler
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
+#' @importFrom pbapply pblapply
 #' 
 #' @examples 
 #' \donttest{
@@ -266,7 +267,7 @@ deconvolute_and_contextualize <- function(count_file,signature_matrix, DEG_list,
   proportions <- proportions[,colMeans(proportions) > 0.001]
   
   message("your bulk data contains the following cell types")
-  message(colnames(proportions))
+  message(paste(colnames(proportions), " "))
   #convert to correct datatypes for downstream analysis
   wilcox_or <- wilcox_or[,colnames(proportions)]
   wilcox_or_df <- as.data.frame(wilcox_or)
@@ -324,7 +325,7 @@ deconvolute_and_contextualize <- function(count_file,signature_matrix, DEG_list,
   }
   
   # run this with all genes
-  iterated <- lapply(genesIn, deconvolute_gene_removed)
+  iterated <- pbapply::pblapply(genesIn, deconvolute_gene_removed)
   names(iterated) <- genesIn
   proportion_pull <- function(tester) {
     #Internal: given a list of cell-type proprotions using a leave-one-out approach, pull the average
@@ -357,7 +358,7 @@ deconvolute_and_contextualize <- function(count_file,signature_matrix, DEG_list,
   }
   
   message("Leave one out cell proporitons: ")
-  iterated_pull <- lapply(iterated, proportion_pull)
+  iterated_pull <- pbapply::pblapply(iterated, proportion_pull)
   pull_means <- function(x) return(x$Mean)
   pull_fc <- function(x) return(x$FC) 
   # pull the means and fold-changes and bind it into a matrix
@@ -397,7 +398,7 @@ deconvolute_and_contextualize <- function(count_file,signature_matrix, DEG_list,
   if((length(dup_gene_names) > 0)[1]) {
     dup_gene_names <- DEGs$gene_name[dup_gene_names]
     warning("Duplicated gene names:")
-    message(dup_gene_names)
+    message(paste(dup_gene_names, " "))
     warning("Some gene names are duplicated -- keeping the first duplicate in the list. Check if there should be duplicate gene symbols in your dataset.")
   }
   DEGs <- DEGs[!duplicated(DEGs$gene_name),]
@@ -441,7 +442,7 @@ deconvolute_and_contextualize <- function(count_file,signature_matrix, DEG_list,
     return(val)
   }
   message("Adjusting Coefficients:")
-  vals_out <- lapply(toInter_InGene$gene_name, values_with_preferences)
+  vals_out <- pbapply::pblapply(toInter_InGene$gene_name, values_with_preferences)
   message("Done")
   vals_out_mat <- do.call("rbind", vals_out)
   rownames(vals_out_mat) <- toInter_InGene$gene_name
@@ -488,7 +489,7 @@ deconvolute_and_contextualize <- function(count_file,signature_matrix, DEG_list,
       grDevices::pdf(paste0(path,"/","deconvolute_generemove_quantseq_",names,".pdf"))
       g <- ggplot2::ggplot(all_stack, ggplot2::aes(factor(cell_type), proportion)) + ggplot2::geom_boxplot()  + ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, hjust = 1, size = 8))
       # generate barplot for every cell-type combined
-      message(g)
+      print(g)
       grDevices::dev.off()
       
       for(i in unique(all_stack$cell_type)) {
@@ -500,7 +501,7 @@ deconvolute_and_contextualize <- function(count_file,signature_matrix, DEG_list,
         
         grDevices::pdf(paste0(path,"/","deconvolute_generemov_quantseq_", i,"_",names,".pdf"))
                 # generate barplot for one cell-type at a time
-        message(g)
+        print(g)
         grDevices::dev.off()
         message(i)
       }
