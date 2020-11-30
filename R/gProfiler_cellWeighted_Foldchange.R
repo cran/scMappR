@@ -9,7 +9,7 @@
 #' @name gProfiler_cellWeighted_Foldchange
 #'
 #' @param cellWeighted_Foldchange_matrix Matrix of cell weighted Fold changes from the deconvolute_and_contextualize functions.
-#' @param species Human, mouse, or a charcter that is compatible with gProfileR.
+#' @param species Human, mouse, or a name that is compatible with gProfileR (e.g. "mmusculus").
 #' @param background A list of background genes to test against.
 #' @param gene_cut The top number of genes in pathway analysis.
 #' @param newGprofiler Using gProfileR or gprofiler2, (T/F).
@@ -18,12 +18,12 @@
 #' \item{BP}{gprofiler enrichment of biological pathways for each cell-type}
 #' \item{TF}{gprofiler enrichment of transcription factors for eachc cell-type.}
 #' 
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -32,6 +32,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples 
 #' \donttest{
@@ -84,13 +86,8 @@ gProfiler_cellWeighted_Foldchange <- function(cellWeighted_Foldchange_matrix, sp
   if(!(is.logical(newGprofiler))) {
     stop("newGprofiler must be logical (TRUE/FALSE)")
   }
-  
-  if(!(species %in% c("human", "mouse"))) {
-    if(species != -9) {
-      stop("species is not 'human' 'mouse' or '-9' (case sensitive), please try again with this filled.")
-    }
-  }
-  
+  if(!is.character(species)) stop("species is not human, mouse, -9, or a species name compatible with g:ProfileR.")
+
   
   if(species == "human") {
     message("Assuming species = Human")

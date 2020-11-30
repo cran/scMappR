@@ -1,25 +1,25 @@
 #' Identify all cell-type markers 
 #'
-#' Takes processed Seurat matrix and identifies cell-type markers with FindMarkers.
+#' Takes processed Seurat matrix and identifies cell-type markers with FindMarkers in Seurat.
 #'
-#' Internal: This function runs the FindMarkers function from seurat in a loop, will use the Seurat v2 or Seurat v3 object after identifying which Seurat object is inputted. 
+#' Internal: This function runs the FindMarkers function from Seurat in a loop, will use the Seurat v2 or Seurat v3 object after identifying which Seurat object is inputted. 
 #' It then takes the output of the FindMarkers and puts it in a list, returning it.
 #' 
 #' @rdname seurat_to_generes
 #' @name seurat_to_generes
 #'
 #' @param pbmc Processed Seurat object.
-#' @param test statistical test for calling CT markers -- must be in Seurat
+#' @param test statistical test for calling CT markers -- must be in Seurat.
 #'  
 #'
 #' @return \code{seurat_to_generes} A list of genes where their over-representation in the i'th cell-type is computed. Each element contains the gene name, adjusted p-value, and the log2Fold-Change of each gene being present in that cell-type. \cr
 #'
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -28,6 +28,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples
 #' \donttest{  

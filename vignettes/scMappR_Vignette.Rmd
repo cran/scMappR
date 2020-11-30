@@ -12,7 +12,7 @@ vignette: >
 ---
 
 ## Install and load scMappR
-Currently, there is only  a development version. scMappR relies on the following dependencies which should be downloaded/updated with scMappR automatically. Please ensure that these packages are not open when installing scMappR. \
+ scMappR relies on the following dependencies which should be downloaded/updated with scMappR automatically. Please ensure that these packages are not open when installing scMappR. 
 
   * ggplot2 - CRAN
   * pheatmap - CRAN
@@ -26,6 +26,8 @@ Currently, there is only  a development version. scMappR relies on the following
   * grDevices - CRAN
   * gProfileR - CRAN
   * limSolve - CRAN 
+  * ADAPTS - CRAN
+  * reshape - CRAN
 	
 
 Install GSVA and pcaMethods from bioconductor first, as `devtools::install_githb()` will automatically install CRAN. 
@@ -43,14 +45,14 @@ if (!requireNamespace("devtools", quietly = TRUE))
 BiocManager::install("pcaMethods")
 BiocManager::install("GSVA")
 
-devtools::install_github("DustinSokolowski/scMappR")
+devtools::install_github("wilsonlabgroup/scMappR")
 
 
 
 ```
 
 
-2. CRAN (Stable Release) -- Currently not available
+2. CRAN (Stable Release)
 
 
 ```{r install_cran, eval=FALSE}
@@ -69,137 +71,45 @@ install.packages("scMappR")
 
 ## Downloading Files.
 
-Before using scMappR, we strongly recommend that you download data files from "https://github.com/DustinSokolowski/scMappR_Data". As a default, it is assumed that these rda files have been downloaded and stored in ~/scMappR/data. These data files can be downloaded anywhere as long as the 'rda_data' parameter is changed to this directory when using scMappR. When data are not downloaded, the Downloader R package will temporarily download data files they are required within functions. Naturally, stable internet is required for this.
+Before using scMappR, we strongly recommend that you download data files from "https://github.com/wilsonlabgroup/scMappR_Data".Tthe `rda_path` parameter will allow users to set the directory where these data are stored. If the correct files are not stored in this directory, then scMappR will download these as temporary files from "https://github.com/wilsonlabgroup/scMappR_Data", use them in the function, and not save them. This parameter is set to "" as a default and thus data are downloaded as a default.
 
-## Printing results.
+Additionally, the `get_signature_matrices()` function allows the user to get the list of all stored signature matrices at any given time. Input "all", "pVal", or "OR" to get the matrix of p-values, odds-ratios, or both. This function outputs the signature matrices, the top 30 cell-type markers for each cell-type, and the predicted cluster label from the Fisher's exact test and GSVA.
 
-Many of the functions in scMappR print files or even generate directories. To return the full output of scMappR, please change the 'toSave' parameters from `FALSE` to `TRUE` in any of the functions being used. Otherwise, the functions in scMappR will only return a small portion of what scMappR has to offer. Due to CRAN packages not allowing for their packages to print files/make directories, toSave is set to `FALSE` as default.
 
-When `toSave == TRUE`, it is also required to set the directory where files can be saved. In this vignette, it is assumed that there is a directory called `vignette_dir` in the working directory. To change the directory where files are saved, change the `path` argument. This vignette sets `path` to `tempdir()`. When using scMappR, change `tempdir()` to the directories where files should be saved.
+```{r get_signatures, eval=FALSE}
 
-## Introduction of the primary functionalists highlighted in the vignette.
+signatures <- get_signature_matrices(type = "all") #return a list of cell-type labels, p-values, and odds-ratios.
 
+
+```
+
+
+
+## Saving results.
+
+Many of the functions in scMappR print files or  generate directories. To return the full output of scMappR, please change the 'toSave' parameters from `FALSE` to `TRUE` in any of the functions being used. Otherwise, the functions in scMappR will only return a small portion of what scMappR has to offer. Due to CRAN packages not allowing for their packages to print files/make directories, toSave is set to `FALSE` as default. Furthermore, a path directory must be set. For example `path="./"` will print files and directories to the working directory. These measures are to prevent any file overwriting. This vignette sets `path` to `tempdir()`. When using scMappR, change `tempdir()` to the directories where files should be saved.
+
+## Introduction of the primary functions highlighted in the vignette.
+
+#### Transforming summary statistics of differentially expressed genes by cell-type specific information
+* `scMappR_and_pathway_analysis()`: This function generates cell-weighted fold changes (cellWeighted_Foldchanges), visualizes them in a heatmap, and completes pathway enrichment of cellWeighted_Foldchanges and bulk gene list.
+* `two_method_pathway_enrichment()`: This function completes additional pathway enrichment tests from cwFold-changes calculated in `scMappR_and_pathway_analysis`. Specifically, it re-ranks cwFoldChanges based on their absolute ct specificity scores (per-celltype) as well as their rank increase in cell-type specificity before completing an ordered pathway analysis. In the second method, only genes with a rank increase in cell-type specificity were included.
+* `cwFoldChange_evaluate()`. At the level of the gene, cwFold-changes are scored so that they sum to 1. For each gene, cell-types whose cwFold-change are greater than the cell-type proportion while accounting for an abnormally high proportion of the fold change (+ 3 median absolute deviations from median cell-type specificity) are considered cell-type specific. At the level of the cell-type, bulk DEGs and cwFold-changes for each cell-type are correlated. The difference in the rank of DEG is also measured.
+
+#### Enriching cell-type markers in a list of genes.
 * `tissue_scMappR_custom()`: This function visualizes signature matrix, clusters subsetted genes, completes enrichment of individual cell-types and co-enrichment. 
 * `tissue_scMappR_internal()`: This function loops through every signature matrix in a particular tissue and generates heatmaps, cell-type preferences, and co-enrichment.
-* `scMappR_and_pathway_analysis()`: This function generates cell-weighted fold changes (cellWeighted_Foldchanges), visualizes them in a heatmap, and completes pathway enrichment of cellWeighted_Foldchanges and bulk gene list.
 * `tissue_by_celltype_enrichment()`: This function completes a fishers exact test of an input list of genes against one of the two curated tissue by cell-type marker datasets from scMappR.
+
+#### Processing scRNA-seq count data into a gene list.
+
 * `process_dgTMatrix_lists()`: This function takes a list of count matrices, processes them, calls cell-types, and generates signature matrices.
-
-```{r library_scMappR, warning=FALSE, echo = FALSE}
-
-library(scMappR)
-
-```
-
-## Cell-type markers in a list of genes.
-Given a tissue and an unranked list of genes (i.e. without a count matrix or summary statistics), the `tissue_scMappR_custom()` and `tissue_scMappR_internal()` functions visualizes cell-type markers contained within the gene-list and tests for the enrichment of cell-types within that tissue. When there is no custom signature matrix, providing a tissue present in "https://github.com/DustinSokolowski/scMappR_Data/blob/master/Signature_matrices_Pval.rda" will complete cell-type specific gene visualization and enrichment for every signature matrix in the tissue.
-
-### No custom signature matrix:
-  
-#### Example
-
-``` {r  scMappR_internal_example, eval = FALSE} 
-
-data(POA_example) # region to preoptic area
-
-Signature <- POA_example$POA_Rank_signature # signature matrix 
-
-rowname <- get_gene_symbol(Signature) # get signature
-
-rownames(Signature) <- rowname$rowname
-
-genes <- rownames(Signature)[1:60]
-
-rda_path1 = "" # data directory (if it exists)
-
-# Identify tissues available for tissue_scMappR_internal
-data(scMappR_tissues)
-
-"Hypothalamus" %in% toupper(scMappR_tissues)
-
-internal <- tissue_scMappR_internal(genes, "mouse", output_directory = "scMappR_Test_Internal", 
-tissue = "hypothalamus", rda_path = rda_path1, toSave = TRUE, path = tempdir())
-
-
-```
-
-#### Output
-
-This function returns a list "internal". Using the example of `internal[[4]]`, the prophetic area of the hypothalamus, you can see four objects. 
-
-##### background_heatmap
-  * genesIn: genes in the signature matrix is tested. \
-  * genesNoIn: genes not in the signature matrix (empty). \
-  * geneHeat: Gene x cell-type matrix containing the cell-type rank of each gene in the signature matrix. \
-  * preferences: Cell-type marker genes sorted into each cell-type. 
-   
-
-##### gene_list_heatmap
-  * genesIn: Inputted genes that are also in the signature matrix. 
-  * genesNoIn: Inputted genes not in the signature matrix. 
-  * geneHeat: Gene x cell-type matrix containing the cell-type rank for inputted genes overlaying with genes in the signature matrix. 
-  * preferences: Inputted genes overlaying with signature matrix sorted into the cell-types where they're preferentially expressed.
-  
-##### single_celltype_preferences
-  * Output of the Fisher's exact test for cell-type enrichment of inputted genes with every cell-type. 
-
-##### group_celltype_preference
-  * Identification and statistical enrichment of groups of cell-types containing the same cell-type marker genes.
-  
-#### Saved directory
-
-When `toSave == TRUE`, a directory is generated with visualization of each signature matrix, the signature matrix subsetted by input genes, and statistical enrichment.
-
-
-### Custom signature matrix
-tissue_scMappR_custom() assumes a custom signature matrix, or an inputted gene x cell-type matrix that is filled with the cell-type preferences of each gene (Rank is recommended but any value will suffice). If the value filling the matrix is not rank, you will need to change the gene_cutoff from 1 to whatever cutoff you need. Furthermore, if is_pvalue == TRUE, tissue_scMappR_custom() will transform the p-values into ranks rank := -1log10(Padj)*sign(FC). We strongly recommend that you generate these ranks before using tissue_scMappR_custom(); however, we assume that all fold changes are positive and therefore sign(FC) = 1.
-
-#### Example
-
-```{r scMappR_custom_example, eval = FALSE} 
-
-# Acquiring the gene list
-data(POA_example)
-
-Signature <- POA_example$POA_Rank_signature
-
-rowname <- get_gene_symbol(Signature)
-
-rownames(Signature) <- rowname$rowname
-
-genes <- rownames(Signature)[1:200]
- 
-#running tisue_scMappR_custom
-internal <- tissue_scMappR_custom(genes,Signature,output_directory = "scMappR_Test_custom", toSave = F)
-
-
-```
-
-#### Output
-
-The output is identical to that found in tissue_scMappR_internal() but with only one study, or the example shown above. \
-
-If you choose to set toSave = TRUE. This function will return a directory with a number of relevant files. 
-
-### Saved Outputs
-  
-  * _celltype_preferences.tsv: Enrichment of inputted genes on each cell-type.
-  * _cell_co_preferences.tsv: Identification and enrichment of cell-types being enriched by the same genes (cell-type markers in common).
-  * _custom_background_heatmap.pdf: Heatmap of all cell-type markers in each cell-type in the entire signature matrix.
-  * _custom_background_preferences.pdf: All cell-type markers sorted into each cell-type.
-  * _custom_genelist_heatmap.pdf: Heatmap of cell-type markers intersected with inputted gene list.
-  * _custom_genelist_preferences.pdf: Cell-type markers intersected with inputted gene list sorted into each cell-type.
-  
-#### Saved directory
-
-When `toSave == TRUE`, a directory is generated with visualization of each signature matrix, the signature matrix subsetted by input genes, and statistical enrichment.
-
 
 
 ## cell-weighted Fold Changes (cwFold-changes) Generation
 
-The scMappR_and_pathway_analysis() function generates cellWeighted_Foldchanges based on an inputted signature matrix, normalized RNA-seq count matrix, and list of differentially-expressed genes (DEGs) before creating cell-weighted Fold Changes (cwFold-changes) (cellWeighted_Foldchanges), visualizing these cellWeighted_Foldchange's against the cell-type preferences of these DEGs, that are also cell-type markers, visualizing cellWeighted_Foldchange's regardless of if the cellWeighted_Foldchange is cell-type markers, and if allowed, pathway enrichment of DEGs re-ranked by cell-type. \ 
-The example below has `toSave = FALSE`, `up_and_downregulated = FALSE` and `internet = FALSE`. When running scMappR yourself, it is strongly recommended to set all to `TRUE`. toSave = TRUE allows for the printing of folders, images, and files onto a desktop/cluster. up_and_downregulated = TRUE repeats pathway analysis for up and down-regulated genes separately. internet = TRUE allows for the completion of pathway analysis altogether. Tissue-types are available in `data(scMappR_tissues)`, and the signature matrices themselves from https://github.com/DustinSokolowski/scMappR_Data/blob/master/Signature_matrices_OR.rda
+The `scMappR_and_pathway_analysis()` function generates cellWeighted_Foldchanges based on an inputted signature matrix, normalized RNA-seq count matrix (e.g. TPM, RPKM, CPM), and list of differentially-expressed genes (DEGs) before creating cell-weighted Fold Changes (cwFold-changes). cwFold-changes are row-normalized and visualized in a heatmap. Cell-type markers within calculated cwFold-changes are also visualized both as cell-type markers on their own (i.e. just their cell-type specificity), and as cwFold-changes. Then, for each cell-type, this function filters genes expressed in each cell-type (cwFold-change > 1e-5), reorders the genes by cwFold-change, then completes an ordered pathway analysis with g:ProfileR or gprofiler2 package (user chooses). All genes detected in the bulk RNA-seq are used as the background.  \ 
+The example below has `toSave = FALSE`, `up_and_downregulated = FALSE` and `internet = FALSE`. When running scMappR yourself, it is strongly recommended to set all to `TRUE`. `toSave = TRUE` allows for the printing of folders, images, and files onto a desktop/cluster. `up_and_downregulated = TRUE` repeats pathway analysis for up and down-regulated genes separately. `internet = TRUE` allows for the completion of pathway analysis altogether. Tissue-types are available in `data(scMappR_tissues)`, and the signature matrices themselves from `get_signature_matrices(type = "OR")`.
 
 #### Example
 
@@ -239,43 +149,212 @@ toOut <- scMappR_and_pathway_analysis(bulk_normalized, odds_ratio_in,
 
 ### Saved outputs
 
-
 Assuming `toSave = T` and `up_and_downregulated = T`, `scMappR_and_pathway_analysis()` will also generate a folder in your current directory with a considerable amount of data/figures.
 
 
- Here, we will walk through the output of the above example sorting by name and working downwards.
-  * scMappR_vignette_celltype_specific_cellWeighted_Foldchangess_upregulated_heatmap.pdf: Row-normalized cellWeighted_Foldchanges of upregulated genes that are also cell-type specific (in the signature matrix).
-  * scMappR_vignette_celltype_specific_cellWeighted_Foldchangess_downregulated_heatmap.pdf: Row-normalized cellWeighted_Foldchanges of downregulated genes that are also cell-type specific (in the signature matrix).
-  * scMappR_vignette__cellWeighted_Foldchangess_upregulated_DEGs_heatmap.pdf: row-normalized cellWeighted_Foldchanges of upregulated genes.
-  * scMappR_vignette__cellWeighted_Foldchangess_downregulated_DEGs_heatmap.pdf: row-normalized cellWeighted_Foldchanges of downregulated genes.
-  * scMappR_vignette_reordered_transcription_factors.Rdata: .Rdata file containing a list of outputs from gprofiler or gprofiler2 that are transcription factors enriched after re-ordering.
-  * scMappR_vignette_reordered_pathways: .Rdata file containing list of outputs from gprofileR or gprofiler2 that are  "GOBP", "REAC", and "KEGG" enrichments after re-ordering.
-  * scMappR_vignette_leaveOneOut_gene_proportions.RData: Average cell-type proportion when gene is removed.
-  * scMappR_vignette_celltype_specific_preferences_upregulated_DEGs_heatmap.pdf: Row-normalized .pdf of signature matrix intersecting with upregulated DEGs.
-  * scMappR_vignette_celltype_specific_preferences_downregulated_DEGs_heatmap.pdf: Row-normalized .pdf of signature matrix intersecting with downregulated DEGs.  
- * scMappR_vignette_celltype_proportions.Rdata: Data matrix of cell-type proportions for each sample.
- * scMappR_vignette_cell_proportions_heatmap.pdf: Row-normalized heatmap of cell-type proportions.
- * scMappR_vignette_cell_proportion_changes_summary.tsv: Table of t-tests to interrogate differences in cell-type proportions.
- * scMappR_vignette_bulk_transcription_factors.Rdata: gprofiler enrichment of bulk transcription factors.
- * scMappR_vignette_bulk_pathways.Rdata: gprofiler enrichment of bulk GOBP, REAC, and KEGG.
- * scMappR_vignette_all_CT_markers_in_background.pdf: Signature matrix of all genes in the background.
- * Bulk_TF_enrichment.pdf: Barplot of bulk transcription factor enrichment.
- * Bulk_pathway_enrichment.pdf: Barplot of bulk pathway enrichment.
- * upregulated: Directory with the same pathway analysis specifically for upregulated genes.
- * downregulated: Directory with the same pathway analysis specifically for downregulated genes.
- * TF_barplot: Directory with .pdfs of re-ranked TF enrichment.
- * BP_barplot: Directory with .pdfs of re-ranked GOBP, KEGG, and REAC enrichment.
+Here, we will walk through the output of the above example sorting by name and working downwards.
+  * BP_barplot: a directory with pdf's of the top 10 pathways of DEGs that have been re-normlaized by their cwFold-change.
+  * Downregulated: a directory with pdf's and Rdata files of pathway and TF enrichment of downregulated DEGs re-normalized by their cwFold-change.
+  * TF_barplot: a directory with pdf's of the top 10 TFs of DEGs that have been re-normlaized by their cwFold-change.
+  * Upregulated: a directory with pdf's and Rdata files of pathway and TF enrichment of upregulated DEGs re-normalized by their cwFold-change.
+  * bulk_pathway_enrichment: png and Rdata file of traditional g:ProfilR analysis of GOBP, REAC, and KEGG databases.
+  * bulk_TF_enrichment: png and Rdata file of traditional g:ProfilR analysis of TF database.
+  * scMappR_vignette_cell_proportion_changes_summary: t-tests looking at difference in estimated cell-type proporitons between conditions.
+  * scMappR_vignette_celltype_proportions: Estimated cell-type proportions of all inputted samples.
+  * scMappR_vignette_cellWeighted_Foldchanges: cwFold-changes of all estimated DEGs.
+  * scMappR_vignette_cwFC_downregulated_DEGs: heatmap of downregulated cwFold-changes.
+  * scMappR_vignette_cwFC_signature_matrix_downregulated_DEGs: heatmap of downregulated cwFold-changes overlapping with signature matrix.
+  * scMappR_vignette_DEG_signature_matrix: Heatmap of signature matrix.
+  * scMappR_vignette_leaveOneOut_gene_proportions: estimated cell-type proportions of all samples after each DEG is removed.
+  * scMappR_vignette_reordered_pathways: g:ProfileR enrichment of DEGs after they're re-ordered by cwFold-changes.   
+  * scMappR_vignette_reordered_transcription_factors: g:ProfileR enrichment of DEGs after they're re-ordered by cwFold-changes.   
+  * scMappR_vignette_signature_matrix: heatmap of signature matrix.
+  * scMappR_vignette_signature_matrix_downregulated_DEGs: heatmap of signature matrix overlapping downregulated DEGs.
+  * scMappR_vignette_signature_matrix_upregulated_DEGs: heatmap of signature matrix overlapping upregulated DEGs.
+  * scMappR_vignetteabs_cwFC: heatmap of absolute valued cwFold-changes (up- and down-regulated DEGs).
+  * scMappR_vignettecwFC_signature_matrix_upregulated_DEGs: heatmap of absolute valued cwFold-changes (up- and down-regulated DEGs) overlapping with the signature matrix.
  
+### Additional pathway enrichments of cwFold-changes
+
+In addition to completing pathway enrichment of DEGs re-ranked by their cwFold-change, it may be informative to interrogate which DEGs were the most influenced by their cell-type specificity in the context of each cell-type.
+
+#### Example
+
+In this example, we are extending the output from the `scMappR_and_pathway_analysis` function above.
+
+```{r two_method_pathway, eval=FALSE}
+
+twoOutFiles <- two_method_pathway_enrichment(bulk_DE_cors, "human",
+scMappR_vals = toOut$cellWeighted_Foldchange, background_genes = rownames(bulk_normalized), 
+output_directory = "newfun_test",plot_names = "nonreranked_", toSave = FALSE)
+
+
+
+```
+
+
+
+#### Output
+
+  * rank_increase: a list containing the rank change between DEGs and cwFold-changes. Additionally, it contains the output of g:ProfileR with genes re-ranked by eac cwFold-change.
+  * non_rank_increase: the same output of pathway enrichment found in `scMappR_and_pathway_analysis`. Please refer to previous section for output.
+
+##### Saved outputs
+
+  * BP_barplot: Plots of the top 10 most enriched pathways by re-ranking genes by cwFold-change using g:ProfileR.
+  * TF_barplot: Plots of the top 10 most enriched TFs by re-ranking genes by cwFold-change using g:ProfileR.
+  * bp_reranked: Plots of the top 10 most enriched pathways by re-ordering genes based on how much the gene increases in rank between Fold-change and cwFold-change.
+  * tf_reranked: Plots of the top 10 most enriched TFs by re-ordering genes based on how much the gene increases in rank between Fold-change and cwFold-change.
+  * scatter_reranked: Scatter plots of the rank of cwFold-changes and regulated fold-changes of DEGs for each cell-type.
+  * bulk_X_enrichment.Rdata: gProfiler results of pathway/TF enrichment of DEGs.
+  * rank_increase_genes.Rdata: list showing the rank difference between Fold-changes and cwFold-changes for each cell-type.
+  * reweighted_bulk_X.Rdata: List of each cell-type containing Pathway/TF enrichment of genes re-ordered by cwFold-change.
+  * reweighted_reordered_X.Rdata: List of each cell-type containing Pathway/TF enrichment of genes ordered by the change in rank between fold-change and cwFold-change.
+  
+## Testing the cell-type specificity of cwFold-changes at the level of the gene and cell-type.
+
+An important aspect of scMappR is to calculate which DEGs from bulk differential analysis may be differentially expressed due to a change in expression of specific cell-types. We complete this task my measuring if the cell-type specificity of each DEG contains outliers for a specific cell-type, and if the distribution of DEGs within a cell-type (measured through cwFold-changes) is different from the distribution of DEGs measured in bulk.
+
+#### Example
+
+In this example, we are extending the output from the `scMappR_and_pathway_analysis` function above.
+
+```{r cwFoldChange_evaluate, eval=FALSE}
+
+
+evaluated <- cwFoldChange_evaluate(toOut$cellWeighted_Foldchange, toOut$cellType_Proportions, bulk_DE_cors)
+
+
+```
+
+#### Output
+  * cwFoldChange_normalized: A gene by cell-type data.frame of cwFold-changes. Here, the cwFold-change of each gene is divided by it's sum such that the cwFold-change can be represented as how much that gene is accounting for the fold-change of the DEG.
+  * gene_level_investigation: A data.frame where each row is a gene. The first column is that gene's normalized cwFold-change's (see previous point) euclidean distance from 1. The following columns test if that gene's normalized cwFold-change fits a normal distribution using a Shapiro test.
+  * cwFoldchange_gene_assigned: A list of cell-types. Each cell-type contains genes where scMappR would predict that the cell-type is driving the gene's expression in the researcher's bulk sample. For each gene, outliers are measured using mean + 3sd or median + 3mad depending on if the cwFold-change of the gene fit the normal distribution. As a second threshold, the cwFold-change of the DEG in the outlier cell-type needed needed to be greater than the cell-type proportion of that cell-type. The normalized cwFold-change for that gene in the assigned cell-type is also stored.
+  * celltype_level_investigation: data frame where the columns are cell-type and the rows are the Pearson and Spearman correlation coefficients (and p-values) between bulk DEGs and cwFold-changes.
+  * cwFoldchange_vs_bulk_rank_change: A gene by cell-type matrix populated with what rank the gene is differentially expressed given that cell-type.
+  
+  
+
+```{r library_scMappR, warning=FALSE, echo = FALSE}
+
+library(scMappR)
+
+```
+
+## Cell-type markers in a list of genes.
+Given a tissue and an unranked list of genes (i.e. without a count matrix or summary statistics), the `tissue_scMappR_custom()` and `tissue_scMappR_internal()` functions visualizes cell-type markers contained within the gene-list. Then, they test for the enrichment of cell-types within that tissue. When there is no custom signature matrix, providing a tissue present in `get_signature_matrices(type = "pVal")` will complete cell-type specific gene visualization and enrichment for every signature matrix in the tissue.
+
+### No custom signature matrix: 
+  
+#### Example
+
+``` {r  scMappR_internal_example, eval = FALSE} 
+
+data(POA_example) # region to preoptic area
+
+Signature <- POA_example$POA_Rank_signature # signature matrix 
+
+rowname <- get_gene_symbol(Signature) # get signature
+
+rownames(Signature) <- rowname$rowname
+
+genes <- rownames(Signature)[1:60]
+
+rda_path1 = "" # data directory (if it exists)
+
+# Identify tissues available for tissue_scMappR_internal
+data(scMappR_tissues)
+
+"Hypothalamus" %in% toupper(scMappR_tissues)
+
+internal <- tissue_scMappR_internal(genes, "mouse", output_directory = "scMappR_Test_Internal", 
+tissue = "hypothalamus", rda_path = rda_path1, toSave = TRUE, path = tempdir())
+
+
+```
+
+#### Output
+
+This function returns a list "internal". Using the example of `internal[[4]]`, the pre-optic area of the hypothalamus, you can see four objects. 
+
+##### background_heatmap
+  * genesIn: genes in the signature matrix is tested. \
+  * genesNoIn: genes not in the signature matrix (empty). \
+  * geneHeat: Gene x cell-type matrix containing the cell-type rank of each gene in the signature matrix. \
+  * preferences: Cell-type marker genes sorted into each cell-type. 
+   
+
+##### gene_list_heatmap
+  * genesIn: Inputted genes that are also in the signature matrix. 
+  * genesNoIn: Inputted genes not in the signature matrix. 
+  * geneHeat: Gene x cell-type matrix containing the cell-type rank for inputted genes overlaying with genes in the signature matrix. 
+  * preferences: Inputted genes overlaying with signature matrix sorted into the cell-types where they're preferentially expressed.
+  
+##### single_celltype_preferences
+  * Output of the Fisher's-exact test for cell-type enrichment of inputted genes with every cell-type. 
+
+##### group_celltype_preference
+  * Identification and statistical enrichment of groups of cell-types containing the same cell-type marker genes.
+  
+#### Saved directory
+
+When `toSave == TRUE`, a directory is generated with visualization of each signature matrix, the signature matrix subsetted by input genes, and statistical enrichment.
+
+
+### Custom signature matrix
+`tissue_scMappR_custom()` assumes a custom signature matrix. We suggest a gene x cell-type matrix populated with the `-log10(Padj)*sign(FC)` (i.e. Rank) of the cell-type marker. We identify the cell-type marker with the `FindMarker` function from the Seurat package. The statistical test within that function is based on the biological question that the user interested in. Pre-computed signature matrices use the Wilcoxon test. If the value filling the matrix is not rank, users will need to change the `gene_cutoff` parameter to what they deem significant. If `is_pvalue == TRUE`, `tissue_scMappR_custom()` will transform the p-values into Ranks.
+
+#### Example
+
+```{r scMappR_custom_example, eval = FALSE} 
+
+# Acquiring the gene list
+data(POA_example)
+
+Signature <- POA_example$POA_Rank_signature
+
+rowname <- get_gene_symbol(Signature)
+
+rownames(Signature) <- rowname$rowname
+
+genes <- rownames(Signature)[1:200]
+ 
+#running tisue_scMappR_custom
+internal <- tissue_scMappR_custom(genes,Signature,output_directory = "scMappR_Test_custom", toSave = F)
+
+
+```
+
+#### Output
+
+The output is identical to that found in `tissue_scMappR_internal()` but with only one study, or the example shown above. \
+
+If you choose to set `toSave = TRUE`. This function will return a directory with a number of relevant files. 
+
+### Saved Outputs
+  
+  * _celltype_preferences.tsv: Enrichment of inputted genes on each cell-type.
+  * _cell_co_preferences.tsv: Identification and enrichment of cell-types being enriched by the same genes (cell-type markers in common).
+  * _custom_background_heatmap.pdf: Heatmap of all cell-type markers in each cell-type in the entire signature matrix.
+  * _custom_background_preferences.pdf: All cell-type markers sorted into each cell-type.
+  * _custom_genelist_heatmap.pdf: Heatmap of cell-type markers intersected with inputted gene list.
+  * _custom_genelist_preferences.pdf: Cell-type markers intersected with inputted gene list sorted into each cell-type.
+  
+#### Saved directory
+
+When `toSave == TRUE`, a directory is generated with visualization of each signature matrix, the signature matrix subsetted by input genes, and statistical enrichment.
+
   
 ## Tissue by cell-type enrichment.
 
-scMappR allows for gene-set enrichment of every cell-type marker, sorted by cell-type, tissue, and study, curated while preprocessing all of the signature matrices for the functions within scMappR. The dataset may be downloaded from https://github.com/DustinSokolowski/scMappR_Data, processed into a gmt file using a number of packages (qusage, activepathways etc.) and then used with traditional gene-set-enrichment tools (GSEA, GSVA, gprofiler). Additionally, scMappR contains the "tissue_by_celltype_enrichment.R" function, that enriches a gene list against all cell-type markers using a Fisher's exact test. 
+scMappR allows for gene-set enrichment of every cell-type marker, sorted by cell-type, tissue, and study, curated while preprocessing all of the signature matrices for the functions within scMappR. The dataset may be downloaded from https://github.com/DustinSokolowski/scMappR_Data, processed into a gmt file using a number of packages (qusage, activepathways etc.) and then used with traditional gene-set-enrichment tools (GSEA, GSVA, gprofiler). Additionally, scMappR contains the `tissue_by_celltype_enrichment` function, that enriches a gene list against all cell-type markers using a Fisher's-exact test. Users can also download all cell-type markers by setting `return_gmt = TRUE` when using the function.
 
 
 #### Example
 
 Here, we will investigate the tissue x cell-type enrichment of the top 100 genes in the Preoptic area signature matrix. 
-#### NOTE: Fix dimensions of plot or don't plot it at all.
+
 
 ```{r tissue_ct_enrichment_example, fig.show='hide', eval=FALSE}
 
@@ -304,7 +383,7 @@ species = "mouse",p_thresh = 0.05, isect_size = 3)
   
 ## Processing scRNA-seq count data into a signature matrix.
 
-scMappR inputs a list of count matrices (of class list, dCGMatrix, or matrix) and re-processes it using the standard Seurat V3 vignette (+ removal of cells with > 2 standard deviations of mt contamination than mean). Then, it finds cell-type markers and identifies potential cell-type names using the GSVA and fisher's exact methods on the CellMarker and Panglao databases. Finally, it creates a signature matrix of odds ratios and ranks. There are options to save the Seurat object, gsva cell-type identities and list of cell-type markers. To identify what naming-preferences options are available, download and load https://github.com/DustinSokolowski/scMappR_Data/blob/master/cell_preferences_categorized.rda.
+scMappR inputs a list of count matrices (of class list, dCGMatrix, or matrix) and re-processes it using the standard Seurat V3 vignette (+ removal of cells with > 2 standard deviations of mt contamination than mean). Then, it finds cell-type markers and identifies potential cell-type names using the GSVA and Fisher's exact methods on the CellMarker and Panglao databases. Finally, it creates a signature matrix of odds ratios and ranks. There are options to save the Seurat object, GSVA cell-type identities and list of cell-type markers. To identify what naming-preferences options described here: "brain", "epithelial", "endothelial", "blood", "connective","eye", "epidermis", "Digestive", "Immune", "pancreas", "liver", "reproductive", "kidney", "respiratory"
 
 ```{r process_scRNAseq_count, eval = FALSE}
 
@@ -329,6 +408,10 @@ Here, the following objects are saved.
   * testProcess_pval_heatmap.Rdata: signature matrix of ranks named from Fisher's exact test.
   * testProcess_custom.Rdata: Processed (and integrated if necessary) Seurat object.
   * testProcess_gsva_cellname_avg_expression.Rdata: list of cell-type markers from CelllMarker and Panglao using the GSVA method as well as the average expression of each gene in each cell-type.
+  
+### Processing scRNA-seq count data from a different species.
+
+Please continue to use the `process_from_count` function. The only species specific information required in this function is the mitochondrial gene symbol to regress out mitochondria. In each of your count matrices, make sure that your michondial genes have a "MT-" preface. Then select "human" as the species. This can also be done with an "mt-" preface and selecting mouse. 
   
 ### Processing scRNA-seq count data when cell-types are already named.
 
@@ -405,51 +488,6 @@ seurat_example_inter@active.ident <- Cell_type_id_inter
 
 ```
 
-
-## Pathway enrichment of cwFold-changes
-
-The scMappR manuscript describes two pathway enrichment methodologies. Pathway enrichment of the first approach represents biological pathways associated with the rank-change in expression of each cell-type. Secondly, scMappR re-ranks genes by their increase in cell-type specificity before completing an ordered pathway analysis. For example, if a gene is the 150th most DE gene in bulk and the 2nd most DE gene for a cell-type, it would have a score of 148 for that cell-type. Pathway enrichment of the second approach represents biological pathways associated with genes most influenced by scMappR. These two pathway enrichment methodologies are consolodated into a single function separate from `scMappR_and_pathway_analysis`. Specifically, they are found in `two_method_pathway_analysis.`
-
-This function requires that you input cwFold-changes computed from `scMappR_and_pathway_analysis` as well as the bulk DE genes inputted into the original analysis. An example is shown below:
-
-```{r pathway_analysis, eval = FALSE}
-
-data(PBMC_example)
-bulk_DE_cors <- PBMC_example$bulk_DE_cors
-bulk_normalized <- PBMC_example$bulk_normalized
-odds_ratio_in <- PBMC_example$odds_ratio_in
-case_grep <- "_female"
-control_grep <- "_male"
-max_proportion_change <- 10
-print_plots <- FALSE
-theSpecies <- "human"
-toOut <- scMappR_and_pathway_analysis(bulk_normalized, odds_ratio_in, 
-                                      bulk_DE_cors, case_grep = case_grep,
-                                      control_grep = control_grep, rda_path = "", 
-                                      max_proportion_change = 10, print_plots = TRUE, 
-                                      plot_names = "tst1", theSpecies = "human", 
-                                      output_directory = "tester",
-                                      sig_matrix_size = 3000, up_and_downregulated = FALSE, 
-                                      internet = FALSE)
-
-twoOutFiles <- two_method_pathway_enrichment(bulk_DE_cors, "human", scMappR_vals = toOut$cellWeighted_Foldchange, background_genes = rownames(bulk_normalized), output_directory = "newfun_test",plot_names = "nonreranked_", toSave = FALSE, path=NULL)
-
-# The code below would save graphs and paths into the working directory.  It is commented to not make code in your working directory
-#twoOutFiles <- two_method_pathway_enrichment(bulk_DE_cors, "human", scMappR_vals = toOut$cellWeighted_Foldchange, background_genes = rownames(bulk_normalized), output_directory = "newfun_test",plot_names = "nonreranked_", toSave = TRUE, path="./")
-
-```
-
-Here, the following objects are saved.
-
-* bulk ___ enrichment (.Rdata/.png/.pdf): the bulk enrichment of the .Rdata object, and .png/.pdf of the top pathways
-* _reordered_pathways.pdf: list of pathways re-ordered by cwFold-change
-* _reordered_tfs.pdf: list of tfs re-ordered by cwFold-change
-* rank_increase_genes: a list of cell-types. Each cell-type contains three dfs: 1) the rank change of each gene between the bulk DE gene and cwFold-change. 2) the enriched bps when genes are ordered by their increase in rank after scmappR was applied. 3) the enriched tfs when genes are ordered by their increase in rank after scmappR was applied.
-* bp_reranked: folder containing the plots of most enriched bp when genes are ordered by their increase in rank after scmappR was applied.
-* bp_reranked: folder containing the plots of most enriched tf when genes are ordered by their increase in rank after scmappR was applied.
-* scatterplot_reranked: folder containing the rank differences between cwFold-change and bulk DE gene for each cell-type.
-* BP_barplot: top BPs identified by cwFold-change for each cell-type.
-* TF_barplot: top BPs identified by cwFold-change for each cell-type.
 
 
 ## Manually making graphics.

@@ -8,7 +8,7 @@
 #  BiocManager::install("pcaMethods")
 #  BiocManager::install("GSVA")
 #  
-#  devtools::install_github("DustinSokolowski/scMappR")
+#  devtools::install_github("wilsonlabgroup/scMappR")
 #  
 #  
 #  
@@ -24,6 +24,58 @@
 #  BiocManager::install("GSVA")
 #  
 #  install.packages("scMappR")
+#  
+
+## ----get_signatures, eval=FALSE-----------------------------------------------
+#  
+#  signatures <- get_signature_matrices(type = "all") #return a list of cell-type labels, p-values, and odds-ratios.
+#  
+#  
+
+## ----scMappR_and_pathway_analysis, eval=FALSE---------------------------------
+#  
+#  data(PBMC_scMappR) # load data example of PBMC bulk- and cell-sorted RNA-seq data
+#  
+#  bulk_DE_cors <- PBMC_example$bulk_DE_cors # 59 sex-specific DEGs in bulk PBMC (up-regulated = female-biased)
+#  
+#  bulk_normalized <- PBMC_example$bulk_normalized # log CPM normalized bulk RNA-seq data
+#  
+#  odds_ratio_in <- PBMC_example$odds_ratio_in # signature matrix developed from cell-sorted RNA-seq
+#  
+#  case_grep <- "_female" # flag for 'cases' (up-regulated), index is also acceptable
+#  
+#  control_grep <- "_male" # flag for 'control' (down-regulated), index is also acceptable
+#  
+#  max_proportion_change <- 10 # maximum cell-type proportion change -- this is good for cell-types that are uncomon in population and small absolute changes may yield large relative changes
+#  
+#  theSpecies <- "human" # these RNA-seq data have human gene symbols (and are also from human)
+#  
+#  # When running scMappR, it is strongly recommended to use scMappR_and_pathway analysis with the parameters below.
+#  toOut <- scMappR_and_pathway_analysis(bulk_normalized, odds_ratio_in,
+#                                        bulk_DE_cors, case_grep = case_grep,
+#                                        control_grep = control_grep, rda_path = "",
+#                                        max_proportion_change = 10, print_plots = TRUE,
+#                                        plot_names = "scMappR_vignette_", theSpecies = "human",
+#                                        output_directory = "scMappR_vignette_",
+#                                        sig_matrix_size = 3000, up_and_downregulated = TRUE,
+#                                        internet = TRUE, toSave = TRUE, path = tempdir())
+#  
+#  
+
+## ----two_method_pathway, eval=FALSE-------------------------------------------
+#  
+#  twoOutFiles <- two_method_pathway_enrichment(bulk_DE_cors, "human",
+#  scMappR_vals = toOut$cellWeighted_Foldchange, background_genes = rownames(bulk_normalized),
+#  output_directory = "newfun_test",plot_names = "nonreranked_", toSave = FALSE)
+#  
+#  
+#  
+
+## ----cwFoldChange_evaluate, eval=FALSE----------------------------------------
+#  
+#  
+#  evaluated <- cwFoldChange_evaluate(toOut$cellWeighted_Foldchange, toOut$cellType_Proportions, bulk_DE_cors)
+#  
 #  
 
 ## ----library_scMappR, warning=FALSE, echo = FALSE-----------------------------
@@ -70,36 +122,6 @@ library(scMappR)
 #  
 #  #running tisue_scMappR_custom
 #  internal <- tissue_scMappR_custom(genes,Signature,output_directory = "scMappR_Test_custom", toSave = F)
-#  
-#  
-
-## ----scMappR_and_pathway_analysis, eval=FALSE---------------------------------
-#  
-#  data(PBMC_scMappR) # load data example of PBMC bulk- and cell-sorted RNA-seq data
-#  
-#  bulk_DE_cors <- PBMC_example$bulk_DE_cors # 59 sex-specific DEGs in bulk PBMC (up-regulated = female-biased)
-#  
-#  bulk_normalized <- PBMC_example$bulk_normalized # log CPM normalized bulk RNA-seq data
-#  
-#  odds_ratio_in <- PBMC_example$odds_ratio_in # signature matrix developed from cell-sorted RNA-seq
-#  
-#  case_grep <- "_female" # flag for 'cases' (up-regulated), index is also acceptable
-#  
-#  control_grep <- "_male" # flag for 'control' (down-regulated), index is also acceptable
-#  
-#  max_proportion_change <- 10 # maximum cell-type proportion change -- this is good for cell-types that are uncomon in population and small absolute changes may yield large relative changes
-#  
-#  theSpecies <- "human" # these RNA-seq data have human gene symbols (and are also from human)
-#  
-#  # When running scMappR, it is strongly recommended to use scMappR_and_pathway analysis with the parameters below.
-#  toOut <- scMappR_and_pathway_analysis(bulk_normalized, odds_ratio_in,
-#                                        bulk_DE_cors, case_grep = case_grep,
-#                                        control_grep = control_grep, rda_path = "",
-#                                        max_proportion_change = 10, print_plots = TRUE,
-#                                        plot_names = "scMappR_vignette_", theSpecies = "human",
-#                                        output_directory = "scMappR_vignette_",
-#                                        sig_matrix_size = 3000, up_and_downregulated = TRUE,
-#                                        internet = TRUE, toSave = TRUE, path = tempdir())
 #  
 #  
 
@@ -182,32 +204,6 @@ library(scMappR)
 #      generes <- seurat_to_generes(pbmc = seurat_example_inter, test = "wilcox")
 #  
 #      gene_out <- generes_to_heatmap(generes, make_names = FALSE)
-#  
-
-## ----pathway_analysis, eval = FALSE-------------------------------------------
-#  
-#  data(PBMC_example)
-#  bulk_DE_cors <- PBMC_example$bulk_DE_cors
-#  bulk_normalized <- PBMC_example$bulk_normalized
-#  odds_ratio_in <- PBMC_example$odds_ratio_in
-#  case_grep <- "_female"
-#  control_grep <- "_male"
-#  max_proportion_change <- 10
-#  print_plots <- FALSE
-#  theSpecies <- "human"
-#  toOut <- scMappR_and_pathway_analysis(bulk_normalized, odds_ratio_in,
-#                                        bulk_DE_cors, case_grep = case_grep,
-#                                        control_grep = control_grep, rda_path = "",
-#                                        max_proportion_change = 10, print_plots = TRUE,
-#                                        plot_names = "tst1", theSpecies = "human",
-#                                        output_directory = "tester",
-#                                        sig_matrix_size = 3000, up_and_downregulated = FALSE,
-#                                        internet = FALSE)
-#  
-#  twoOutFiles <- two_method_pathway_enrichment(bulk_DE_cors, "human", scMappR_vals = toOut$cellWeighted_Foldchange, background_genes = rownames(bulk_normalized), output_directory = "newfun_test",plot_names = "nonreranked_", toSave = FALSE, path=NULL)
-#  
-#  # The code below would save graphs and paths into the working directory.  It is commented to not make code in your working directory
-#  #twoOutFiles <- two_method_pathway_enrichment(bulk_DE_cors, "human", scMappR_vals = toOut$cellWeighted_Foldchange, background_genes = rownames(bulk_normalized), output_directory = "newfun_test",plot_names = "nonreranked_", toSave = TRUE, path="./")
 #  
 
 ## ----plot_barplot, eval=FALSE-------------------------------------------------

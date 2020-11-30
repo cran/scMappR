@@ -12,8 +12,8 @@
 #' @param comp The name of the comparison.
 #' @param cex The size of the genes in the column label for the heatmap.
 #' @param rd_path The directory to RData files -- if they are not in this directory, then the files will be downloaded.
-#' @param isMax If you are taking the single best CT marker (T/F) -- TRUE not reccomended.
-#' @param isPval If the signature matrix is raw p-value (T/F) -- TRUE not reccomended.
+#' @param isMax If you are taking the single best CT marker (T/F) -- TRUE not recommended
+#' @param isPval If the signature matrix is raw p-value (T/F) -- TRUE not recommended
 #' @param cellTypes Colnames of the cell-types you will extract (passed to extract_genes_cell).
 #' @param pVal The level of association a gene has within a cell type (passed to extract_genes_cell).
 #' @param isBackground If the heatmap is from the entire signature matrix or just the inputted gene list (T/F). isBackground == TRUE is used for internal.
@@ -28,12 +28,12 @@
 #' \item{geneHeat}{Signature matrix subsetted by inputted gene list}
 #' \item{preferences}{Cell-markers mapping to cell-types.}
 #' 
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -42,6 +42,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples
 #' 

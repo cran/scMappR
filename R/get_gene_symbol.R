@@ -1,4 +1,4 @@
-#' Internal -- get gene symbol from Panglao.db matrix.
+#' Internal -- get gene symbol from Panglao.db assigned gene-names (symbol-ensembl).
 #'
 #' Internal -- removes Ensembl signature appended to signature matrix from Panglao and figure out species by pre-fix Ensembl of the Ensembl ID that is appended to gene names.
 #'
@@ -16,12 +16,12 @@
 #' \item{rowname}{Genes in the signature matrix excluding the ensemble name.}
 #' \item{species}{"mouse" or "human" depending on appended ensembl symbols.}
 #'
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -30,6 +30,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples
 #' 

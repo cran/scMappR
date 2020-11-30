@@ -1,210 +1,343 @@
 <!DOCTYPE html>
+
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Install and load scMappR</title>
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Dustin Sokolowski" />
+
+<meta name="date" content="2020-11-30" />
+
+<title>single cell Mapper (scMappR)</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
   }
-};
-</script>
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 
-<!-- Styles for R syntax highlighter -->
-<style type="text/css">
-   pre .operator,
-   pre .paren {
-     color: rgb(104, 118, 135)
-   }
-
-   pre .literal {
-     color: #990073
-   }
-
-   pre .number {
-     color: #099;
-   }
-
-   pre .comment {
-     color: #998;
-     font-style: italic
-   }
-
-   pre .keyword {
-     color: #900;
-     font-weight: bold
-   }
-
-   pre .identifier {
-     color: rgb(0, 0, 0);
-   }
-
-   pre .string {
-     color: #d14;
-   }
 </style>
-
-<!-- R syntax highlighter -->
-<script type="text/javascript">
-var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
-hljs.initHighlightingOnLoad();
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
 </script>
 
 
 
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
 }
-
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 20px;
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
 }
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
 }
-
-h1 {
-   font-size:2.2em;
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
 }
-
-h2 {
-   font-size:1.8em;
+#TOC ul ul {
+margin-left: -2em;
 }
-
-h3 {
-   font-size:1.4em;
+#TOC li {
+line-height: 16px;
 }
-
-h4 {
-   font-size:1.0em;
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
 }
-
-h5 {
-   font-size:0.9em;
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
 }
-
-h6 {
-   font-size:0.8em;
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
 }
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
 }
-
-pre, img {
-  max-width: 100%;
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
 }
 pre {
-  overflow-x: auto;
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
 }
-pre code {
-   display: block; padding: 0.5em;
+pre:not([class]) {
+background-color: #f7f7f7;
 }
-
 code {
-  font-size: 92%;
-  border: 1px solid #ccc;
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
 }
-
-code[class] {
-  background-color: #F8F8F8;
+p > code, li > code {
+padding: 2px 0px;
 }
-
-table, td, th {
-  border: none;
+div.figure {
+text-align: center;
 }
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
 }
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
 }
-
-@media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
 }
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
 
 
 
 </head>
 
 <body>
+
+
+
+
+<h1 class="title toc-ignore">single cell Mapper (scMappR)</h1>
+<h4 class="author">Dustin Sokolowski</h4>
+<h4 class="date">2020-11-30</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#install-and-load-scmappr">Install and load scMappR</a></li>
+<li><a href="#downloading-files.">Downloading Files.</a></li>
+<li><a href="#saving-results.">Saving results.</a></li>
+<li><a href="#introduction-of-the-primary-functions-highlighted-in-the-vignette.">Introduction of the primary functions highlighted in the vignette.</a></li>
+<li><a href="#cell-weighted-fold-changes-cwfold-changes-generation">cell-weighted Fold Changes (cwFold-changes) Generation</a><ul>
+<li><a href="#saved-outputs">Saved outputs</a></li>
+<li><a href="#additional-pathway-enrichments-of-cwfold-changes">Additional pathway enrichments of cwFold-changes</a></li>
+</ul></li>
+<li><a href="#testing-the-cell-type-specificity-of-cwfold-changes-at-the-level-of-the-gene-and-cell-type.">Testing the cell-type specificity of cwFold-changes at the level of the gene and cell-type.</a></li>
+<li><a href="#cell-type-markers-in-a-list-of-genes.">Cell-type markers in a list of genes.</a><ul>
+<li><a href="#no-custom-signature-matrix">No custom signature matrix:</a></li>
+<li><a href="#custom-signature-matrix">Custom signature matrix</a></li>
+<li><a href="#saved-outputs-2">Saved Outputs</a></li>
+</ul></li>
+<li><a href="#tissue-by-cell-type-enrichment.">Tissue by cell-type enrichment.</a><ul>
+<li><a href="#three-types-of-outputs.">Three types of outputs.</a></li>
+</ul></li>
+<li><a href="#processing-scrna-seq-count-data-into-a-signature-matrix.">Processing scRNA-seq count data into a signature matrix.</a><ul>
+<li><a href="#processing-scrna-seq-count-data-from-a-different-species.">Processing scRNA-seq count data from a different species.</a></li>
+<li><a href="#processing-scrna-seq-count-data-when-cell-types-are-already-named.">Processing scRNA-seq count data when cell-types are already named.</a></li>
+<li><a href="#signature-matrix-from-seurat-object-with-named-cell-type">Signature matrix from Seurat object with named cell-type</a></li>
+</ul></li>
+<li><a href="#manually-making-graphics.">Manually making graphics.</a><ul>
+<li><a href="#barplots">Barplots</a></li>
+<li><a href="#heatmaps">Heatmaps</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="install-and-load-scmappr" class="section level2">
 <h2>Install and load scMappR</h2>
-
-<p>Currently, there is only  a development version. scMappR relies on the following dependencies which should be downloaded/updated with scMappR automatically. Please ensure that these packages are not open when installing scMappR. \</p>
-
+<p>scMappR relies on the following dependencies which should be downloaded/updated with scMappR automatically. Please ensure that these packages are not open when installing scMappR.</p>
 <ul>
 <li>ggplot2 - CRAN</li>
 <li>pheatmap - CRAN</li>
@@ -217,157 +350,261 @@ hr {
 <li>pcaMethods - Bioconductor</li>
 <li>grDevices - CRAN</li>
 <li>gProfileR - CRAN</li>
-<li>limSolve - CRAN </li>
+<li>limSolve - CRAN</li>
+<li>ADAPTS - CRAN</li>
+<li>reshape - CRAN</li>
 </ul>
-
-<p>Install GSVA and pcaMethods from bioconductor first, as <code>devtools::install_githb()</code> will automatically install CRAN. </p>
-
-<ol>
+<p>Install GSVA and pcaMethods from bioconductor first, as <code>devtools::install_githb()</code> will automatically install CRAN.</p>
+<ol style="list-style-type: decimal">
 <li>Github (Development Version)</li>
 </ol>
-
-<pre><code class="r">if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
-    install.packages(&quot;BiocManager&quot;)
-if (!requireNamespace(&quot;devtools&quot;, quietly = TRUE))
-    install.packages(&quot;devtools&quot;)
-
-BiocManager::install(&quot;pcaMethods&quot;)
-BiocManager::install(&quot;GSVA&quot;)
-
-devtools::install_github(&quot;DustinSokolowski/scMappR&quot;)
-</code></pre>
-
-<ol>
-<li>CRAN (Stable Release) &ndash; Currently not available</li>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb1-2" title="2">    <span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;devtools&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
+<a class="sourceLine" id="cb1-5" title="5"></a>
+<a class="sourceLine" id="cb1-6" title="6">BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;pcaMethods&quot;</span>)</a>
+<a class="sourceLine" id="cb1-7" title="7">BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;GSVA&quot;</span>)</a>
+<a class="sourceLine" id="cb1-8" title="8"></a>
+<a class="sourceLine" id="cb1-9" title="9">devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;wilsonlabgroup/scMappR&quot;</span>)</a></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>CRAN (Stable Release)</li>
 </ol>
-
-<pre><code class="r">if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
-    install.packages(&quot;BiocManager&quot;)
-if (!requireNamespace(&quot;devtools&quot;, quietly = TRUE))
-    install.packages(&quot;devtools&quot;)
-
-BiocManager::install(&quot;pcaMethods&quot;)
-BiocManager::install(&quot;GSVA&quot;)
-
-install.packages(&quot;scMappR&quot;)
-</code></pre>
-
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb2-2" title="2">    <span class="kw">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="cf">if</span> (<span class="op">!</span><span class="kw">requireNamespace</span>(<span class="st">&quot;devtools&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>))</a>
+<a class="sourceLine" id="cb2-4" title="4">    <span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;pcaMethods&quot;</span>)</a>
+<a class="sourceLine" id="cb2-7" title="7">BiocManager<span class="op">::</span><span class="kw">install</span>(<span class="st">&quot;GSVA&quot;</span>)</a>
+<a class="sourceLine" id="cb2-8" title="8"></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="kw">install.packages</span>(<span class="st">&quot;scMappR&quot;</span>)</a></code></pre></div>
+</div>
+<div id="downloading-files." class="section level2">
 <h2>Downloading Files.</h2>
-
-<p>Before using scMappR, we strongly recommend that you download data files from &ldquo;<a href="https://github.com/DustinSokolowski/scMappR_Data">https://github.com/DustinSokolowski/scMappR_Data</a>&rdquo;. As a default, it is assumed that these rda files have been downloaded and stored in ~/scMappR/data. These data files can be downloaded anywhere as long as the &#39;rda_data&#39; parameter is changed to this directory when using scMappR. When data are not downloaded, the Downloader R package will temporarily download data files they are required within functions. Naturally, stable internet is required for this.</p>
-
-<h2>Printing results.</h2>
-
-<p>Many of the functions in scMappR print files or even generate directories. To return the full output of scMappR, please change the &#39;toSave&#39; parameters from <code>FALSE</code> to <code>TRUE</code> in any of the functions being used. Otherwise, the functions in scMappR will only return a small portion of what scMappR has to offer. Due to CRAN packages not allowing for their packages to print files/make directories, toSave is set to <code>FALSE</code> as default.</p>
-
-<p>When <code>toSave == TRUE</code>, it is also required to set the directory where files can be saved. In this vignette, it is assumed that there is a directory called <code>vignette_dir</code> in the working directory. To change the directory where files are saved, change the <code>path</code> argument. This vignette sets <code>path</code> to <code>tempdir()</code>. When using scMappR, change <code>tempdir()</code> to the directories where files should be saved.</p>
-
-<h2>Introduction of the primary functionalists highlighted in the vignette.</h2>
-
+<p>Before using scMappR, we strongly recommend that you download data files from “<a href="https://github.com/wilsonlabgroup/scMappR_Data" class="uri">https://github.com/wilsonlabgroup/scMappR_Data</a>”.Tthe <code>rda_path</code> parameter will allow users to set the directory where these data are stored. If the correct files are not stored in this directory, then scMappR will download these as temporary files from “<a href="https://github.com/wilsonlabgroup/scMappR_Data" class="uri">https://github.com/wilsonlabgroup/scMappR_Data</a>”, use them in the function, and not save them. This parameter is set to &quot;&quot; as a default and thus data are downloaded as a default.</p>
+<p>Additionally, the <code>get_signature_matrices()</code> function allows the user to get the list of all stored signature matrices at any given time. Input “all”, “pVal”, or “OR” to get the matrix of p-values, odds-ratios, or both. This function outputs the signature matrices, the top 30 cell-type markers for each cell-type, and the predicted cluster label from the Fisher’s exact test and GSVA.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">signatures &lt;-<span class="st"> </span><span class="kw">get_signature_matrices</span>(<span class="dt">type =</span> <span class="st">&quot;all&quot;</span>) <span class="co">#return a list of cell-type labels, p-values, and odds-ratios.</span></a></code></pre></div>
+</div>
+<div id="saving-results." class="section level2">
+<h2>Saving results.</h2>
+<p>Many of the functions in scMappR print files or generate directories. To return the full output of scMappR, please change the ‘toSave’ parameters from <code>FALSE</code> to <code>TRUE</code> in any of the functions being used. Otherwise, the functions in scMappR will only return a small portion of what scMappR has to offer. Due to CRAN packages not allowing for their packages to print files/make directories, toSave is set to <code>FALSE</code> as default. Furthermore, a path directory must be set. For example <code>path=&quot;./&quot;</code> will print files and directories to the working directory. These measures are to prevent any file overwriting. This vignette sets <code>path</code> to <code>tempdir()</code>. When using scMappR, change <code>tempdir()</code> to the directories where files should be saved.</p>
+</div>
+<div id="introduction-of-the-primary-functions-highlighted-in-the-vignette." class="section level2">
+<h2>Introduction of the primary functions highlighted in the vignette.</h2>
+<div id="transforming-summary-statistics-of-differentially-expressed-genes-by-cell-type-specific-information" class="section level4">
+<h4>Transforming summary statistics of differentially expressed genes by cell-type specific information</h4>
 <ul>
-<li><code>tissue_scMappR_custom()</code>: This function visualizes signature matrix, clusters subsetted genes, completes enrichment of individual cell-types and co-enrichment. </li>
-<li><code>tissue_scMappR_internal()</code>: This function loops through every signature matrix in a particular tissue and generates heatmaps, cell-type preferences, and co-enrichment.</li>
 <li><code>scMappR_and_pathway_analysis()</code>: This function generates cell-weighted fold changes (cellWeighted_Foldchanges), visualizes them in a heatmap, and completes pathway enrichment of cellWeighted_Foldchanges and bulk gene list.</li>
+<li><code>two_method_pathway_enrichment()</code>: This function completes additional pathway enrichment tests from cwFold-changes calculated in <code>scMappR_and_pathway_analysis</code>. Specifically, it re-ranks cwFoldChanges based on their absolute ct specificity scores (per-celltype) as well as their rank increase in cell-type specificity before completing an ordered pathway analysis. In the second method, only genes with a rank increase in cell-type specificity were included.</li>
+<li><code>cwFoldChange_evaluate()</code>. At the level of the gene, cwFold-changes are scored so that they sum to 1. For each gene, cell-types whose cwFold-change are greater than the cell-type proportion while accounting for an abnormally high proportion of the fold change (+ 3 median absolute deviations from median cell-type specificity) are considered cell-type specific. At the level of the cell-type, bulk DEGs and cwFold-changes for each cell-type are correlated. The difference in the rank of DEG is also measured.</li>
+</ul>
+</div>
+<div id="enriching-cell-type-markers-in-a-list-of-genes." class="section level4">
+<h4>Enriching cell-type markers in a list of genes.</h4>
+<ul>
+<li><code>tissue_scMappR_custom()</code>: This function visualizes signature matrix, clusters subsetted genes, completes enrichment of individual cell-types and co-enrichment.</li>
+<li><code>tissue_scMappR_internal()</code>: This function loops through every signature matrix in a particular tissue and generates heatmaps, cell-type preferences, and co-enrichment.</li>
 <li><code>tissue_by_celltype_enrichment()</code>: This function completes a fishers exact test of an input list of genes against one of the two curated tissue by cell-type marker datasets from scMappR.</li>
+</ul>
+</div>
+<div id="processing-scrna-seq-count-data-into-a-gene-list." class="section level4">
+<h4>Processing scRNA-seq count data into a gene list.</h4>
+<ul>
 <li><code>process_dgTMatrix_lists()</code>: This function takes a list of count matrices, processes them, calls cell-types, and generates signature matrices.</li>
 </ul>
-
-<h2>Cell-type markers in a list of genes.</h2>
-
-<p>Given a tissue and an unranked list of genes (i.e. without a count matrix or summary statistics), the <code>tissue_scMappR_custom()</code> and <code>tissue_scMappR_internal()</code> functions visualizes cell-type markers contained within the gene-list and tests for the enrichment of cell-types within that tissue. When there is no custom signature matrix, providing a tissue present in &ldquo;<a href="https://github.com/DustinSokolowski/scMappR_Data/blob/master/Signature_matrices_Pval.rda">https://github.com/DustinSokolowski/scMappR_Data/blob/master/Signature_matrices_Pval.rda</a>&rdquo; will complete cell-type specific gene visualization and enrichment for every signature matrix in the tissue.</p>
-
-<h3>No custom signature matrix:</h3>
-
+</div>
+</div>
+<div id="cell-weighted-fold-changes-cwfold-changes-generation" class="section level2">
+<h2>cell-weighted Fold Changes (cwFold-changes) Generation</h2>
+<p>The <code>scMappR_and_pathway_analysis()</code> function generates cellWeighted_Foldchanges based on an inputted signature matrix, normalized RNA-seq count matrix (e.g. TPM, RPKM, CPM), and list of differentially-expressed genes (DEGs) before creating cell-weighted Fold Changes (cwFold-changes). cwFold-changes are row-normalized and visualized in a heatmap. Cell-type markers within calculated cwFold-changes are also visualized both as cell-type markers on their own (i.e. just their cell-type specificity), and as cwFold-changes. Then, for each cell-type, this function filters genes expressed in each cell-type (cwFold-change &gt; 1e-5), reorders the genes by cwFold-change, then completes an ordered pathway analysis with g:ProfileR or gprofiler2 package (user chooses). All genes detected in the bulk RNA-seq are used as the background.   The example below has <code>toSave = FALSE</code>, <code>up_and_downregulated = FALSE</code> and <code>internet = FALSE</code>. When running scMappR yourself, it is strongly recommended to set all to <code>TRUE</code>. <code>toSave = TRUE</code> allows for the printing of folders, images, and files onto a desktop/cluster. <code>up_and_downregulated = TRUE</code> repeats pathway analysis for up and down-regulated genes separately. <code>internet = TRUE</code> allows for the completion of pathway analysis altogether. Tissue-types are available in <code>data(scMappR_tissues)</code>, and the signature matrices themselves from <code>get_signature_matrices(type = &quot;OR&quot;)</code>.</p>
+<div id="example" class="section level4">
 <h4>Example</h4>
-
-<pre><code class="r">data(POA_example) # region to preoptic area
-
-Signature &lt;- POA_example$POA_Rank_signature # signature matrix 
-
-rowname &lt;- get_gene_symbol(Signature) # get signature
-
-rownames(Signature) &lt;- rowname$rowname
-
-genes &lt;- rownames(Signature)[1:60]
-
-rda_path1 = &quot;&quot; # data directory (if it exists)
-
-# Identify tissues available for tissue_scMappR_internal
-data(scMappR_tissues)
-
-&quot;Hypothalamus&quot; %in% toupper(scMappR_tissues)
-
-internal &lt;- tissue_scMappR_internal(genes, &quot;mouse&quot;, output_directory = &quot;scMappR_Test_Internal&quot;, 
-tissue = &quot;hypothalamus&quot;, rda_path = rda_path1, toSave = TRUE, path = tempdir())
-</code></pre>
-
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">data</span>(PBMC_scMappR) <span class="co"># load data example of PBMC bulk- and cell-sorted RNA-seq data</span></a>
+<a class="sourceLine" id="cb4-2" title="2"></a>
+<a class="sourceLine" id="cb4-3" title="3">bulk_DE_cors &lt;-<span class="st"> </span>PBMC_example<span class="op">$</span>bulk_DE_cors <span class="co"># 59 sex-specific DEGs in bulk PBMC (up-regulated = female-biased)</span></a>
+<a class="sourceLine" id="cb4-4" title="4"></a>
+<a class="sourceLine" id="cb4-5" title="5">bulk_normalized &lt;-<span class="st"> </span>PBMC_example<span class="op">$</span>bulk_normalized <span class="co"># log CPM normalized bulk RNA-seq data</span></a>
+<a class="sourceLine" id="cb4-6" title="6"></a>
+<a class="sourceLine" id="cb4-7" title="7">odds_ratio_in &lt;-<span class="st"> </span>PBMC_example<span class="op">$</span>odds_ratio_in <span class="co"># signature matrix developed from cell-sorted RNA-seq</span></a>
+<a class="sourceLine" id="cb4-8" title="8"></a>
+<a class="sourceLine" id="cb4-9" title="9">case_grep &lt;-<span class="st"> &quot;_female&quot;</span> <span class="co"># flag for &#39;cases&#39; (up-regulated), index is also acceptable</span></a>
+<a class="sourceLine" id="cb4-10" title="10"></a>
+<a class="sourceLine" id="cb4-11" title="11">control_grep &lt;-<span class="st"> &quot;_male&quot;</span> <span class="co"># flag for &#39;control&#39; (down-regulated), index is also acceptable</span></a>
+<a class="sourceLine" id="cb4-12" title="12"></a>
+<a class="sourceLine" id="cb4-13" title="13">max_proportion_change &lt;-<span class="st"> </span><span class="dv">10</span> <span class="co"># maximum cell-type proportion change -- this is good for cell-types that are uncomon in population and small absolute changes may yield large relative changes</span></a>
+<a class="sourceLine" id="cb4-14" title="14"></a>
+<a class="sourceLine" id="cb4-15" title="15">theSpecies &lt;-<span class="st"> &quot;human&quot;</span> <span class="co"># these RNA-seq data have human gene symbols (and are also from human)</span></a>
+<a class="sourceLine" id="cb4-16" title="16"></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="co"># When running scMappR, it is strongly recommended to use scMappR_and_pathway analysis with the parameters below.</span></a>
+<a class="sourceLine" id="cb4-18" title="18">toOut &lt;-<span class="st"> </span><span class="kw">scMappR_and_pathway_analysis</span>(bulk_normalized, odds_ratio_in, </a>
+<a class="sourceLine" id="cb4-19" title="19">                                      bulk_DE_cors, <span class="dt">case_grep =</span> case_grep,</a>
+<a class="sourceLine" id="cb4-20" title="20">                                      <span class="dt">control_grep =</span> control_grep, <span class="dt">rda_path =</span> <span class="st">&quot;&quot;</span>, </a>
+<a class="sourceLine" id="cb4-21" title="21">                                      <span class="dt">max_proportion_change =</span> <span class="dv">10</span>, <span class="dt">print_plots =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb4-22" title="22">                                      <span class="dt">plot_names =</span> <span class="st">&quot;scMappR_vignette_&quot;</span>, <span class="dt">theSpecies =</span> <span class="st">&quot;human&quot;</span>, </a>
+<a class="sourceLine" id="cb4-23" title="23">                                      <span class="dt">output_directory =</span> <span class="st">&quot;scMappR_vignette_&quot;</span>,</a>
+<a class="sourceLine" id="cb4-24" title="24">                                      <span class="dt">sig_matrix_size =</span> <span class="dv">3000</span>, <span class="dt">up_and_downregulated =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb4-25" title="25">                                      <span class="dt">internet =</span> <span class="ot">TRUE</span>, <span class="dt">toSave =</span> <span class="ot">TRUE</span>, <span class="dt">path =</span> <span class="kw">tempdir</span>())</a></code></pre></div>
+</div>
+<div id="output" class="section level4">
 <h4>Output</h4>
-
-<p>This function returns a list &ldquo;internal&rdquo;. Using the example of <code>internal[[4]]</code>, the prophetic area of the hypothalamus, you can see four objects. </p>
-
+</div>
+<div id="saved-outputs" class="section level3">
+<h3>Saved outputs</h3>
+<p>Assuming <code>toSave = T</code> and <code>up_and_downregulated = T</code>, <code>scMappR_and_pathway_analysis()</code> will also generate a folder in your current directory with a considerable amount of data/figures.</p>
+<p>Here, we will walk through the output of the above example sorting by name and working downwards. * BP_barplot: a directory with pdf’s of the top 10 pathways of DEGs that have been re-normlaized by their cwFold-change. * Downregulated: a directory with pdf’s and Rdata files of pathway and TF enrichment of downregulated DEGs re-normalized by their cwFold-change. * TF_barplot: a directory with pdf’s of the top 10 TFs of DEGs that have been re-normlaized by their cwFold-change. * Upregulated: a directory with pdf’s and Rdata files of pathway and TF enrichment of upregulated DEGs re-normalized by their cwFold-change. * bulk_pathway_enrichment: png and Rdata file of traditional g:ProfilR analysis of GOBP, REAC, and KEGG databases. * bulk_TF_enrichment: png and Rdata file of traditional g:ProfilR analysis of TF database. * scMappR_vignette_cell_proportion_changes_summary: t-tests looking at difference in estimated cell-type proporitons between conditions. * scMappR_vignette_celltype_proportions: Estimated cell-type proportions of all inputted samples. * scMappR_vignette_cellWeighted_Foldchanges: cwFold-changes of all estimated DEGs. * scMappR_vignette_cwFC_downregulated_DEGs: heatmap of downregulated cwFold-changes. * scMappR_vignette_cwFC_signature_matrix_downregulated_DEGs: heatmap of downregulated cwFold-changes overlapping with signature matrix. * scMappR_vignette_DEG_signature_matrix: Heatmap of signature matrix. * scMappR_vignette_leaveOneOut_gene_proportions: estimated cell-type proportions of all samples after each DEG is removed. * scMappR_vignette_reordered_pathways: g:ProfileR enrichment of DEGs after they’re re-ordered by cwFold-changes.<br />
+* scMappR_vignette_reordered_transcription_factors: g:ProfileR enrichment of DEGs after they’re re-ordered by cwFold-changes.<br />
+* scMappR_vignette_signature_matrix: heatmap of signature matrix. * scMappR_vignette_signature_matrix_downregulated_DEGs: heatmap of signature matrix overlapping downregulated DEGs. * scMappR_vignette_signature_matrix_upregulated_DEGs: heatmap of signature matrix overlapping upregulated DEGs. * scMappR_vignetteabs_cwFC: heatmap of absolute valued cwFold-changes (up- and down-regulated DEGs). * scMappR_vignettecwFC_signature_matrix_upregulated_DEGs: heatmap of absolute valued cwFold-changes (up- and down-regulated DEGs) overlapping with the signature matrix.</p>
+</div>
+<div id="additional-pathway-enrichments-of-cwfold-changes" class="section level3">
+<h3>Additional pathway enrichments of cwFold-changes</h3>
+<p>In addition to completing pathway enrichment of DEGs re-ranked by their cwFold-change, it may be informative to interrogate which DEGs were the most influenced by their cell-type specificity in the context of each cell-type.</p>
+<div id="example-1" class="section level4">
+<h4>Example</h4>
+<p>In this example, we are extending the output from the <code>scMappR_and_pathway_analysis</code> function above.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">twoOutFiles &lt;-<span class="st"> </span><span class="kw">two_method_pathway_enrichment</span>(bulk_DE_cors, <span class="st">&quot;human&quot;</span>,</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="dt">scMappR_vals =</span> toOut<span class="op">$</span>cellWeighted_Foldchange, <span class="dt">background_genes =</span> <span class="kw">rownames</span>(bulk_normalized), </a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="dt">output_directory =</span> <span class="st">&quot;newfun_test&quot;</span>,<span class="dt">plot_names =</span> <span class="st">&quot;nonreranked_&quot;</span>, <span class="dt">toSave =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+</div>
+<div id="output-1" class="section level4">
+<h4>Output</h4>
+<ul>
+<li>rank_increase: a list containing the rank change between DEGs and cwFold-changes. Additionally, it contains the output of g:ProfileR with genes re-ranked by eac cwFold-change.</li>
+<li>non_rank_increase: the same output of pathway enrichment found in <code>scMappR_and_pathway_analysis</code>. Please refer to previous section for output.</li>
+</ul>
+<div id="saved-outputs-1" class="section level5">
+<h5>Saved outputs</h5>
+<ul>
+<li>BP_barplot: Plots of the top 10 most enriched pathways by re-ranking genes by cwFold-change using g:ProfileR.</li>
+<li>TF_barplot: Plots of the top 10 most enriched TFs by re-ranking genes by cwFold-change using g:ProfileR.</li>
+<li>bp_reranked: Plots of the top 10 most enriched pathways by re-ordering genes based on how much the gene increases in rank between Fold-change and cwFold-change.</li>
+<li>tf_reranked: Plots of the top 10 most enriched TFs by re-ordering genes based on how much the gene increases in rank between Fold-change and cwFold-change.</li>
+<li>scatter_reranked: Scatter plots of the rank of cwFold-changes and regulated fold-changes of DEGs for each cell-type.</li>
+<li>bulk_X_enrichment.Rdata: gProfiler results of pathway/TF enrichment of DEGs.</li>
+<li>rank_increase_genes.Rdata: list showing the rank difference between Fold-changes and cwFold-changes for each cell-type.</li>
+<li>reweighted_bulk_X.Rdata: List of each cell-type containing Pathway/TF enrichment of genes re-ordered by cwFold-change.</li>
+<li>reweighted_reordered_X.Rdata: List of each cell-type containing Pathway/TF enrichment of genes ordered by the change in rank between fold-change and cwFold-change.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="testing-the-cell-type-specificity-of-cwfold-changes-at-the-level-of-the-gene-and-cell-type." class="section level2">
+<h2>Testing the cell-type specificity of cwFold-changes at the level of the gene and cell-type.</h2>
+<p>An important aspect of scMappR is to calculate which DEGs from bulk differential analysis may be differentially expressed due to a change in expression of specific cell-types. We complete this task my measuring if the cell-type specificity of each DEG contains outliers for a specific cell-type, and if the distribution of DEGs within a cell-type (measured through cwFold-changes) is different from the distribution of DEGs measured in bulk.</p>
+<div id="example-2" class="section level4">
+<h4>Example</h4>
+<p>In this example, we are extending the output from the <code>scMappR_and_pathway_analysis</code> function above.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">evaluated &lt;-<span class="st"> </span><span class="kw">cwFoldChange_evaluate</span>(toOut<span class="op">$</span>cellWeighted_Foldchange, toOut<span class="op">$</span>cellType_Proportions, bulk_DE_cors)</a></code></pre></div>
+</div>
+<div id="output-2" class="section level4">
+<h4>Output</h4>
+<ul>
+<li>cwFoldChange_normalized: A gene by cell-type data.frame of cwFold-changes. Here, the cwFold-change of each gene is divided by it’s sum such that the cwFold-change can be represented as how much that gene is accounting for the fold-change of the DEG.</li>
+<li>gene_level_investigation: A data.frame where each row is a gene. The first column is that gene’s normalized cwFold-change’s (see previous point) euclidean distance from 1. The following columns test if that gene’s normalized cwFold-change fits a normal distribution using a Shapiro test.</li>
+<li>cwFoldchange_gene_assigned: A list of cell-types. Each cell-type contains genes where scMappR would predict that the cell-type is driving the gene’s expression in the researcher’s bulk sample. For each gene, outliers are measured using mean + 3sd or median + 3mad depending on if the cwFold-change of the gene fit the normal distribution. As a second threshold, the cwFold-change of the DEG in the outlier cell-type needed needed to be greater than the cell-type proportion of that cell-type. The normalized cwFold-change for that gene in the assigned cell-type is also stored.</li>
+<li>celltype_level_investigation: data frame where the columns are cell-type and the rows are the Pearson and Spearman correlation coefficients (and p-values) between bulk DEGs and cwFold-changes.</li>
+<li>cwFoldchange_vs_bulk_rank_change: A gene by cell-type matrix populated with what rank the gene is differentially expressed given that cell-type.</li>
+</ul>
+</div>
+</div>
+<div id="cell-type-markers-in-a-list-of-genes." class="section level2">
+<h2>Cell-type markers in a list of genes.</h2>
+<p>Given a tissue and an unranked list of genes (i.e. without a count matrix or summary statistics), the <code>tissue_scMappR_custom()</code> and <code>tissue_scMappR_internal()</code> functions visualizes cell-type markers contained within the gene-list. Then, they test for the enrichment of cell-types within that tissue. When there is no custom signature matrix, providing a tissue present in <code>get_signature_matrices(type = &quot;pVal&quot;)</code> will complete cell-type specific gene visualization and enrichment for every signature matrix in the tissue.</p>
+<div id="no-custom-signature-matrix" class="section level3">
+<h3>No custom signature matrix:</h3>
+<div id="example-3" class="section level4">
+<h4>Example</h4>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">data</span>(POA_example) <span class="co"># region to preoptic area</span></a>
+<a class="sourceLine" id="cb7-2" title="2"></a>
+<a class="sourceLine" id="cb7-3" title="3">Signature &lt;-<span class="st"> </span>POA_example<span class="op">$</span>POA_Rank_signature <span class="co"># signature matrix </span></a>
+<a class="sourceLine" id="cb7-4" title="4"></a>
+<a class="sourceLine" id="cb7-5" title="5">rowname &lt;-<span class="st"> </span><span class="kw">get_gene_symbol</span>(Signature) <span class="co"># get signature</span></a>
+<a class="sourceLine" id="cb7-6" title="6"></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="kw">rownames</span>(Signature) &lt;-<span class="st"> </span>rowname<span class="op">$</span>rowname</a>
+<a class="sourceLine" id="cb7-8" title="8"></a>
+<a class="sourceLine" id="cb7-9" title="9">genes &lt;-<span class="st"> </span><span class="kw">rownames</span>(Signature)[<span class="dv">1</span><span class="op">:</span><span class="dv">60</span>]</a>
+<a class="sourceLine" id="cb7-10" title="10"></a>
+<a class="sourceLine" id="cb7-11" title="11">rda_path1 =<span class="st"> &quot;&quot;</span> <span class="co"># data directory (if it exists)</span></a>
+<a class="sourceLine" id="cb7-12" title="12"></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="co"># Identify tissues available for tissue_scMappR_internal</span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="kw">data</span>(scMappR_tissues)</a>
+<a class="sourceLine" id="cb7-15" title="15"></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="st">&quot;Hypothalamus&quot;</span> <span class="op">%in%</span><span class="st"> </span><span class="kw">toupper</span>(scMappR_tissues)</a>
+<a class="sourceLine" id="cb7-17" title="17"></a>
+<a class="sourceLine" id="cb7-18" title="18">internal &lt;-<span class="st"> </span><span class="kw">tissue_scMappR_internal</span>(genes, <span class="st">&quot;mouse&quot;</span>, <span class="dt">output_directory =</span> <span class="st">&quot;scMappR_Test_Internal&quot;</span>, </a>
+<a class="sourceLine" id="cb7-19" title="19"><span class="dt">tissue =</span> <span class="st">&quot;hypothalamus&quot;</span>, <span class="dt">rda_path =</span> rda_path1, <span class="dt">toSave =</span> <span class="ot">TRUE</span>, <span class="dt">path =</span> <span class="kw">tempdir</span>())</a></code></pre></div>
+</div>
+<div id="output-3" class="section level4">
+<h4>Output</h4>
+<p>This function returns a list “internal”. Using the example of <code>internal[[4]]</code>, the pre-optic area of the hypothalamus, you can see four objects.</p>
+<div id="background_heatmap" class="section level5">
 <h5>background_heatmap</h5>
-
 <ul>
-<li>genesIn: genes in the signature matrix is tested. \</li>
-<li>genesNoIn: genes not in the signature matrix (empty). \</li>
-<li>geneHeat: Gene x cell-type matrix containing the cell-type rank of each gene in the signature matrix. \</li>
-<li>preferences: Cell-type marker genes sorted into each cell-type. </li>
+<li>genesIn: genes in the signature matrix is tested.<br />
+</li>
+<li>genesNoIn: genes not in the signature matrix (empty).<br />
+</li>
+<li>geneHeat: Gene x cell-type matrix containing the cell-type rank of each gene in the signature matrix.<br />
+</li>
+<li>preferences: Cell-type marker genes sorted into each cell-type.</li>
 </ul>
-
+</div>
+<div id="gene_list_heatmap" class="section level5">
 <h5>gene_list_heatmap</h5>
-
 <ul>
-<li>genesIn: Inputted genes that are also in the signature matrix. </li>
-<li>genesNoIn: Inputted genes not in the signature matrix. </li>
-<li>geneHeat: Gene x cell-type matrix containing the cell-type rank for inputted genes overlaying with genes in the signature matrix. </li>
-<li>preferences: Inputted genes overlaying with signature matrix sorted into the cell-types where they&#39;re preferentially expressed.</li>
+<li>genesIn: Inputted genes that are also in the signature matrix.</li>
+<li>genesNoIn: Inputted genes not in the signature matrix.</li>
+<li>geneHeat: Gene x cell-type matrix containing the cell-type rank for inputted genes overlaying with genes in the signature matrix.</li>
+<li>preferences: Inputted genes overlaying with signature matrix sorted into the cell-types where they’re preferentially expressed.</li>
 </ul>
-
+</div>
+<div id="single_celltype_preferences" class="section level5">
 <h5>single_celltype_preferences</h5>
-
 <ul>
-<li>Output of the Fisher&#39;s exact test for cell-type enrichment of inputted genes with every cell-type. </li>
+<li>Output of the Fisher’s-exact test for cell-type enrichment of inputted genes with every cell-type.</li>
 </ul>
-
+</div>
+<div id="group_celltype_preference" class="section level5">
 <h5>group_celltype_preference</h5>
-
 <ul>
 <li>Identification and statistical enrichment of groups of cell-types containing the same cell-type marker genes.</li>
 </ul>
-
+</div>
+</div>
+<div id="saved-directory" class="section level4">
 <h4>Saved directory</h4>
-
 <p>When <code>toSave == TRUE</code>, a directory is generated with visualization of each signature matrix, the signature matrix subsetted by input genes, and statistical enrichment.</p>
-
+</div>
+</div>
+<div id="custom-signature-matrix" class="section level3">
 <h3>Custom signature matrix</h3>
-
-<p>tissue_scMappR_custom() assumes a custom signature matrix, or an inputted gene x cell-type matrix that is filled with the cell-type preferences of each gene (Rank is recommended but any value will suffice). If the value filling the matrix is not rank, you will need to change the gene_cutoff from 1 to whatever cutoff you need. Furthermore, if is_pvalue == TRUE, tissue_scMappR_custom() will transform the p-values into ranks rank := -1log10(Padj)*sign(FC). We strongly recommend that you generate these ranks before using tissue_scMappR_custom(); however, we assume that all fold changes are positive and therefore sign(FC) = 1.</p>
-
+<p><code>tissue_scMappR_custom()</code> assumes a custom signature matrix. We suggest a gene x cell-type matrix populated with the <code>-log10(Padj)*sign(FC)</code> (i.e. Rank) of the cell-type marker. We identify the cell-type marker with the <code>FindMarker</code> function from the Seurat package. The statistical test within that function is based on the biological question that the user interested in. Pre-computed signature matrices use the Wilcoxon test. If the value filling the matrix is not rank, users will need to change the <code>gene_cutoff</code> parameter to what they deem significant. If <code>is_pvalue == TRUE</code>, <code>tissue_scMappR_custom()</code> will transform the p-values into Ranks.</p>
+<div id="example-4" class="section level4">
 <h4>Example</h4>
-
-<pre><code class="r"># Acquiring the gene list
-data(POA_example)
-
-Signature &lt;- POA_example$POA_Rank_signature
-
-rowname &lt;- get_gene_symbol(Signature)
-
-rownames(Signature) &lt;- rowname$rowname
-
-genes &lt;- rownames(Signature)[1:200]
-
-#running tisue_scMappR_custom
-internal &lt;- tissue_scMappR_custom(genes,Signature,output_directory = &quot;scMappR_Test_custom&quot;, toSave = F)
-</code></pre>
-
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co"># Acquiring the gene list</span></a>
+<a class="sourceLine" id="cb8-2" title="2"><span class="kw">data</span>(POA_example)</a>
+<a class="sourceLine" id="cb8-3" title="3"></a>
+<a class="sourceLine" id="cb8-4" title="4">Signature &lt;-<span class="st"> </span>POA_example<span class="op">$</span>POA_Rank_signature</a>
+<a class="sourceLine" id="cb8-5" title="5"></a>
+<a class="sourceLine" id="cb8-6" title="6">rowname &lt;-<span class="st"> </span><span class="kw">get_gene_symbol</span>(Signature)</a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="kw">rownames</span>(Signature) &lt;-<span class="st"> </span>rowname<span class="op">$</span>rowname</a>
+<a class="sourceLine" id="cb8-9" title="9"></a>
+<a class="sourceLine" id="cb8-10" title="10">genes &lt;-<span class="st"> </span><span class="kw">rownames</span>(Signature)[<span class="dv">1</span><span class="op">:</span><span class="dv">200</span>]</a>
+<a class="sourceLine" id="cb8-11" title="11"> </a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="co">#running tisue_scMappR_custom</span></a>
+<a class="sourceLine" id="cb8-13" title="13">internal &lt;-<span class="st"> </span><span class="kw">tissue_scMappR_custom</span>(genes,Signature,<span class="dt">output_directory =</span> <span class="st">&quot;scMappR_Test_custom&quot;</span>, <span class="dt">toSave =</span> F)</a></code></pre></div>
+</div>
+<div id="output-4" class="section level4">
 <h4>Output</h4>
-
-<p>The output is identical to that found in tissue_scMappR_internal() but with only one study, or the example shown above. \</p>
-
-<p>If you choose to set toSave = TRUE. This function will return a directory with a number of relevant files. </p>
-
+<p>The output is identical to that found in <code>tissue_scMappR_internal()</code> but with only one study, or the example shown above.<br />
+</p>
+<p>If you choose to set <code>toSave = TRUE</code>. This function will return a directory with a number of relevant files.</p>
+</div>
+</div>
+<div id="saved-outputs-2" class="section level3">
 <h3>Saved Outputs</h3>
-
 <ul>
 <li>_celltype_preferences.tsv: Enrichment of inputted genes on each cell-type.</li>
 <li>_cell_co_preferences.tsv: Identification and enrichment of cell-types being enriched by the same genes (cell-type markers in common).</li>
@@ -376,294 +613,186 @@ internal &lt;- tissue_scMappR_custom(genes,Signature,output_directory = &quot;sc
 <li>_custom_genelist_heatmap.pdf: Heatmap of cell-type markers intersected with inputted gene list.</li>
 <li>_custom_genelist_preferences.pdf: Cell-type markers intersected with inputted gene list sorted into each cell-type.</li>
 </ul>
-
+<div id="saved-directory-1" class="section level4">
 <h4>Saved directory</h4>
-
 <p>When <code>toSave == TRUE</code>, a directory is generated with visualization of each signature matrix, the signature matrix subsetted by input genes, and statistical enrichment.</p>
-
-<h2>cell-weighted Fold Changes (cwFold-changes) Generation</h2>
-
-<p>The scMappR_and_pathway_analysis() function generates cellWeighted_Foldchanges based on an inputted signature matrix, normalized RNA-seq count matrix, and list of differentially-expressed genes (DEGs) before creating cell-weighted Fold Changes (cwFold-changes) (cellWeighted_Foldchanges), visualizing these cellWeighted_Foldchange&#39;s against the cell-type preferences of these DEGs, that are also cell-type markers, visualizing cellWeighted_Foldchange&#39;s regardless of if the cellWeighted_Foldchange is cell-type markers, and if allowed, pathway enrichment of DEGs re-ranked by cell-type. \ 
-The example below has <code>toSave = FALSE</code>, <code>up_and_downregulated = FALSE</code> and <code>internet = FALSE</code>. When running scMappR yourself, it is strongly recommended to set all to <code>TRUE</code>. toSave = TRUE allows for the printing of folders, images, and files onto a desktop/cluster. up_and_downregulated = TRUE repeats pathway analysis for up and down-regulated genes separately. internet = TRUE allows for the completion of pathway analysis altogether. Tissue-types are available in <code>data(scMappR_tissues)</code>, and the signature matrices themselves from <a href="https://github.com/DustinSokolowski/scMappR_Data/blob/master/Signature_matrices_OR.rda">https://github.com/DustinSokolowski/scMappR_Data/blob/master/Signature_matrices_OR.rda</a></p>
-
-<h4>Example</h4>
-
-<pre><code class="r">data(PBMC_scMappR) # load data example of PBMC bulk- and cell-sorted RNA-seq data
-
-bulk_DE_cors &lt;- PBMC_example$bulk_DE_cors # 59 sex-specific DEGs in bulk PBMC (up-regulated = female-biased)
-
-bulk_normalized &lt;- PBMC_example$bulk_normalized # log CPM normalized bulk RNA-seq data
-
-odds_ratio_in &lt;- PBMC_example$odds_ratio_in # signature matrix developed from cell-sorted RNA-seq
-
-case_grep &lt;- &quot;_female&quot; # flag for &#39;cases&#39; (up-regulated), index is also acceptable
-
-control_grep &lt;- &quot;_male&quot; # flag for &#39;control&#39; (down-regulated), index is also acceptable
-
-max_proportion_change &lt;- 10 # maximum cell-type proportion change -- this is good for cell-types that are uncomon in population and small absolute changes may yield large relative changes
-
-theSpecies &lt;- &quot;human&quot; # these RNA-seq data have human gene symbols (and are also from human)
-
-# When running scMappR, it is strongly recommended to use scMappR_and_pathway analysis with the parameters below.
-toOut &lt;- scMappR_and_pathway_analysis(bulk_normalized, odds_ratio_in, 
-                                      bulk_DE_cors, case_grep = case_grep,
-                                      control_grep = control_grep, rda_path = &quot;&quot;, 
-                                      max_proportion_change = 10, print_plots = TRUE, 
-                                      plot_names = &quot;scMappR_vignette_&quot;, theSpecies = &quot;human&quot;, 
-                                      output_directory = &quot;scMappR_vignette_&quot;,
-                                      sig_matrix_size = 3000, up_and_downregulated = TRUE, 
-                                      internet = TRUE, toSave = TRUE, path = tempdir())
-</code></pre>
-
-<h4>Output</h4>
-
-<h3>Saved outputs</h3>
-
-<p>Assuming <code>toSave = T</code> and <code>up_and_downregulated = T</code>, <code>scMappR_and_pathway_analysis()</code> will also generate a folder in your current directory with a considerable amount of data/figures.</p>
-
-<p>Here, we will walk through the output of the above example sorting by name and working downwards.</p>
-
-<ul>
-<li>scMappR_vignette_celltype_specific_cellWeighted_Foldchangess_upregulated_heatmap.pdf: Row-normalized cellWeighted_Foldchanges of upregulated genes that are also cell-type specific (in the signature matrix).</li>
-<li>scMappR_vignette_celltype_specific_cellWeighted_Foldchangess_downregulated_heatmap.pdf: Row-normalized cellWeighted_Foldchanges of downregulated genes that are also cell-type specific (in the signature matrix).</li>
-<li>scMappR<em>vignette</em>_cellWeighted_Foldchangess_upregulated_DEGs_heatmap.pdf: row-normalized cellWeighted_Foldchanges of upregulated genes.</li>
-<li>scMappR<em>vignette</em>_cellWeighted_Foldchangess_downregulated_DEGs_heatmap.pdf: row-normalized cellWeighted_Foldchanges of downregulated genes.</li>
-<li>scMappR_vignette_reordered_transcription_factors.Rdata: .Rdata file containing a list of outputs from gprofiler or gprofiler2 that are transcription factors enriched after re-ordering.</li>
-<li>scMappR_vignette_reordered_pathways: .Rdata file containing list of outputs from gprofileR or gprofiler2 that are  &ldquo;GOBP&rdquo;, &ldquo;REAC&rdquo;, and &ldquo;KEGG&rdquo; enrichments after re-ordering.</li>
-<li>scMappR_vignette_leaveOneOut_gene_proportions.RData: Average cell-type proportion when gene is removed.</li>
-<li>scMappR_vignette_celltype_specific_preferences_upregulated_DEGs_heatmap.pdf: Row-normalized .pdf of signature matrix intersecting with upregulated DEGs.</li>
-<li>scMappR_vignette_celltype_specific_preferences_downregulated_DEGs_heatmap.pdf: Row-normalized .pdf of signature matrix intersecting with downregulated DEGs.<br/>
-
-<ul>
-<li>scMappR_vignette_celltype_proportions.Rdata: Data matrix of cell-type proportions for each sample.</li>
-<li>scMappR_vignette_cell_proportions_heatmap.pdf: Row-normalized heatmap of cell-type proportions.</li>
-<li>scMappR_vignette_cell_proportion_changes_summary.tsv: Table of t-tests to interrogate differences in cell-type proportions.</li>
-<li>scMappR_vignette_bulk_transcription_factors.Rdata: gprofiler enrichment of bulk transcription factors.</li>
-<li>scMappR_vignette_bulk_pathways.Rdata: gprofiler enrichment of bulk GOBP, REAC, and KEGG.</li>
-<li>scMappR_vignette_all_CT_markers_in_background.pdf: Signature matrix of all genes in the background.</li>
-<li>Bulk_TF_enrichment.pdf: Barplot of bulk transcription factor enrichment.</li>
-<li>Bulk_pathway_enrichment.pdf: Barplot of bulk pathway enrichment.</li>
-<li>upregulated: Directory with the same pathway analysis specifically for upregulated genes.</li>
-<li>downregulated: Directory with the same pathway analysis specifically for downregulated genes.</li>
-<li>TF_barplot: Directory with .pdfs of re-ranked TF enrichment.</li>
-<li>BP_barplot: Directory with .pdfs of re-ranked GOBP, KEGG, and REAC enrichment.</li>
-</ul></li>
-</ul>
-
+</div>
+</div>
+</div>
+<div id="tissue-by-cell-type-enrichment." class="section level2">
 <h2>Tissue by cell-type enrichment.</h2>
-
-<p>scMappR allows for gene-set enrichment of every cell-type marker, sorted by cell-type, tissue, and study, curated while preprocessing all of the signature matrices for the functions within scMappR. The dataset may be downloaded from <a href="https://github.com/DustinSokolowski/scMappR_Data">https://github.com/DustinSokolowski/scMappR_Data</a>, processed into a gmt file using a number of packages (qusage, activepathways etc.) and then used with traditional gene-set-enrichment tools (GSEA, GSVA, gprofiler). Additionally, scMappR contains the &ldquo;tissue_by_celltype_enrichment.R&rdquo; function, that enriches a gene list against all cell-type markers using a Fisher&#39;s exact test. </p>
-
+<p>scMappR allows for gene-set enrichment of every cell-type marker, sorted by cell-type, tissue, and study, curated while preprocessing all of the signature matrices for the functions within scMappR. The dataset may be downloaded from <a href="https://github.com/DustinSokolowski/scMappR_Data" class="uri">https://github.com/DustinSokolowski/scMappR_Data</a>, processed into a gmt file using a number of packages (qusage, activepathways etc.) and then used with traditional gene-set-enrichment tools (GSEA, GSVA, gprofiler). Additionally, scMappR contains the <code>tissue_by_celltype_enrichment</code> function, that enriches a gene list against all cell-type markers using a Fisher’s-exact test. Users can also download all cell-type markers by setting <code>return_gmt = TRUE</code> when using the function.</p>
+<div id="example-5" class="section level4">
 <h4>Example</h4>
-
-<p>Here, we will investigate the tissue x cell-type enrichment of the top 100 genes in the Preoptic area signature matrix. </p>
-
-<h4>NOTE: Fix dimensions of plot or don&#39;t plot it at all.</h4>
-
-<pre><code class="r">data(POA_example)
-POA_generes &lt;- POA_example$POA_generes
-POA_OR_signature &lt;- POA_example$POA_OR_signature
-POA_Rank_signature &lt;- POA_example$POA_Rank_signature
-Signature &lt;- POA_Rank_signature
-rowname &lt;- get_gene_symbol(Signature)
-rownames(Signature) &lt;- rowname$rowname
-genes &lt;- rownames(Signature)[1:100]
-
-enriched &lt;- tissue_by_celltype_enrichment(gene_list = genes, 
-species = &quot;mouse&quot;,p_thresh = 0.05, isect_size = 3)
-</code></pre>
-
+<p>Here, we will investigate the tissue x cell-type enrichment of the top 100 genes in the Preoptic area signature matrix.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">data</span>(POA_example)</a>
+<a class="sourceLine" id="cb9-2" title="2">POA_generes &lt;-<span class="st"> </span>POA_example<span class="op">$</span>POA_generes</a>
+<a class="sourceLine" id="cb9-3" title="3">POA_OR_signature &lt;-<span class="st"> </span>POA_example<span class="op">$</span>POA_OR_signature</a>
+<a class="sourceLine" id="cb9-4" title="4">POA_Rank_signature &lt;-<span class="st"> </span>POA_example<span class="op">$</span>POA_Rank_signature</a>
+<a class="sourceLine" id="cb9-5" title="5">Signature &lt;-<span class="st"> </span>POA_Rank_signature</a>
+<a class="sourceLine" id="cb9-6" title="6">rowname &lt;-<span class="st"> </span><span class="kw">get_gene_symbol</span>(Signature)</a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="kw">rownames</span>(Signature) &lt;-<span class="st"> </span>rowname<span class="op">$</span>rowname</a>
+<a class="sourceLine" id="cb9-8" title="8">genes &lt;-<span class="st"> </span><span class="kw">rownames</span>(Signature)[<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>]</a>
+<a class="sourceLine" id="cb9-9" title="9"></a>
+<a class="sourceLine" id="cb9-10" title="10">enriched &lt;-<span class="st"> </span><span class="kw">tissue_by_celltype_enrichment</span>(<span class="dt">gene_list =</span> genes, </a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="dt">species =</span> <span class="st">&quot;mouse&quot;</span>,<span class="dt">p_thresh =</span> <span class="fl">0.05</span>, <span class="dt">isect_size =</span> <span class="dv">3</span>)</a></code></pre></div>
+</div>
+<div id="three-types-of-outputs." class="section level3">
 <h3>Three types of outputs.</h3>
-
 <ul>
 <li>tissue x CT enrichment: Always returned when using the <code>tissue_by_celltype_enrichment()</code> function. This function returns gene set enrichment compatible with <code>plotBP()</code> for all cell-type markers significantly enriched via the function.</li>
-<li>gmt_file: Since the bank of signature matrices is updated monthly, it is recommended to periodically download a new human_tissue_celltype_scMappR.rda and mouse_tissue_celltype_scMappR.rda from <a href="https://github.com/DustinSokolowski/scMappR_Data">https://github.com/DustinSokolowski/scMappR_Data</a>. When internet is available, setting &ldquo;rda_path&rdquo; to &ldquo;&rdquo; will download the most updated pathway files directly using the downloader package. Here, if <code>return_gmt == TRUE</code>, then this downloaded gmt will be returned with the enrichment.</li>
+<li>gmt_file: Since the bank of signature matrices is updated monthly, it is recommended to periodically download a new human_tissue_celltype_scMappR.rda and mouse_tissue_celltype_scMappR.rda from <a href="https://github.com/DustinSokolowski/scMappR_Data" class="uri">https://github.com/DustinSokolowski/scMappR_Data</a>. When internet is available, setting “rda_path” to &quot;&quot; will download the most updated pathway files directly using the downloader package. Here, if <code>return_gmt == TRUE</code>, then this downloaded gmt will be returned with the enrichment.</li>
 <li>if <code>toSave == TRUE</code>, then the -log10(P_adj) of the top 10 tissue/cell-types that are enriched are plotted.</li>
 </ul>
-
+</div>
+</div>
+<div id="processing-scrna-seq-count-data-into-a-signature-matrix." class="section level2">
 <h2>Processing scRNA-seq count data into a signature matrix.</h2>
-
-<p>scMappR inputs a list of count matrices (of class list, dCGMatrix, or matrix) and re-processes it using the standard Seurat V3 vignette (+ removal of cells with &gt; 2 standard deviations of mt contamination than mean). Then, it finds cell-type markers and identifies potential cell-type names using the GSVA and fisher&#39;s exact methods on the CellMarker and Panglao databases. Finally, it creates a signature matrix of odds ratios and ranks. There are options to save the Seurat object, gsva cell-type identities and list of cell-type markers. To identify what naming-preferences options are available, download and load <a href="https://github.com/DustinSokolowski/scMappR_Data/blob/master/cell_preferences_categorized.rda">https://github.com/DustinSokolowski/scMappR_Data/blob/master/cell_preferences_categorized.rda</a>.</p>
-
-<pre><code class="r">data(sm)
-
-toProcess &lt;- list(example = sm)
-
-tst1 &lt;- process_dgTMatrix_lists(toProcess, name = &quot;testPropcess&quot;, species_name = -9,
-naming_preference = &quot;eye&quot;, rda_path = &quot;&quot;, 
-toSave = TRUE, saveSCObject = TRUE, path = tempdir())
-</code></pre>
-
+<p>scMappR inputs a list of count matrices (of class list, dCGMatrix, or matrix) and re-processes it using the standard Seurat V3 vignette (+ removal of cells with &gt; 2 standard deviations of mt contamination than mean). Then, it finds cell-type markers and identifies potential cell-type names using the GSVA and Fisher’s exact methods on the CellMarker and Panglao databases. Finally, it creates a signature matrix of odds ratios and ranks. There are options to save the Seurat object, GSVA cell-type identities and list of cell-type markers. To identify what naming-preferences options described here: “brain”, “epithelial”, “endothelial”, “blood”, “connective”,“eye”, “epidermis”, “Digestive”, “Immune”, “pancreas”, “liver”, “reproductive”, “kidney”, “respiratory”</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">data</span>(sm)</a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3">toProcess &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">example =</span> sm)</a>
+<a class="sourceLine" id="cb10-4" title="4"></a>
+<a class="sourceLine" id="cb10-5" title="5">tst1 &lt;-<span class="st"> </span><span class="kw">process_dgTMatrix_lists</span>(toProcess, <span class="dt">name =</span> <span class="st">&quot;testPropcess&quot;</span>, <span class="dt">species_name =</span> <span class="dv">-9</span>,</a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="dt">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="dt">rda_path =</span> <span class="st">&quot;&quot;</span>, </a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="dt">toSave =</span> <span class="ot">TRUE</span>, <span class="dt">saveSCObject =</span> <span class="ot">TRUE</span>, <span class="dt">path =</span> <span class="kw">tempdir</span>())</a></code></pre></div>
 <p>It is recommended to set <code>toSave == TRUE</code>, allowing for important data objects to be saved. Here, the above function is repeated with <code>toSave == TRUE</code> and <code>saveSCObject == TRUE</code>, and the outputted files will be briefly discussed.</p>
-
 <p>Here, the following objects are saved.</p>
-
 <ul>
 <li>testProcess_generes.Rdata: list of cell-type markers for every cluster.</li>
-<li>testProcess_or_heatmap.Rdata: signature matrix of odds ratios named from Fisher&#39;s exact test.</li>
-<li>testProcess_pval_heatmap.Rdata: signature matrix of ranks named from Fisher&#39;s exact test.</li>
+<li>testProcess_or_heatmap.Rdata: signature matrix of odds ratios named from Fisher’s exact test.</li>
+<li>testProcess_pval_heatmap.Rdata: signature matrix of ranks named from Fisher’s exact test.</li>
 <li>testProcess_custom.Rdata: Processed (and integrated if necessary) Seurat object.</li>
 <li>testProcess_gsva_cellname_avg_expression.Rdata: list of cell-type markers from CelllMarker and Panglao using the GSVA method as well as the average expression of each gene in each cell-type.</li>
 </ul>
-
+<div id="processing-scrna-seq-count-data-from-a-different-species." class="section level3">
+<h3>Processing scRNA-seq count data from a different species.</h3>
+<p>Please continue to use the <code>process_from_count</code> function. The only species specific information required in this function is the mitochondrial gene symbol to regress out mitochondria. In each of your count matrices, make sure that your michondial genes have a “MT-” preface. Then select “human” as the species. This can also be done with an “mt-” preface and selecting mouse.</p>
+</div>
+<div id="processing-scrna-seq-count-data-when-cell-types-are-already-named." class="section level3">
 <h3>Processing scRNA-seq count data when cell-types are already named.</h3>
-
 <p>It may be common to generate a signature matrix when clusters and cell-types have already been given for every cell. These examples follow how to make this signature matrix from:</p>
-
-<p>1) A Seurat object with named cell-types
-2) A Count matrix with named cell-types.</p>
-
+<ol style="list-style-type: decimal">
+<li>A Seurat object with named cell-types</li>
+<li>A Count matrix with named cell-types.</li>
+</ol>
+</div>
+<div id="signature-matrix-from-seurat-object-with-named-cell-type" class="section level3">
 <h3>Signature matrix from Seurat object with named cell-type</h3>
-
 <p>Generating the Seurat Object for example and making up cell-types. This example will be used from 1-2.</p>
-
-<pre><code class="r">data(sm)
-
-toProcess &lt;- list(sm = sm)
-
-seurat_example &lt;- process_from_count(toProcess, &quot;test_vignette&quot;,theSpecies  = -9)
-
-levels(seurat_example@active.ident) &lt;- c(&quot;Myoblast&quot;, &quot;Neutrophil&quot;, &quot;cardiomyoblast&quot;, &quot;Mesothelial&quot;)
-</code></pre>
-
-<p>1) A Seurat object with named cell-types. Markers for each cell-type are stored in the <code>generes</code> object and each signature matrix is in <code>gene_out</code>.</p>
-
-<pre><code class="r">    generes &lt;- seurat_to_generes(pbmc = seurat_example, test = &quot;wilcox&quot;)
-
-    gene_out &lt;- generes_to_heatmap(generes, make_names = FALSE)
-</code></pre>
-
-<p>2) A count matrix with named cell-types.</p>
-
-<pre><code class="r">#Create the cell-type ids and matrix
-Cell_type_id &lt;- seurat_example@active.ident
-
-count_file &lt;- sm
-
-rownames_example &lt;- get_gene_symbol(count_file)
-
-rownames(count_file) &lt;- rownames_example$rowname
-
-# make seurat object
-seurat_example &lt;- process_from_count(count_file, &quot;test_vignette&quot;,theSpecies  = &quot;mouse&quot;)
-
-# Intersect column names (cell-types) with labelled CTs
-
-inters &lt;- intersect(colnames(seurat_example), names(Cell_type_id))
-
-seurat_example_inter &lt;- seurat_example[,inters]
-
-Cell_type_id_inter &lt;- Cell_type_id[inters]
-
-seurat_example_inter@active.ident &lt;- Cell_type_id_inter
-
-# Making signature matrices
-
-    generes &lt;- seurat_to_generes(pbmc = seurat_example_inter, test = &quot;wilcox&quot;)
-
-    gene_out &lt;- generes_to_heatmap(generes, make_names = FALSE)
-</code></pre>
-
-<h2>Pathway enrichment of cwFold-changes</h2>
-
-<p>The scMappR manuscript describes two pathway enrichment methodologies. Pathway enrichment of the first approach represents biological pathways associated with the rank-change in expression of each cell-type. Secondly, scMappR re-ranks genes by their increase in cell-type specificity before completing an ordered pathway analysis. For example, if a gene is the 150th most DE gene in bulk and the 2nd most DE gene for a cell-type, it would have a score of 148 for that cell-type. Pathway enrichment of the second approach represents biological pathways associated with genes most influenced by scMappR. These two pathway enrichment methodologies are consolodated into a single function separate from <code>scMappR_and_pathway_analysis</code>. Specifically, they are found in <code>two_method_pathway_analysis.</code></p>
-
-<p>This function requires that you input cwFold-changes computed from <code>scMappR_and_pathway_analysis</code> as well as the bulk DE genes inputted into the original analysis. An example is shown below:</p>
-
-<pre><code class="r">data(PBMC_example)
-bulk_DE_cors &lt;- PBMC_example$bulk_DE_cors
-bulk_normalized &lt;- PBMC_example$bulk_normalized
-odds_ratio_in &lt;- PBMC_example$odds_ratio_in
-case_grep &lt;- &quot;_female&quot;
-control_grep &lt;- &quot;_male&quot;
-max_proportion_change &lt;- 10
-print_plots &lt;- FALSE
-theSpecies &lt;- &quot;human&quot;
-toOut &lt;- scMappR_and_pathway_analysis(bulk_normalized, odds_ratio_in, 
-                                      bulk_DE_cors, case_grep = case_grep,
-                                      control_grep = control_grep, rda_path = &quot;&quot;, 
-                                      max_proportion_change = 10, print_plots = TRUE, 
-                                      plot_names = &quot;tst1&quot;, theSpecies = &quot;human&quot;, 
-                                      output_directory = &quot;tester&quot;,
-                                      sig_matrix_size = 3000, up_and_downregulated = FALSE, 
-                                      internet = FALSE)
-
-twoOutFiles &lt;- two_method_pathway_enrichment(bulk_DE_cors, &quot;human&quot;, scMappR_vals = toOut$cellWeighted_Foldchange, background_genes = rownames(bulk_normalized), output_directory = &quot;newfun_test&quot;,plot_names = &quot;nonreranked_&quot;, toSave = FALSE, path=NULL)
-
-# The code below would save graphs and paths into the working directory.  It is commented to not make code in your working directory
-#twoOutFiles &lt;- two_method_pathway_enrichment(bulk_DE_cors, &quot;human&quot;, scMappR_vals = toOut$cellWeighted_Foldchange, background_genes = rownames(bulk_normalized), output_directory = &quot;newfun_test&quot;,plot_names = &quot;nonreranked_&quot;, toSave = TRUE, path=&quot;./&quot;)
-</code></pre>
-
-<p>Here, the following objects are saved.</p>
-
-<ul>
-<li>bulk ___ enrichment (.Rdata/.png/.pdf): the bulk enrichment of the .Rdata object, and .png/.pdf of the top pathways</li>
-<li>_reordered_pathways.pdf: list of pathways re-ordered by cwFold-change</li>
-<li>_reordered_tfs.pdf: list of tfs re-ordered by cwFold-change</li>
-<li>rank_increase_genes: a list of cell-types. Each cell-type contains three dfs: 1) the rank change of each gene between the bulk DE gene and cwFold-change. 2) the enriched bps when genes are ordered by their increase in rank after scmappR was applied. 3) the enriched tfs when genes are ordered by their increase in rank after scmappR was applied.</li>
-<li>bp_reranked: folder containing the plots of most enriched bp when genes are ordered by their increase in rank after scmappR was applied.</li>
-<li>bp_reranked: folder containing the plots of most enriched tf when genes are ordered by their increase in rank after scmappR was applied.</li>
-<li>scatterplot_reranked: folder containing the rank differences between cwFold-change and bulk DE gene for each cell-type.</li>
-<li>BP_barplot: top BPs identified by cwFold-change for each cell-type.</li>
-<li>TF_barplot: top BPs identified by cwFold-change for each cell-type.</li>
-</ul>
-
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">data</span>(sm)</a>
+<a class="sourceLine" id="cb11-2" title="2"></a>
+<a class="sourceLine" id="cb11-3" title="3">toProcess &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sm =</span> sm)</a>
+<a class="sourceLine" id="cb11-4" title="4"></a>
+<a class="sourceLine" id="cb11-5" title="5">seurat_example &lt;-<span class="st"> </span><span class="kw">process_from_count</span>(toProcess, <span class="st">&quot;test_vignette&quot;</span>,<span class="dt">theSpecies  =</span> <span class="dv">-9</span>)</a>
+<a class="sourceLine" id="cb11-6" title="6"></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="kw">levels</span>(seurat_example<span class="op">@</span>active.ident) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Myoblast&quot;</span>, <span class="st">&quot;Neutrophil&quot;</span>, <span class="st">&quot;cardiomyoblast&quot;</span>, <span class="st">&quot;Mesothelial&quot;</span>)</a></code></pre></div>
+<ol style="list-style-type: decimal">
+<li>A Seurat object with named cell-types. Markers for each cell-type are stored in the <code>generes</code> object and each signature matrix is in <code>gene_out</code>.</li>
+</ol>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">    generes &lt;-<span class="st"> </span><span class="kw">seurat_to_generes</span>(<span class="dt">pbmc =</span> seurat_example, <span class="dt">test =</span> <span class="st">&quot;wilcox&quot;</span>)</a>
+<a class="sourceLine" id="cb12-2" title="2"></a>
+<a class="sourceLine" id="cb12-3" title="3">    gene_out &lt;-<span class="st"> </span><span class="kw">generes_to_heatmap</span>(generes, <span class="dt">make_names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>A count matrix with named cell-types.</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">#Create the cell-type ids and matrix</span></a>
+<a class="sourceLine" id="cb13-2" title="2">Cell_type_id &lt;-<span class="st"> </span>seurat_example<span class="op">@</span>active.ident</a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4">count_file &lt;-<span class="st"> </span>sm</a>
+<a class="sourceLine" id="cb13-5" title="5"></a>
+<a class="sourceLine" id="cb13-6" title="6">rownames_example &lt;-<span class="st"> </span><span class="kw">get_gene_symbol</span>(count_file)</a>
+<a class="sourceLine" id="cb13-7" title="7"></a>
+<a class="sourceLine" id="cb13-8" title="8"><span class="kw">rownames</span>(count_file) &lt;-<span class="st"> </span>rownames_example<span class="op">$</span>rowname</a>
+<a class="sourceLine" id="cb13-9" title="9"></a>
+<a class="sourceLine" id="cb13-10" title="10"><span class="co"># make seurat object</span></a>
+<a class="sourceLine" id="cb13-11" title="11">seurat_example &lt;-<span class="st"> </span><span class="kw">process_from_count</span>(count_file, <span class="st">&quot;test_vignette&quot;</span>,<span class="dt">theSpecies  =</span> <span class="st">&quot;mouse&quot;</span>)</a>
+<a class="sourceLine" id="cb13-12" title="12"></a>
+<a class="sourceLine" id="cb13-13" title="13"><span class="co"># Intersect column names (cell-types) with labelled CTs</span></a>
+<a class="sourceLine" id="cb13-14" title="14"></a>
+<a class="sourceLine" id="cb13-15" title="15">inters &lt;-<span class="st"> </span><span class="kw">intersect</span>(<span class="kw">colnames</span>(seurat_example), <span class="kw">names</span>(Cell_type_id))</a>
+<a class="sourceLine" id="cb13-16" title="16"></a>
+<a class="sourceLine" id="cb13-17" title="17">seurat_example_inter &lt;-<span class="st"> </span>seurat_example[,inters]</a>
+<a class="sourceLine" id="cb13-18" title="18"></a>
+<a class="sourceLine" id="cb13-19" title="19">Cell_type_id_inter &lt;-<span class="st"> </span>Cell_type_id[inters]</a>
+<a class="sourceLine" id="cb13-20" title="20"></a>
+<a class="sourceLine" id="cb13-21" title="21">seurat_example_inter<span class="op">@</span>active.ident &lt;-<span class="st"> </span>Cell_type_id_inter</a>
+<a class="sourceLine" id="cb13-22" title="22"></a>
+<a class="sourceLine" id="cb13-23" title="23"><span class="co"># Making signature matrices</span></a>
+<a class="sourceLine" id="cb13-24" title="24"></a>
+<a class="sourceLine" id="cb13-25" title="25">    generes &lt;-<span class="st"> </span><span class="kw">seurat_to_generes</span>(<span class="dt">pbmc =</span> seurat_example_inter, <span class="dt">test =</span> <span class="st">&quot;wilcox&quot;</span>)</a>
+<a class="sourceLine" id="cb13-26" title="26"></a>
+<a class="sourceLine" id="cb13-27" title="27">    gene_out &lt;-<span class="st"> </span><span class="kw">generes_to_heatmap</span>(generes, <span class="dt">make_names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+</div>
+</div>
+<div id="manually-making-graphics." class="section level2">
 <h2>Manually making graphics.</h2>
-
 <p>scMappR generates heatmaps and barplots. The barplots are generated with <code>plotBP</code> and <code>make_TF_barplot</code>. The plotting code for <code>plotBP</code> is provided. Inputs are a matrix called <code>ordered_back_all</code> of -log10(padj) and term names with the column names log10 and term_name respectively.</p>
-
+<div id="barplots" class="section level3">
 <h3>Barplots</h3>
-
-<pre><code class="r"># making an example matrix
-term_name &lt;- c(&quot;one&quot;, &quot;two&quot;, &quot;three&quot;)
-log10 &lt;- c(1.5, 4, 2.1)
-
-ordered_back_all &lt;- as.data.frame(cbind(term_name,log10))
-
-#plotting
- g &lt;- ggplot2::ggplot(ordered_back_all, ggplot2::aes(x = stats::reorder(term_name, 
-        log10), y = log10)) + ggplot2::geom_bar(stat = &quot;identity&quot;, 
-        fill = &quot;turquoise&quot;) + ggplot2::coord_flip() + ggplot2::labs(y = &quot;-log10(Padj)&quot;, 
-        x = &quot;Gene Ontology&quot;)
-    y &lt;- g + ggplot2::theme(axis.text.x = ggplot2::element_text(face = NULL, 
-        color = &quot;black&quot;, size = 12, angle = 35), axis.text.y = ggplot2::element_text(face = NULL, 
-        color = &quot;black&quot;, size = 12, angle = 35), axis.title = ggplot2::element_text(size = 16, 
-        color = &quot;black&quot;))
-
-print(y)
-</code></pre>
-
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># making an example matrix</span></a>
+<a class="sourceLine" id="cb14-2" title="2">term_name &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;one&quot;</span>, <span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>)</a>
+<a class="sourceLine" id="cb14-3" title="3">log10 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1.5</span>, <span class="dv">4</span>, <span class="fl">2.1</span>)</a>
+<a class="sourceLine" id="cb14-4" title="4"></a>
+<a class="sourceLine" id="cb14-5" title="5">ordered_back_all &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">cbind</span>(term_name,log10))</a>
+<a class="sourceLine" id="cb14-6" title="6"></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="co">#plotting</span></a>
+<a class="sourceLine" id="cb14-8" title="8"> g &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(ordered_back_all, ggplot2<span class="op">::</span><span class="kw">aes</span>(<span class="dt">x =</span> stats<span class="op">::</span><span class="kw">reorder</span>(term_name, </a>
+<a class="sourceLine" id="cb14-9" title="9">        log10), <span class="dt">y =</span> log10)) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>, </a>
+<a class="sourceLine" id="cb14-10" title="10">        <span class="dt">fill =</span> <span class="st">&quot;turquoise&quot;</span>) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">coord_flip</span>() <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;-log10(Padj)&quot;</span>, </a>
+<a class="sourceLine" id="cb14-11" title="11">        <span class="dt">x =</span> <span class="st">&quot;Gene Ontology&quot;</span>)</a>
+<a class="sourceLine" id="cb14-12" title="12">    y &lt;-<span class="st"> </span>g <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">face =</span> <span class="ot">NULL</span>, </a>
+<a class="sourceLine" id="cb14-13" title="13">        <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">angle =</span> <span class="dv">35</span>), <span class="dt">axis.text.y =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">face =</span> <span class="ot">NULL</span>, </a>
+<a class="sourceLine" id="cb14-14" title="14">        <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">angle =</span> <span class="dv">35</span>), <span class="dt">axis.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, </a>
+<a class="sourceLine" id="cb14-15" title="15">        <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>))</a>
+<a class="sourceLine" id="cb14-16" title="16">    </a>
+<a class="sourceLine" id="cb14-17" title="17"><span class="kw">print</span>(y)</a></code></pre></div>
+</div>
+<div id="heatmaps" class="section level3">
 <h3>Heatmaps</h3>
-
 <p>Here, the heatmaps are for plotting cwFold-changes and cell-type proportions. The same heatmap is used so just an example of one is given.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co"># Generating a heatmap</span></a>
+<a class="sourceLine" id="cb15-2" title="2"></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="co"># Acquiring the gene list</span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="kw">data</span>(POA_example)</a>
+<a class="sourceLine" id="cb15-5" title="5"></a>
+<a class="sourceLine" id="cb15-6" title="6">Signature &lt;-<span class="st"> </span>POA_example<span class="op">$</span>POA_Rank_signature</a>
+<a class="sourceLine" id="cb15-7" title="7"></a>
+<a class="sourceLine" id="cb15-8" title="8">rowname &lt;-<span class="st"> </span><span class="kw">get_gene_symbol</span>(Signature)</a>
+<a class="sourceLine" id="cb15-9" title="9"></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="kw">rownames</span>(Signature) &lt;-<span class="st"> </span>rowname<span class="op">$</span>rowname</a>
+<a class="sourceLine" id="cb15-11" title="11"></a>
+<a class="sourceLine" id="cb15-12" title="12">genes &lt;-<span class="st"> </span><span class="kw">rownames</span>(Signature)[<span class="dv">1</span><span class="op">:</span><span class="dv">200</span>]</a>
+<a class="sourceLine" id="cb15-13" title="13"> </a>
+<a class="sourceLine" id="cb15-14" title="14"><span class="co">#running tisue_scMappR_custom</span></a>
+<a class="sourceLine" id="cb15-15" title="15">internal &lt;-<span class="st"> </span><span class="kw">tissue_scMappR_custom</span>(genes,Signature,<span class="dt">output_directory =</span> <span class="st">&quot;scMappR_Test_custom&quot;</span>, <span class="dt">toSave =</span> F)</a>
+<a class="sourceLine" id="cb15-16" title="16"></a>
+<a class="sourceLine" id="cb15-17" title="17">toPlot &lt;-<span class="st"> </span>internal<span class="op">$</span>gene_list_heatmap<span class="op">$</span>geneHeat</a>
+<a class="sourceLine" id="cb15-18" title="18"></a>
+<a class="sourceLine" id="cb15-19" title="19"></a>
+<a class="sourceLine" id="cb15-20" title="20"><span class="co">#Plotting the heatmap</span></a>
+<a class="sourceLine" id="cb15-21" title="21"></a>
+<a class="sourceLine" id="cb15-22" title="22">cex =<span class="st"> </span><span class="fl">0.2</span> <span class="co"># size of genes</span></a>
+<a class="sourceLine" id="cb15-23" title="23"></a>
+<a class="sourceLine" id="cb15-24" title="24">myheatcol &lt;-<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;orange&quot;</span>))(<span class="dv">256</span>)</a>
+<a class="sourceLine" id="cb15-25" title="25">    pheatmap<span class="op">::</span><span class="kw">pheatmap</span>(<span class="kw">as.matrix</span>(toPlot), <span class="dt">color =</span> myheatcol, <span class="dt">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="dt">fontsize_row =</span> cex, <span class="dt">fontsize_col =</span> <span class="dv">10</span>)</a></code></pre></div>
+</div>
+</div>
 
-<pre><code class="r"># Generating a heatmap
-
-# Acquiring the gene list
-data(POA_example)
-
-Signature &lt;- POA_example$POA_Rank_signature
-
-rowname &lt;- get_gene_symbol(Signature)
-
-rownames(Signature) &lt;- rowname$rowname
-
-genes &lt;- rownames(Signature)[1:200]
-
-#running tisue_scMappR_custom
-internal &lt;- tissue_scMappR_custom(genes,Signature,output_directory = &quot;scMappR_Test_custom&quot;, toSave = F)
-
-toPlot &lt;- internal$gene_list_heatmap$geneHeat
 
 
-#Plotting the heatmap
+<!-- code folding -->
 
-cex = 0.2 # size of genes
 
-myheatcol &lt;- grDevices::colorRampPalette(c(&quot;lightblue&quot;, &quot;white&quot;, &quot;orange&quot;))(256)
-    pheatmap::pheatmap(as.matrix(toPlot), color = myheatcol, scale = &quot;row&quot;, fontsize_row = cex, fontsize_col = 10)
-</code></pre>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
-
 </html>

@@ -10,19 +10,19 @@
 #' @rdname topgenes_extract
 #' @name topgenes_extract
 #'
-#' @param generes A list of cell-tpe markers with fold-changes and p-vlaues (FindMarkers output in Seurat).
+#' @param generes A list of cell-type markers with fold-changes and p-values (FindMarkers output in Seurat).
 #' @param padj The p-value (FDR) cutoff.
 #' @param FC The fold-change cutoff.
 #' @param topNum The number of genes to extract.
 #'
 #' @return \code{topgenes_extract} Returns a list of character vectors with the top (topNum) of gene markers for each cell-type. \cr
 #' 
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -31,6 +31,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples 
 #'  

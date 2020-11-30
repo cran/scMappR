@@ -11,19 +11,19 @@
 #'
 #' @param geneHeat The heatmap of ranks from your scRNA-seq dataset with your genes subsetted.
 #' @param cellTypes The cell-types that you're interested in extracting. They need to be colnames (not case sensitive).
-#' @param val How associated a gene is with a particualr cell type to include in your list - default is slightly associated.
+#' @param val How associated a gene is with a particular cell type to include in your list - default is slightly associated.
 #' @param isMax If you are taking the single best CT marker (T/F) -- TRUE not recommended.
 #' @param isPvalue If the signature matrix is raw p-value (T/F) -- TRUE not recommended.
 #' 
 #'
 #' @return \code{extract_genes_cell} A vector of genes above the threshold for each sample. \cr
 #'
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -32,6 +32,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples
 #' 

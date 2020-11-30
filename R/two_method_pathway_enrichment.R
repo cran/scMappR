@@ -2,34 +2,34 @@
 #'
 #' Pathway analysis of each cell-type based on cell-type specificity and rank improvement by scMappR.
 #'
-#' This function re-ranks cwFoldChanges based on their absolute ct specificity scores (per-celltype) as well as their rank increase in cell-type specificity before completing an ordered pathway analysis. In the second method, only genes with a rank increase in cell-type specificity were included
+#' This function re-ranks cwFoldChanges based on their absolute cell-type specificity scores (per-celltype) as well as their rank increase in cell-type specificity before completing an ordered pathway analysis. In the second method, only genes with a rank increase in cell-type specificity were included.
 #'  
 #'
 #' @rdname two_method_pathway_enrichment
 #' @name two_method_pathway_enrichment
 #'
-#' @param DEGs Differentially expressed genes (gene_name, padj, log2fc).
-#' @param theSpecies Human, mouse, or a charcter that is compatible with gProfileR.
+#' @param DEG_list Differentially expressed genes (gene_name, padj, log2fc).
+#' @param theSpecies Human, mouse, or a character that is compatible with g:ProfileR.
 #' @param scMappR_vals cell weighted Fold-changes of differentially expressed genes.
-#' @param background_genes A list of background genes to test against. NULL assumes all genes in gprofiler gene set databases.
+#' @param background_genes A list of background genes to test against. NULL assumes all genes in g:profileR gene set databases.
 #' @param output_directory Path to the directory where files will be saved.
 #' @param plot_names Names of output.
 #' @param number_genes Number of genes to if there are many, many DEGs.
-#' @param newGprofiler Whether to use gProfileR or gprofiler2 (T/F).
+#' @param newGprofiler Whether to use g:ProfileR or gprofiler2 (T/F).
 #' @param toSave Allow scMappR to write files in the current directory (T/F).
 #' @param path If toSave == TRUE, path to the directory where files will be saved.
 #' 
 #' 
 #' @return List with the following elements:
-#' \item{rank_increase}{A list containing the degree of rank change between bulk DE genes and cwFold-changes. Pathway enrichment and tf enrichment of these reranked genes.}
+#' \item{rank_increase}{A list containing the degree of rank change between bulk DE genes and cwFold-changes. Pathway enrichment and TF enrichment of these reranked genes.}
 #' \item{non_rank_increase}{list of DFs containing the pathway and TF enrichment of cwFold-changes.}
 #'
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -38,6 +38,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples 
 #' \donttest{
@@ -73,8 +75,20 @@
 #' @export
 #' 
 
-two_method_pathway_enrichment <- function(DEGs, theSpecies, scMappR_vals, background_genes = NULL, output_directory = "output", plot_names = "reweighted", number_genes = -9,  newGprofiler = FALSE, toSave = FALSE, path = NULL) {
+two_method_pathway_enrichment <- function(DEG_list, theSpecies, scMappR_vals, background_genes = NULL, output_directory = "output", plot_names = "reweighted", number_genes = -9,  newGprofiler = FALSE, toSave = FALSE, path = NULL) {
 
+  if(is.character(DEG_list)) {
+    DEGs <- utils::read.table(DEG_list, header = FALSE, as.is = TRUE, sep = "\t")
+  } else {
+    DEGs <- as.data.frame(DEG_list)
+  }
+  
+  colnames(DEGs) <- c("gene_name", "padj", "log2fc")
+  DEGs$gene_name <- tochr(DEGs$gene_name)
+  DEGs$padj <- toNum(DEGs$padj)
+  DEGs$log2fc <- toNum(DEGs$log2fc)
+  rownames(DEGs) <- DEGs$gene_name
+  
   scMappR_vals_class <- class(scMappR_vals)[1] %in% c("data.frame", "matrix")
   if(scMappR_vals_class[1] == FALSE) {
     stop("scMappR_vals must be a data.frame or matrix.")
@@ -150,14 +164,15 @@ two_method_pathway_enrichment <- function(DEGs, theSpecies, scMappR_vals, backgr
     
     # generating the DF containing the rank order difference between cwFold-changes and DE genes
     scMappR_vals_CT <- scMappR_vals[order(abs(scMappR_vals[,i]), decreasing = TRUE),]
-
+    DEGs <- DEGs[order(abs(DEGs$log2fc), decreasing = TRUE),] 
+    
     rank_CT <- 1:length(rownames(scMappR_vals_CT))
     rank_DEGs <- 1:length(DEGs$gene_name)
     names(rank_CT) <- rownames(scMappR_vals_CT)
     names(rank_DEGs) <- DEGs$gene_name
     
-    rank_CT <- rank_CT[intersect(names(rank_CT),names(rank_DEGs) )]
-    rank_DEGs <- rank_DEGs[intersect(names(rank_CT),names(rank_DEGs) )]
+    rank_CT <- rank_CT[names(rank_DEGs) ]
+    rank_DEGs <- rank_DEGs[names(rank_DEGs) ]
     rank_change <- rank_CT - rank_DEGs
     ranks <- as.data.frame(cbind(rank_CT, rank_DEGs, rank_change))
     ranks <- ranks[order(ranks$rank_change),]  

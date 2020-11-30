@@ -1,25 +1,25 @@
-#' Plot gprofileR Barplot (TF)
+#' Plot g:profileR Barplot (TF)
 #' 
 #' Make a barplot of the top transcription factors enriched by gprofileR.
 #'
 #' This function takes a gprofileR output and prints the top "top_tfs" most significantly
-#' enriched p-values before plotting the rank of their p-values.
+#' enriched fdr adjusted p-values before plotting the rank of their p-values.
 #'
 #'
 #' @rdname make_TF_barplot
 #' @name make_TF_barplot
 #'
-#' @param ordered_back_all_tf Output of the gprofileR function.
-#' @param top_tf The number of pathways you want to plot.
+#' @param ordered_back_all_tf Output of the g:profileR function.
+#' @param top_tf The number of transcription factors to be plotted.
 #' 
 #' @return \code{make_TF_barplot} A barplot of the number of "top_tf" tf names (not motifs), ranked by -log10(Pfdr). \cr
 #' 
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -28,6 +28,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples 
 #' \donttest{
@@ -120,6 +122,6 @@ make_TF_barplot <- function(ordered_back_all_tf, top_tf = 5) {
                                                               size=12, angle=0), 
                           axis.title=ggplot2::element_text(size=16, color = "black"))
   y <- y + ggplot2::theme_classic()
-  print(y)
+  #print(y)
   return(y)
 }

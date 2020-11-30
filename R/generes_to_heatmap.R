@@ -7,7 +7,7 @@
 #' @rdname generes_to_heatmap
 #' @name generes_to_heatmap
 #'
-#' @param generes A list of cell-tpe markers with fold-changes and p-vlaues (FindMarkers output in Seurat).
+#' @param generes A list of cell-type markers with fold-changes and p-values (FindMarkers output in Seurat).
 #' @param species The species of gene symbols, if not internal, "human" or "mouse".
 #' @param naming_preference Likely cell-types given tissues (to be passed into human_mouse_ct_marker_enrich).
 #' @param make_names Identify names of cell-type markers using the Fisher's exact test method (T/F).
@@ -20,12 +20,12 @@
 #' \item{cellname}{A vector of the cell-labels returned from the GSVA method.}
 #' \item{topGenes}{the top 30 mos expressed genes in each cell-type.}
 #' 
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -34,6 +34,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples
 #' 

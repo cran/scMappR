@@ -11,10 +11,10 @@
 #' @name tissue_scMappR_custom
 #'
 #' @param gene_list A list of gene symbols matching that of the signature_matrix. Any gene symbol is acceptable.
-#' @param signature_matrix Pre=computed signature matrix with matching gene names.
+#' @param signature_matrix Pre-computed signature matrix with matching gene names.
 #' @param output_directory Directory made containing output of functions.
 #' @param gene_cutoff Value cut-off (generally rank := log10(Padj)) for a gene to be considered a marker.
-#' @param is_pvalue If signature matrix is p-value before rank is applied (not recommended ) (T/F).
+#' @param is_pvalue If signature matrix is p-value before rank is applied (not recommended) (T/F).
 #' @param toSave Allow scMappR to write files in the current directory (T/F).
 #' @param path If toSave == TRUE, path to the directory where files will be saved.
 #'
@@ -24,20 +24,22 @@
 #' \item{single_celltype_preferences}{Data frame of enriched cell-types.}
 #' \item{group_celtype_preference}{Data frame of groups of cell-types enriched by the same genes.}
 #' 
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
-#' @importFrom pheatmap pheatmap 
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
+#' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
-#' @importFrom gProfileR gprofiler
 #' @importFrom gprofiler2 gost
+#' @importFrom gProfileR gprofiler
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples 
 #' 

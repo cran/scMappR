@@ -1,21 +1,21 @@
 #' Get signature matrices.
 #'
-#' This function downloads and returns signature matrices and associated cel-type labels from the scMappR_data repo.
+#' This function downloads and returns signature matrices and associated cell-type labels from the scMappR_data repo.
 #'
 #'
 #' @rdname get_signature_matrices
 #' @name get_signature_matrices
 #'
-#' @param type a character vector that can be 'both', 'pVal', or 'OR'
+#' @param type a character vector that can be 'all', 'pVal', or 'OR'
 #'
 #' @return \code{get_signature_matrices} Returns the signature matrices currently stored in scMappR_Data. Associated cell-type labels from different methods for each signature matrix is also provided.\cr
 #'
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -24,6 +24,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples
 #' \donttest{

@@ -1,25 +1,25 @@
 #' Plot gProfileR Barplot
 #' 
-#' Make a barplot of the top biological factors enriched by gProfileR.
+#' Make a barplot of the top biological factors enriched by g:ProfileR.
 #'
 #' This function takes a gProfileR output and prints the top "top_bp" most significantly
-#' enriched p-values before plotting the rank of their p-values.
+#' enriched FDR adjusted p-values before plotting the rank of their p-values.
 #'
 #'
 #' @rdname plotBP
 #' @name plotBP
 #'
-#' @param ordered_back_all Output of the gProfileR function.
+#' @param ordered_back_all Output of the g:ProfileR function.
 #' @param top_bp The number of pathways you want to plot.
 #' 
 #' @return \code{plotBP} A barplot of the number of "top_bp" pathways, ranked by -log10(Pfdr). \cr
 #' 
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -28,6 +28,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples 
 #' \donttest{
@@ -121,6 +123,6 @@ plotBP <- function(ordered_back_all, top_bp = 10) {
                                             size=12, angle=0), 
                  axis.title= ggplot2::element_text(size=16, color = "black"))
   y <- y + ggplot2::theme_classic()
-  print(y)
+  #print(y)
   return(y)
 }

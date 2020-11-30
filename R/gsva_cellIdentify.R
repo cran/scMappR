@@ -7,23 +7,23 @@
 #' @rdname gsva_cellIdentify
 #' @name gsva_cellIdentify
 #'
-#' @param pbmc Processed seurat object without named cells.
-#' @param theSpecies "human" or "mouse" -- it will determine which CT marker database to use -- there are some differences.
-#' @param naming_preference Once top CT markers are identified, naming_preferences will then extract CT markers within a more appropriate tissue type.
+#' @param pbmc Processed Seurat object without named cells.
+#' @param theSpecies "human" or "mouse" -- it will determine which species cell-type markers will originate from.
+#' @param naming_preference Once top cell-type markers are identified, naming_preferences will then extract CT markers within a more appropriate tissue type.
 #' @param rda_path Path to pre-computed cell-type .gmt files (rda objects).
 #' @param toSave If scMappR is allowed to write files and directories.
 #'
 #' @return List with the following elements:
-#' \item{cellMarker}{Most likely cell-types predicted from cellMarker database.}
-#' \item{panglao}{Most likely cell-types predicted from panglao database.}
+#' \item{cellMarker}{Most likely cell-types predicted from CellMarker database.}
+#' \item{panglao}{Most likely cell-types predicted from Panglao database.}
 #' \item{avg_expression}{Average expression of each gene in each cell-type.}
 #'
-#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_text theme coord_flip labs element_text geom_bar theme_classic xlab ylab scale_fill_manual element_line
 #' @importFrom pheatmap pheatmap
 #' @importFrom graphics barplot plot
 #' @importFrom Seurat AverageExpression CreateSeuratObject PercentageFeatureSet SCTransform SelectIntegrationFeatures PrepSCTIntegration FindIntegrationAnchors IntegrateData DefaultAssay RunPCA RunUMAP FindNeighbors FindClusters ScaleData FindMarkers
 #' @importFrom GSVA gsva
-#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases
+#' @importFrom stats fisher.test median p.adjust reorder t.test sd var complete.cases ks.test dist shapiro.test mad
 #' @importFrom utils combn read.table write.table head tail
 #' @importFrom downloader download
 #' @importFrom grDevices pdf dev.off colorRampPalette
@@ -32,6 +32,8 @@
 #' @importFrom pcaMethods prep pca R2cum
 #' @importFrom limSolve lsei
 #' @importFrom pbapply pblapply
+#' @importFrom ADAPTS estCellPercent
+#' @importFrom reshape melt
 #'
 #' @examples 
 #' \donttest{
