@@ -2,7 +2,7 @@
 #'
 #' This function processes a list of count matrices (same species/gene symbols in each list) and converts them to a Seurat object.
 #' 
-#' This function takes a list of count matrices and returns a Seurat object of the count matrices integrated using Seurat v3 (and IntegrationAnchors feature). Different normalization features such as the SCTransform pipeline are also available in this function.
+#' This function takes a list of count matrices and returns a Seurat object of the count matrices integrated using Seurat v4 (and IntegrationAnchors feature). Different normalization features such as the SCTransform pipeline are also available in this function.
 #' Different options are used when the function is being ran internally (i.e. reprocessing count matrices from PanglaoDB) or if it is running from custom scRNA-seq data.
 #' Larger scRNA-seq datasets can take considerable amounts of memory and run-time. See Seurat for details.
 #'
@@ -51,7 +51,7 @@
 #' @export
 #'
 process_from_count <- function(countmat_list, name, theSpecies = -9, haveUmap = FALSE, saveALL = FALSE, panglao_set = FALSE, toSave = FALSE, path = NULL, use_sctransform = FALSE, genes_integrate = 2000, genes_include = FALSE) {
-  # This function takes a list of count matrices and returns a seurat object of the count matrices integrated using Seurat V3 and the interation anchors
+  # This function takes a list of count matrices and returns a seurat object of the count matrices integrated using Seurat V4 and the interation anchors
   # Different options are used for if the function is internal for PanglaoDB dataset reprocessing or being used for a custom set of count matrices.
   # For larger scRNA-seq datasets (~20k + cells), it is likely that this function will be required to run on an hpc.
   
@@ -210,7 +210,7 @@ process_from_count <- function(countmat_list, name, theSpecies = -9, haveUmap = 
       pbmc <- Seurat::FindVariableFeatures(object = pbmc, mean.function = Seurat::ExpMean, dispersion.function = Seurat::LogVMR,
                                            x.low.cutoff = 0.0125, x.high.cutoff = 3, y.cutoff = 0.5, do.plot = FALSE)
       
-      pbmc <- Seurat::ScaleData(pbmc, vars.to.regress = "percent.mt.adj")
+      pbmc <- Seurat::ScaleData(pbmc, vars.to.regress = "percent.mt.adj", features = rownames(pbmc))
     } else {
       
       pbmc <- Seurat::NormalizeData(object = pbmc, normalization.method = "LogNormalize",
@@ -218,7 +218,7 @@ process_from_count <- function(countmat_list, name, theSpecies = -9, haveUmap = 
       pbmc <- Seurat::FindVariableFeatures(object = pbmc, mean.function = Seurat::ExpMean, dispersion.function = Seurat::LogVMR,
                                            x.low.cutoff = 0.0125, x.high.cutoff = 3, y.cutoff = 0.5, do.plot = FALSE)
       
-      pbmc <- Seurat::ScaleData(pbmc)
+      pbmc <- Seurat::ScaleData(pbmc, features = rownames(pbmc))
       
     }
 
@@ -292,7 +292,7 @@ process_from_count <- function(countmat_list, name, theSpecies = -9, haveUmap = 
       
       pancreas.anchors <- Seurat::FindIntegrationAnchors(object.list = each_sra, dims = 1:20, anchor.features = genes_integrate)
       pancreas.integrated <- Seurat::IntegrateData(anchorset = pancreas.anchors, dims = 1:20, features.to.integrate = inter_rownames)
-      pancreas.integrated <- Seurat::ScaleData(pancreas.integrated, verbose = FALSE)
+      pancreas.integrated <- Seurat::ScaleData(pancreas.integrated, verbose = FALSE, features = rownames(pancreas.integrated))
       pbmc <- pancreas.integrated
       
       
@@ -311,7 +311,7 @@ process_from_count <- function(countmat_list, name, theSpecies = -9, haveUmap = 
     # Save the seurat object before scaling
     save(pbmc, file = paste0(path,"/",name, "_custom.Rdata"))
   }
-  pbmc <- try(Seurat::ScaleData(object = pbmc)) # scale data
+  pbmc <- try(Seurat::ScaleData(object = pbmc, features = rownames(pbmc))) # scale data
   if(class(pbmc)[1] == "try-error") {
     stop("Data scaling did not finish, this can often be due to a memory error (as of November 2019). 
         the Seurat object up to this point has been saved.
