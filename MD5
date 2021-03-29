@@ -1,4 +1,4 @@
-8cb5ced10c3ac8abf47aa13b8e498280 *DESCRIPTION
+6f2eec35297e026f7aeb63565b3812e5 *DESCRIPTION
 c6cb0bad9d9acede91747f56a4f53375 *NAMESPACE
 70f21a6cd48762bb696177c7d76baedd *R/DeconRNAseq_CRAN.R
 bb8d05b3fcea1c0896c33b8576ad7b86 *R/PBMC_example.R
@@ -21,7 +21,7 @@ eb80898191b8cfbc5d553f869c580ded *R/heatmap_generation.R
 6deeafc1eb4752925f4df4a674807a53 *R/pathway_enrich_internal.R
 411c5e016bfc480c00694a7bfc72d9a0 *R/plotBP.R
 4eea098dc0f032e10acdec764fbd7e02 *R/process_dgTMatrix_lists.R
-77253715e3f022293d24c51d470661fc *R/process_from_count.R
+74c37cdd517afd8bdd02a3436f751e16 *R/process_from_count.R
 70babbedc09ac7170d1ebcfbbdd56c0e *R/scMappR_and_pathway_analysis.R
 960d8113281e8d1b29143e6cde30741b *R/scMappR_tissues.R
 ffddf501f59e46062505683d1786b38b *R/seurat_to_generes.R
@@ -43,7 +43,7 @@ a42473f4ca915b38f43b17181916f252 *data/scMappR_tissues.rda
 5cfb7169665f442f5f486612af6e7fdf *data/sm.rda
 c5e511af74f208a4e974fb04ccdea50d *inst/doc/scMappR_Vignette.R
 6116c40107c23d9949fe06c391813bd2 *inst/doc/scMappR_Vignette.Rmd
-4b00473312849711be2de30c8672d02d *inst/doc/scMappR_Vignette.html
+d0c785c841a97569ced1bb5c1f7528dd *inst/doc/scMappR_Vignette.html
 fdce41e658c676845f7dfc5f2b8d3e8a *man/DeconRNAseq_CRAN.Rd
 29ff9031507f17d67b452071a0d165f5 *man/PBMC_example.Rd
 d83a7b50cb757c62cef4a9d81257c277 *man/POA_example.Rd
