@@ -12,7 +12,7 @@
 
 <meta name="author" content="Dustin Sokolowski" />
 
-<meta name="date" content="2021-03-29" />
+<meta name="date" content="2021-05-14" />
 
 <title>single cell Mapper (scMappR)</title>
 
@@ -27,7 +27,14 @@
     </style>
 
 
-<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
 <style type="text/css" data-origin="pandoc">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
@@ -311,7 +318,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">single cell Mapper (scMappR)</h1>
 <h4 class="author">Dustin Sokolowski</h4>
-<h4 class="date">2021-03-29</h4>
+<h4 class="date">2021-05-14</h4>
 
 
 <div id="TOC">
@@ -334,6 +341,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li><a href="#three-types-of-outputs.">Three types of outputs.</a></li>
 </ul></li>
 <li><a href="#processing-scrna-seq-count-data-into-a-signature-matrix.">Processing scRNA-seq count data into a signature matrix.</a><ul>
+<li><a href="#processing-scrna-seq-data-with-multiple-scrna-seq-runs.">Processing scRNA-seq data with multiple scRNA-seq runs.</a></li>
 <li><a href="#processing-scrna-seq-count-data-from-a-different-species.">Processing scRNA-seq count data from a different species.</a></li>
 <li><a href="#processing-scrna-seq-count-data-when-cell-types-are-already-named.">Processing scRNA-seq count data when cell-types are already named.</a></li>
 <li><a href="#signature-matrix-from-seurat-object-with-named-cell-type">Signature matrix from Seurat object with named cell-type</a></li>
@@ -666,7 +674,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <a class="sourceLine" id="cb10-2" title="2"></a>
 <a class="sourceLine" id="cb10-3" title="3">toProcess &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">example =</span> sm)</a>
 <a class="sourceLine" id="cb10-4" title="4"></a>
-<a class="sourceLine" id="cb10-5" title="5">tst1 &lt;-<span class="st"> </span><span class="kw">process_dgTMatrix_lists</span>(toProcess, <span class="dt">name =</span> <span class="st">&quot;testPropcess&quot;</span>, <span class="dt">species_name =</span> <span class="dv">-9</span>,</a>
+<a class="sourceLine" id="cb10-5" title="5">tst1 &lt;-<span class="st"> </span><span class="kw">process_dgTMatrix_lists</span>(toProcess, <span class="dt">name =</span> <span class="st">&quot;testProcess&quot;</span>, <span class="dt">species_name =</span> <span class="st">&quot;mouse&quot;</span>,</a>
 <a class="sourceLine" id="cb10-6" title="6"><span class="dt">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="dt">rda_path =</span> <span class="st">&quot;&quot;</span>, </a>
 <a class="sourceLine" id="cb10-7" title="7"><span class="dt">toSave =</span> <span class="ot">TRUE</span>, <span class="dt">saveSCObject =</span> <span class="ot">TRUE</span>, <span class="dt">path =</span> <span class="kw">tempdir</span>())</a></code></pre></div>
 <p>It is recommended to set <code>toSave == TRUE</code>, allowing for important data objects to be saved. Here, the above function is repeated with <code>toSave == TRUE</code> and <code>saveSCObject == TRUE</code>, and the outputted files will be briefly discussed.</p>
@@ -678,6 +686,30 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li>testProcess_custom.Rdata: Processed (and integrated if necessary) Seurat object.</li>
 <li>testProcess_gsva_cellname_avg_expression.Rdata: list of cell-type markers from CelllMarker and Panglao using the GSVA method as well as the average expression of each gene in each cell-type.</li>
 </ul>
+<div id="processing-scrna-seq-data-with-multiple-scrna-seq-runs." class="section level3">
+<h3>Processing scRNA-seq data with multiple scRNA-seq runs.</h3>
+<p>When there are multiple scRNA-seq runs, we use the integration anchors feature to combine runs. Here, each run is a different element of the <code>dgTMatrix_list</code> parameter.</p>
+<p>Making multiple run scRNA-seq data. As seen in many cases, the first dataset is identified with “.1” and the second with “.2”</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># generating scRNA-seq data with multiple runs.</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">data</span>(sm)</a>
+<a class="sourceLine" id="cb11-3" title="3"></a>
+<a class="sourceLine" id="cb11-4" title="4">sm1 &lt;-<span class="st"> </span>sm2 &lt;-<span class="st"> </span>sm</a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="kw">colnames</span>(sm1) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">colnames</span>(sm1), <span class="st">&quot;.1&quot;</span>)</a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="kw">colnames</span>(sm2) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="kw">colnames</span>(sm2),<span class="st">&quot;.2&quot;</span>)</a>
+<a class="sourceLine" id="cb11-7" title="7">combined_counts &lt;-<span class="st"> </span><span class="kw">cbind</span>(sm1,sm2)</a></code></pre></div>
+<p>Combining datasets with the integration anchors batch correction</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">toProcess &lt;-<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="dv">2</span>) {</a>
+<a class="sourceLine" id="cb12-3" title="3">  toProcess[[<span class="kw">paste0</span>(<span class="st">&quot;example&quot;</span>,i)]] &lt;-<span class="st"> </span>combined_counts[,<span class="kw">grep</span>(<span class="kw">paste0</span>(<span class="st">&quot;.&quot;</span>,i), <span class="kw">colnames</span>(combined_counts))]</a>
+<a class="sourceLine" id="cb12-4" title="4">}</a>
+<a class="sourceLine" id="cb12-5" title="5">tst1 &lt;-<span class="st"> </span><span class="kw">process_dgTMatrix_lists</span>(toProcess, <span class="dt">name =</span> <span class="st">&quot;testProcess&quot;</span>, <span class="dt">species_name =</span> <span class="st">&quot;mouse&quot;</span>,</a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="dt">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="dt">rda_path =</span> <span class="st">&quot;&quot;</span>, </a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="dt">toSave =</span> <span class="ot">TRUE</span>, <span class="dt">saveSCObject =</span> <span class="ot">TRUE</span>, <span class="dt">path =</span> <span class="kw">tempdir</span>())</a></code></pre></div>
+<p>If you do not want to use the integration anchors feature and process the scRNA-seq data as if it were one run, then keep all of these data in the same dgCMatrix matrix.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">tst1 &lt;-<span class="st"> </span><span class="kw">process_dgTMatrix_lists</span>(combined_counts, <span class="dt">name =</span> <span class="st">&quot;testProcess&quot;</span>, <span class="dt">species_name =</span> <span class="st">&quot;mouse&quot;</span>,</a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="dt">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="dt">rda_path =</span> <span class="st">&quot;&quot;</span>, </a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="dt">toSave =</span> <span class="ot">TRUE</span>, <span class="dt">saveSCObject =</span> <span class="ot">TRUE</span>, <span class="dt">path =</span> <span class="kw">tempdir</span>())</a></code></pre></div>
+</div>
 <div id="processing-scrna-seq-count-data-from-a-different-species." class="section level3">
 <h3>Processing scRNA-seq count data from a different species.</h3>
 <p>Please continue to use the <code>process_from_count</code> function. The only species specific information required in this function is the mitochondrial gene symbol to regress out mitochondria. In each of your count matrices, make sure that your michondial genes have a “MT-” preface. Then select “human” as the species. This can also be done with an “mt-” preface and selecting mouse.</p>
@@ -693,49 +725,49 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="signature-matrix-from-seurat-object-with-named-cell-type" class="section level3">
 <h3>Signature matrix from Seurat object with named cell-type</h3>
 <p>Generating the Seurat Object for example and making up cell-types. This example will be used from 1-2.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">data</span>(sm)</a>
-<a class="sourceLine" id="cb11-2" title="2"></a>
-<a class="sourceLine" id="cb11-3" title="3">toProcess &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sm =</span> sm)</a>
-<a class="sourceLine" id="cb11-4" title="4"></a>
-<a class="sourceLine" id="cb11-5" title="5">seurat_example &lt;-<span class="st"> </span><span class="kw">process_from_count</span>(toProcess, <span class="st">&quot;test_vignette&quot;</span>,<span class="dt">theSpecies  =</span> <span class="dv">-9</span>)</a>
-<a class="sourceLine" id="cb11-6" title="6"></a>
-<a class="sourceLine" id="cb11-7" title="7"><span class="kw">levels</span>(seurat_example<span class="op">@</span>active.ident) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Myoblast&quot;</span>, <span class="st">&quot;Neutrophil&quot;</span>, <span class="st">&quot;cardiomyoblast&quot;</span>, <span class="st">&quot;Mesothelial&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">data</span>(sm)</a>
+<a class="sourceLine" id="cb14-2" title="2"></a>
+<a class="sourceLine" id="cb14-3" title="3">toProcess &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">sm =</span> sm)</a>
+<a class="sourceLine" id="cb14-4" title="4"></a>
+<a class="sourceLine" id="cb14-5" title="5">seurat_example &lt;-<span class="st"> </span><span class="kw">process_from_count</span>(toProcess, <span class="st">&quot;test_vignette&quot;</span>,<span class="dt">theSpecies  =</span> <span class="st">&quot;mouse&quot;</span>)</a>
+<a class="sourceLine" id="cb14-6" title="6"></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="kw">levels</span>(seurat_example<span class="op">@</span>active.ident) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Myoblast&quot;</span>, <span class="st">&quot;Neutrophil&quot;</span>, <span class="st">&quot;cardiomyoblast&quot;</span>, <span class="st">&quot;Mesothelial&quot;</span>)</a></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>A Seurat object with named cell-types. Markers for each cell-type are stored in the <code>generes</code> object and each signature matrix is in <code>gene_out</code>.</li>
 </ol>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">    generes &lt;-<span class="st"> </span><span class="kw">seurat_to_generes</span>(<span class="dt">pbmc =</span> seurat_example, <span class="dt">test =</span> <span class="st">&quot;wilcox&quot;</span>)</a>
-<a class="sourceLine" id="cb12-2" title="2"></a>
-<a class="sourceLine" id="cb12-3" title="3">    gene_out &lt;-<span class="st"> </span><span class="kw">generes_to_heatmap</span>(generes, <span class="dt">make_names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">    generes &lt;-<span class="st"> </span><span class="kw">seurat_to_generes</span>(<span class="dt">pbmc =</span> seurat_example, <span class="dt">test =</span> <span class="st">&quot;wilcox&quot;</span>)</a>
+<a class="sourceLine" id="cb15-2" title="2"></a>
+<a class="sourceLine" id="cb15-3" title="3">    gene_out &lt;-<span class="st"> </span><span class="kw">generes_to_heatmap</span>(generes, <span class="dt">make_names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>A count matrix with named cell-types.</li>
 </ol>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">#Create the cell-type ids and matrix</span></a>
-<a class="sourceLine" id="cb13-2" title="2">Cell_type_id &lt;-<span class="st"> </span>seurat_example<span class="op">@</span>active.ident</a>
-<a class="sourceLine" id="cb13-3" title="3"></a>
-<a class="sourceLine" id="cb13-4" title="4">count_file &lt;-<span class="st"> </span>sm</a>
-<a class="sourceLine" id="cb13-5" title="5"></a>
-<a class="sourceLine" id="cb13-6" title="6">rownames_example &lt;-<span class="st"> </span><span class="kw">get_gene_symbol</span>(count_file)</a>
-<a class="sourceLine" id="cb13-7" title="7"></a>
-<a class="sourceLine" id="cb13-8" title="8"><span class="kw">rownames</span>(count_file) &lt;-<span class="st"> </span>rownames_example<span class="op">$</span>rowname</a>
-<a class="sourceLine" id="cb13-9" title="9"></a>
-<a class="sourceLine" id="cb13-10" title="10"><span class="co"># make seurat object</span></a>
-<a class="sourceLine" id="cb13-11" title="11">seurat_example &lt;-<span class="st"> </span><span class="kw">process_from_count</span>(count_file, <span class="st">&quot;test_vignette&quot;</span>,<span class="dt">theSpecies  =</span> <span class="st">&quot;mouse&quot;</span>)</a>
-<a class="sourceLine" id="cb13-12" title="12"></a>
-<a class="sourceLine" id="cb13-13" title="13"><span class="co"># Intersect column names (cell-types) with labelled CTs</span></a>
-<a class="sourceLine" id="cb13-14" title="14"></a>
-<a class="sourceLine" id="cb13-15" title="15">inters &lt;-<span class="st"> </span><span class="kw">intersect</span>(<span class="kw">colnames</span>(seurat_example), <span class="kw">names</span>(Cell_type_id))</a>
-<a class="sourceLine" id="cb13-16" title="16"></a>
-<a class="sourceLine" id="cb13-17" title="17">seurat_example_inter &lt;-<span class="st"> </span>seurat_example[,inters]</a>
-<a class="sourceLine" id="cb13-18" title="18"></a>
-<a class="sourceLine" id="cb13-19" title="19">Cell_type_id_inter &lt;-<span class="st"> </span>Cell_type_id[inters]</a>
-<a class="sourceLine" id="cb13-20" title="20"></a>
-<a class="sourceLine" id="cb13-21" title="21">seurat_example_inter<span class="op">@</span>active.ident &lt;-<span class="st"> </span>Cell_type_id_inter</a>
-<a class="sourceLine" id="cb13-22" title="22"></a>
-<a class="sourceLine" id="cb13-23" title="23"><span class="co"># Making signature matrices</span></a>
-<a class="sourceLine" id="cb13-24" title="24"></a>
-<a class="sourceLine" id="cb13-25" title="25">    generes &lt;-<span class="st"> </span><span class="kw">seurat_to_generes</span>(<span class="dt">pbmc =</span> seurat_example_inter, <span class="dt">test =</span> <span class="st">&quot;wilcox&quot;</span>)</a>
-<a class="sourceLine" id="cb13-26" title="26"></a>
-<a class="sourceLine" id="cb13-27" title="27">    gene_out &lt;-<span class="st"> </span><span class="kw">generes_to_heatmap</span>(generes, <span class="dt">make_names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="co">#Create the cell-type ids and matrix</span></a>
+<a class="sourceLine" id="cb16-2" title="2">Cell_type_id &lt;-<span class="st"> </span>seurat_example<span class="op">@</span>active.ident</a>
+<a class="sourceLine" id="cb16-3" title="3"></a>
+<a class="sourceLine" id="cb16-4" title="4">count_file &lt;-<span class="st"> </span>sm</a>
+<a class="sourceLine" id="cb16-5" title="5"></a>
+<a class="sourceLine" id="cb16-6" title="6">rownames_example &lt;-<span class="st"> </span><span class="kw">get_gene_symbol</span>(count_file)</a>
+<a class="sourceLine" id="cb16-7" title="7"></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="kw">rownames</span>(count_file) &lt;-<span class="st"> </span>rownames_example<span class="op">$</span>rowname</a>
+<a class="sourceLine" id="cb16-9" title="9"></a>
+<a class="sourceLine" id="cb16-10" title="10"><span class="co"># make seurat object</span></a>
+<a class="sourceLine" id="cb16-11" title="11">seurat_example &lt;-<span class="st"> </span><span class="kw">process_from_count</span>(count_file, <span class="st">&quot;test_vignette&quot;</span>,<span class="dt">theSpecies  =</span> <span class="st">&quot;mouse&quot;</span>)</a>
+<a class="sourceLine" id="cb16-12" title="12"></a>
+<a class="sourceLine" id="cb16-13" title="13"><span class="co"># Intersect column names (cell-types) with labelled CTs</span></a>
+<a class="sourceLine" id="cb16-14" title="14"></a>
+<a class="sourceLine" id="cb16-15" title="15">inters &lt;-<span class="st"> </span><span class="kw">intersect</span>(<span class="kw">colnames</span>(seurat_example), <span class="kw">names</span>(Cell_type_id))</a>
+<a class="sourceLine" id="cb16-16" title="16"></a>
+<a class="sourceLine" id="cb16-17" title="17">seurat_example_inter &lt;-<span class="st"> </span>seurat_example[,inters]</a>
+<a class="sourceLine" id="cb16-18" title="18"></a>
+<a class="sourceLine" id="cb16-19" title="19">Cell_type_id_inter &lt;-<span class="st"> </span>Cell_type_id[inters]</a>
+<a class="sourceLine" id="cb16-20" title="20"></a>
+<a class="sourceLine" id="cb16-21" title="21">seurat_example_inter<span class="op">@</span>active.ident &lt;-<span class="st"> </span>Cell_type_id_inter</a>
+<a class="sourceLine" id="cb16-22" title="22"></a>
+<a class="sourceLine" id="cb16-23" title="23"><span class="co"># Making signature matrices</span></a>
+<a class="sourceLine" id="cb16-24" title="24"></a>
+<a class="sourceLine" id="cb16-25" title="25">    generes &lt;-<span class="st"> </span><span class="kw">seurat_to_generes</span>(<span class="dt">pbmc =</span> seurat_example_inter, <span class="dt">test =</span> <span class="st">&quot;wilcox&quot;</span>)</a>
+<a class="sourceLine" id="cb16-26" title="26"></a>
+<a class="sourceLine" id="cb16-27" title="27">    gene_out &lt;-<span class="st"> </span><span class="kw">generes_to_heatmap</span>(generes, <span class="dt">make_names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="manually-making-graphics." class="section level2">
@@ -743,52 +775,52 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <p>scMappR generates heatmaps and barplots. The barplots are generated with <code>plotBP</code> and <code>make_TF_barplot</code>. The plotting code for <code>plotBP</code> is provided. Inputs are a matrix called <code>ordered_back_all</code> of -log10(padj) and term names with the column names log10 and term_name respectively.</p>
 <div id="barplots" class="section level3">
 <h3>Barplots</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co"># making an example matrix</span></a>
-<a class="sourceLine" id="cb14-2" title="2">term_name &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;one&quot;</span>, <span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>)</a>
-<a class="sourceLine" id="cb14-3" title="3">log10 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1.5</span>, <span class="dv">4</span>, <span class="fl">2.1</span>)</a>
-<a class="sourceLine" id="cb14-4" title="4"></a>
-<a class="sourceLine" id="cb14-5" title="5">ordered_back_all &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">cbind</span>(term_name,log10))</a>
-<a class="sourceLine" id="cb14-6" title="6"></a>
-<a class="sourceLine" id="cb14-7" title="7"><span class="co">#plotting</span></a>
-<a class="sourceLine" id="cb14-8" title="8"> g &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(ordered_back_all, ggplot2<span class="op">::</span><span class="kw">aes</span>(<span class="dt">x =</span> stats<span class="op">::</span><span class="kw">reorder</span>(term_name, </a>
-<a class="sourceLine" id="cb14-9" title="9">        log10), <span class="dt">y =</span> log10)) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>, </a>
-<a class="sourceLine" id="cb14-10" title="10">        <span class="dt">fill =</span> <span class="st">&quot;turquoise&quot;</span>) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">coord_flip</span>() <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;-log10(Padj)&quot;</span>, </a>
-<a class="sourceLine" id="cb14-11" title="11">        <span class="dt">x =</span> <span class="st">&quot;Gene Ontology&quot;</span>)</a>
-<a class="sourceLine" id="cb14-12" title="12">    y &lt;-<span class="st"> </span>g <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">face =</span> <span class="ot">NULL</span>, </a>
-<a class="sourceLine" id="cb14-13" title="13">        <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">angle =</span> <span class="dv">35</span>), <span class="dt">axis.text.y =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">face =</span> <span class="ot">NULL</span>, </a>
-<a class="sourceLine" id="cb14-14" title="14">        <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">angle =</span> <span class="dv">35</span>), <span class="dt">axis.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, </a>
-<a class="sourceLine" id="cb14-15" title="15">        <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>))</a>
-<a class="sourceLine" id="cb14-16" title="16">    </a>
-<a class="sourceLine" id="cb14-17" title="17"><span class="kw">print</span>(y)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co"># making an example matrix</span></a>
+<a class="sourceLine" id="cb17-2" title="2">term_name &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;one&quot;</span>, <span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>)</a>
+<a class="sourceLine" id="cb17-3" title="3">log10 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1.5</span>, <span class="dv">4</span>, <span class="fl">2.1</span>)</a>
+<a class="sourceLine" id="cb17-4" title="4"></a>
+<a class="sourceLine" id="cb17-5" title="5">ordered_back_all &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">cbind</span>(term_name,log10))</a>
+<a class="sourceLine" id="cb17-6" title="6"></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="co">#plotting</span></a>
+<a class="sourceLine" id="cb17-8" title="8"> g &lt;-<span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">ggplot</span>(ordered_back_all, ggplot2<span class="op">::</span><span class="kw">aes</span>(<span class="dt">x =</span> stats<span class="op">::</span><span class="kw">reorder</span>(term_name, </a>
+<a class="sourceLine" id="cb17-9" title="9">        log10), <span class="dt">y =</span> log10)) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&quot;identity&quot;</span>, </a>
+<a class="sourceLine" id="cb17-10" title="10">        <span class="dt">fill =</span> <span class="st">&quot;turquoise&quot;</span>) <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">coord_flip</span>() <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">&quot;-log10(Padj)&quot;</span>, </a>
+<a class="sourceLine" id="cb17-11" title="11">        <span class="dt">x =</span> <span class="st">&quot;Gene Ontology&quot;</span>)</a>
+<a class="sourceLine" id="cb17-12" title="12">    y &lt;-<span class="st"> </span>g <span class="op">+</span><span class="st"> </span>ggplot2<span class="op">::</span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">face =</span> <span class="ot">NULL</span>, </a>
+<a class="sourceLine" id="cb17-13" title="13">        <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">angle =</span> <span class="dv">35</span>), <span class="dt">axis.text.y =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">face =</span> <span class="ot">NULL</span>, </a>
+<a class="sourceLine" id="cb17-14" title="14">        <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>, <span class="dt">size =</span> <span class="dv">12</span>, <span class="dt">angle =</span> <span class="dv">35</span>), <span class="dt">axis.title =</span> ggplot2<span class="op">::</span><span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">16</span>, </a>
+<a class="sourceLine" id="cb17-15" title="15">        <span class="dt">color =</span> <span class="st">&quot;black&quot;</span>))</a>
+<a class="sourceLine" id="cb17-16" title="16">    </a>
+<a class="sourceLine" id="cb17-17" title="17"><span class="kw">print</span>(y)</a></code></pre></div>
 </div>
 <div id="heatmaps" class="section level3">
 <h3>Heatmaps</h3>
 <p>Here, the heatmaps are for plotting cwFold-changes and cell-type proportions. The same heatmap is used so just an example of one is given.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co"># Generating a heatmap</span></a>
-<a class="sourceLine" id="cb15-2" title="2"></a>
-<a class="sourceLine" id="cb15-3" title="3"><span class="co"># Acquiring the gene list</span></a>
-<a class="sourceLine" id="cb15-4" title="4"><span class="kw">data</span>(POA_example)</a>
-<a class="sourceLine" id="cb15-5" title="5"></a>
-<a class="sourceLine" id="cb15-6" title="6">Signature &lt;-<span class="st"> </span>POA_example<span class="op">$</span>POA_Rank_signature</a>
-<a class="sourceLine" id="cb15-7" title="7"></a>
-<a class="sourceLine" id="cb15-8" title="8">rowname &lt;-<span class="st"> </span><span class="kw">get_gene_symbol</span>(Signature)</a>
-<a class="sourceLine" id="cb15-9" title="9"></a>
-<a class="sourceLine" id="cb15-10" title="10"><span class="kw">rownames</span>(Signature) &lt;-<span class="st"> </span>rowname<span class="op">$</span>rowname</a>
-<a class="sourceLine" id="cb15-11" title="11"></a>
-<a class="sourceLine" id="cb15-12" title="12">genes &lt;-<span class="st"> </span><span class="kw">rownames</span>(Signature)[<span class="dv">1</span><span class="op">:</span><span class="dv">200</span>]</a>
-<a class="sourceLine" id="cb15-13" title="13"> </a>
-<a class="sourceLine" id="cb15-14" title="14"><span class="co">#running tisue_scMappR_custom</span></a>
-<a class="sourceLine" id="cb15-15" title="15">internal &lt;-<span class="st"> </span><span class="kw">tissue_scMappR_custom</span>(genes,Signature,<span class="dt">output_directory =</span> <span class="st">&quot;scMappR_Test_custom&quot;</span>, <span class="dt">toSave =</span> F)</a>
-<a class="sourceLine" id="cb15-16" title="16"></a>
-<a class="sourceLine" id="cb15-17" title="17">toPlot &lt;-<span class="st"> </span>internal<span class="op">$</span>gene_list_heatmap<span class="op">$</span>geneHeat</a>
-<a class="sourceLine" id="cb15-18" title="18"></a>
-<a class="sourceLine" id="cb15-19" title="19"></a>
-<a class="sourceLine" id="cb15-20" title="20"><span class="co">#Plotting the heatmap</span></a>
-<a class="sourceLine" id="cb15-21" title="21"></a>
-<a class="sourceLine" id="cb15-22" title="22">cex =<span class="st"> </span><span class="fl">0.2</span> <span class="co"># size of genes</span></a>
-<a class="sourceLine" id="cb15-23" title="23"></a>
-<a class="sourceLine" id="cb15-24" title="24">myheatcol &lt;-<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;orange&quot;</span>))(<span class="dv">256</span>)</a>
-<a class="sourceLine" id="cb15-25" title="25">    pheatmap<span class="op">::</span><span class="kw">pheatmap</span>(<span class="kw">as.matrix</span>(toPlot), <span class="dt">color =</span> myheatcol, <span class="dt">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="dt">fontsize_row =</span> cex, <span class="dt">fontsize_col =</span> <span class="dv">10</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co"># Generating a heatmap</span></a>
+<a class="sourceLine" id="cb18-2" title="2"></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="co"># Acquiring the gene list</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="kw">data</span>(POA_example)</a>
+<a class="sourceLine" id="cb18-5" title="5"></a>
+<a class="sourceLine" id="cb18-6" title="6">Signature &lt;-<span class="st"> </span>POA_example<span class="op">$</span>POA_Rank_signature</a>
+<a class="sourceLine" id="cb18-7" title="7"></a>
+<a class="sourceLine" id="cb18-8" title="8">rowname &lt;-<span class="st"> </span><span class="kw">get_gene_symbol</span>(Signature)</a>
+<a class="sourceLine" id="cb18-9" title="9"></a>
+<a class="sourceLine" id="cb18-10" title="10"><span class="kw">rownames</span>(Signature) &lt;-<span class="st"> </span>rowname<span class="op">$</span>rowname</a>
+<a class="sourceLine" id="cb18-11" title="11"></a>
+<a class="sourceLine" id="cb18-12" title="12">genes &lt;-<span class="st"> </span><span class="kw">rownames</span>(Signature)[<span class="dv">1</span><span class="op">:</span><span class="dv">200</span>]</a>
+<a class="sourceLine" id="cb18-13" title="13"> </a>
+<a class="sourceLine" id="cb18-14" title="14"><span class="co">#running tisue_scMappR_custom</span></a>
+<a class="sourceLine" id="cb18-15" title="15">internal &lt;-<span class="st"> </span><span class="kw">tissue_scMappR_custom</span>(genes,Signature,<span class="dt">output_directory =</span> <span class="st">&quot;scMappR_Test_custom&quot;</span>, <span class="dt">toSave =</span> F)</a>
+<a class="sourceLine" id="cb18-16" title="16"></a>
+<a class="sourceLine" id="cb18-17" title="17">toPlot &lt;-<span class="st"> </span>internal<span class="op">$</span>gene_list_heatmap<span class="op">$</span>geneHeat</a>
+<a class="sourceLine" id="cb18-18" title="18"></a>
+<a class="sourceLine" id="cb18-19" title="19"></a>
+<a class="sourceLine" id="cb18-20" title="20"><span class="co">#Plotting the heatmap</span></a>
+<a class="sourceLine" id="cb18-21" title="21"></a>
+<a class="sourceLine" id="cb18-22" title="22">cex =<span class="st"> </span><span class="fl">0.2</span> <span class="co"># size of genes</span></a>
+<a class="sourceLine" id="cb18-23" title="23"></a>
+<a class="sourceLine" id="cb18-24" title="24">myheatcol &lt;-<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;orange&quot;</span>))(<span class="dv">256</span>)</a>
+<a class="sourceLine" id="cb18-25" title="25">    pheatmap<span class="op">::</span><span class="kw">pheatmap</span>(<span class="kw">as.matrix</span>(toPlot), <span class="dt">color =</span> myheatcol, <span class="dt">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="dt">fontsize_row =</span> cex, <span class="dt">fontsize_col =</span> <span class="dv">10</span>)</a></code></pre></div>
 </div>
 </div>
 

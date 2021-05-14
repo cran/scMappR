@@ -149,10 +149,40 @@ library(scMappR)
 #  
 #  toProcess <- list(example = sm)
 #  
-#  tst1 <- process_dgTMatrix_lists(toProcess, name = "testPropcess", species_name = -9,
+#  tst1 <- process_dgTMatrix_lists(toProcess, name = "testProcess", species_name = "mouse",
 #  naming_preference = "eye", rda_path = "",
 #  toSave = TRUE, saveSCObject = TRUE, path = tempdir())
 #  
+#  
+#  
+
+## ----make_multi_scRNAseq, eval = FALSE----------------------------------------
+#  
+#  # generating scRNA-seq data with multiple runs.
+#  data(sm)
+#  
+#  sm1 <- sm2 <- sm
+#  colnames(sm1) <- paste0(colnames(sm1), ".1")
+#  colnames(sm2) <- paste0(colnames(sm2),".2")
+#  combined_counts <- cbind(sm1,sm2)
+#  
+
+## ----combine_int_anchors, eval=FALSE------------------------------------------
+#  toProcess <- list()
+#  for(i in 1:2) {
+#    toProcess[[paste0("example",i)]] <- combined_counts[,grep(paste0(".",i), colnames(combined_counts))]
+#  }
+#  tst1 <- process_dgTMatrix_lists(toProcess, name = "testProcess", species_name = "mouse",
+#  naming_preference = "eye", rda_path = "",
+#  toSave = TRUE, saveSCObject = TRUE, path = tempdir())
+#  
+#  
+
+## ----combine_nobatch, eval=FALSE----------------------------------------------
+#  
+#  tst1 <- process_dgTMatrix_lists(combined_counts, name = "testProcess", species_name = "mouse",
+#  naming_preference = "eye", rda_path = "",
+#  toSave = TRUE, saveSCObject = TRUE, path = tempdir())
 #  
 #  
 
@@ -163,7 +193,7 @@ library(scMappR)
 #  
 #  toProcess <- list(sm = sm)
 #  
-#  seurat_example <- process_from_count(toProcess, "test_vignette",theSpecies  = -9)
+#  seurat_example <- process_from_count(toProcess, "test_vignette",theSpecies  = "mouse")
 #  
 #  levels(seurat_example@active.ident) <- c("Myoblast", "Neutrophil", "cardiomyoblast", "Mesothelial")
 #  
