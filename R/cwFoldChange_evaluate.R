@@ -254,9 +254,10 @@ cwFoldChange_evaluate <- function(cwFC, celltype_prop, DEG_list, gene_cutoff = N
   }
   if(length(normal_genes) == 0 & length(abnormal_genes) > 0 ) {
     message("All DEGs are not normally distributed, suggesting very consistent cell-type specificity across genes.")
-    meanOutlier <- lapply(normal_genes, getOutliersMean)
-    names(meanOutlier) <- normal_genes
-    outlier <- c(meanOutlier)
+    medianOutlier <- lapply(abnormal_genes, getOutliersMedian)
+    
+    names(medianOutlier) <- abnormal_genes
+    outlier <- c(medianOutlier)
   }
   
   outlier <- outlier[lengths(outlier) >0 ]
@@ -292,6 +293,7 @@ cwFoldChange_evaluate <- function(cwFC, celltype_prop, DEG_list, gene_cutoff = N
       nonPerfect <- g1[g1Abs > 0 & g1Abs < 0.999]
       Perfect <- g1[ g1Abs > 0.999 ]
       nonP_sorted <- sort(table(nonPerfect),decreasing=TRUE)
+      
       if(!unname(is.na(nonP_sorted[2]))) {
         if(unname(nonP_sorted[1]) > (unname(nonP_sorted[2])*5)) {
           nonPerfect1 <- nonPerfect[round(nonPerfect,5) == round(as.numeric(names(nonP_sorted)[1]),5)]
@@ -306,6 +308,10 @@ cwFoldChange_evaluate <- function(cwFC, celltype_prop, DEG_list, gene_cutoff = N
           cwFoldchange_gene_flagged_FP[[p]] <- numeric(0)
         }
         
+      }
+      
+      if((length(Perfect) > 0 & length(nonPerfect) < 3)[1]) {
+        cwFoldchange_gene_assigned[[p]] <- g1 
       }
       
     }

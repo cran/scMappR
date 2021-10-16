@@ -12,7 +12,7 @@
 
 <meta name="author" content="Dustin Sokolowski" />
 
-<meta name="date" content="2021-05-14" />
+<meta name="date" content="2021-10-14" />
 
 <title>single cell Mapper (scMappR)</title>
 
@@ -318,7 +318,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">single cell Mapper (scMappR)</h1>
 <h4 class="author">Dustin Sokolowski</h4>
-<h4 class="date">2021-05-14</h4>
+<h4 class="date">2021-10-14</h4>
 
 
 <div id="TOC">
@@ -685,7 +685,18 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <li>testProcess_pval_heatmap.Rdata: signature matrix of ranks named from Fisher’s exact test.</li>
 <li>testProcess_custom.Rdata: Processed (and integrated if necessary) Seurat object.</li>
 <li>testProcess_gsva_cellname_avg_expression.Rdata: list of cell-type markers from CelllMarker and Panglao using the GSVA method as well as the average expression of each gene in each cell-type.</li>
+<li>testProcess_cellLabelInfo.Rdata: matrix where each row is a cluster and each column provides information on the cell-type. Columns provide info on the cluster from seurat, the cell-type label from CellMarker and Panglao using the fisher’s exact test and GSVA, and the top 30 markers per cluser.</li>
 </ul>
+<div id="interpreting-the-signature-matrix." class="section level4">
+<h4>Interpreting the signature matrix.</h4>
+<ul>
+<li>Each row is a cell-type marker.</li>
+<li>Each column is a different cell-type. Assuming that <code>process_dgTMatrix_lists</code> was used and cell-types were predicted within scMappR, Each cell-type is labelled as followed.
+<ul>
+<li>cluster X. “cell-type predicted by Cellmarker” and_or “cell-type predicted by panglao”.</li>
+</ul></li>
+</ul>
+</div>
 <div id="processing-scrna-seq-data-with-multiple-scrna-seq-runs." class="section level3">
 <h3>Processing scRNA-seq data with multiple scRNA-seq runs.</h3>
 <p>When there are multiple scRNA-seq runs, we use the integration anchors feature to combine runs. Here, each run is a different element of the <code>dgTMatrix_list</code> parameter.</p>
