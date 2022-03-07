@@ -12,7 +12,7 @@
 
 <meta name="author" content="Dustin Sokolowski" />
 
-<meta name="date" content="2021-10-14" />
+<meta name="date" content="2022-03-07" />
 
 <title>single cell Mapper (scMappR)</title>
 
@@ -318,7 +318,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">single cell Mapper (scMappR)</h1>
 <h4 class="author">Dustin Sokolowski</h4>
-<h4 class="date">2021-10-14</h4>
+<h4 class="date">2022-03-07</h4>
 
 
 <div id="TOC">
@@ -470,9 +470,31 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="saved-outputs" class="section level3">
 <h3>Saved outputs</h3>
 <p>Assuming <code>toSave = T</code> and <code>up_and_downregulated = T</code>, <code>scMappR_and_pathway_analysis()</code> will also generate a folder in your current directory with a considerable amount of data/figures.</p>
-<p>Here, we will walk through the output of the above example sorting by name and working downwards. * BP_barplot: a directory with pdf’s of the top 10 pathways of DEGs that have been re-normlaized by their cwFold-change. * Downregulated: a directory with pdf’s and Rdata files of pathway and TF enrichment of downregulated DEGs re-normalized by their cwFold-change. * TF_barplot: a directory with pdf’s of the top 10 TFs of DEGs that have been re-normlaized by their cwFold-change. * Upregulated: a directory with pdf’s and Rdata files of pathway and TF enrichment of upregulated DEGs re-normalized by their cwFold-change. * bulk_pathway_enrichment: png and Rdata file of traditional g:ProfilR analysis of GOBP, REAC, and KEGG databases. * bulk_TF_enrichment: png and Rdata file of traditional g:ProfilR analysis of TF database. * scMappR_vignette_cell_proportion_changes_summary: t-tests looking at difference in estimated cell-type proporitons between conditions. * scMappR_vignette_celltype_proportions: Estimated cell-type proportions of all inputted samples. * scMappR_vignette_cellWeighted_Foldchanges: cwFold-changes of all estimated DEGs. * scMappR_vignette_cwFC_downregulated_DEGs: heatmap of downregulated cwFold-changes. * scMappR_vignette_cwFC_signature_matrix_downregulated_DEGs: heatmap of downregulated cwFold-changes overlapping with signature matrix. * scMappR_vignette_DEG_signature_matrix: Heatmap of signature matrix. * scMappR_vignette_leaveOneOut_gene_proportions: estimated cell-type proportions of all samples after each DEG is removed. * scMappR_vignette_reordered_pathways: g:ProfileR enrichment of DEGs after they’re re-ordered by cwFold-changes.<br />
-* scMappR_vignette_reordered_transcription_factors: g:ProfileR enrichment of DEGs after they’re re-ordered by cwFold-changes.<br />
-* scMappR_vignette_signature_matrix: heatmap of signature matrix. * scMappR_vignette_signature_matrix_downregulated_DEGs: heatmap of signature matrix overlapping downregulated DEGs. * scMappR_vignette_signature_matrix_upregulated_DEGs: heatmap of signature matrix overlapping upregulated DEGs. * scMappR_vignetteabs_cwFC: heatmap of absolute valued cwFold-changes (up- and down-regulated DEGs). * scMappR_vignettecwFC_signature_matrix_upregulated_DEGs: heatmap of absolute valued cwFold-changes (up- and down-regulated DEGs) overlapping with the signature matrix.</p>
+<p>Here, we will walk through the output of the above example sorting by name and working downwards.</p>
+<ul>
+<li>BP_barplot: a directory with pdf’s of the top 10 pathways of DEGs that have been re-normlaized by their cwFold-change.</li>
+<li>Downregulated: a directory with pdf’s and Rdata files of pathway and TF enrichment of downregulated DEGs re-normalized by their cwFold-change.</li>
+<li>TF_barplot: a directory with pdf’s of the top 10 TFs of DEGs that have been re-normlaized by their cwFold-change.</li>
+<li>Upregulated: a directory with pdf’s and Rdata files of pathway and TF enrichment of upregulated DEGs re-normalized by their cwFold-change.</li>
+<li>bulk_pathway_enrichment: png and Rdata file of traditional g:ProfilR analysis of GOBP, REAC, and KEGG databases.</li>
+<li>bulk_TF_enrichment: png and Rdata file of traditional g:ProfilR analysis of TF database.</li>
+<li>scMappR_vignette_cell_proportion_changes_summary: t-tests looking at difference in estimated cell-type proporitons between conditions.</li>
+<li>scMappR_vignette_celltype_proportions: Estimated cell-type proportions of all inputted samples.</li>
+<li>scMappR_vignette_cellWeighted_Foldchanges: cwFold-changes of all estimated DEGs.</li>
+<li>scMappR_vignette_cwFC_downregulated_DEGs: heatmap of downregulated cwFold-changes.</li>
+<li>scMappR_vignette_cwFC_signature_matrix_downregulated_DEGs: heatmap of downregulated cwFold-changes overlapping with signature matrix.</li>
+<li>scMappR_vignette_DEG_signature_matrix: Heatmap of signature matrix.</li>
+<li>scMappR_vignette_leaveOneOut_gene_proportions: estimated cell-type proportions of all samples after each DEG is removed.</li>
+<li>scMappR_vignette_reordered_pathways: g:ProfileR enrichment of DEGs after they’re re-ordered by cwFold-changes.<br />
+</li>
+<li>scMappR_vignette_reordered_transcription_factors: g:ProfileR enrichment of DEGs after they’re re-ordered by cwFold-changes.<br />
+</li>
+<li>scMappR_vignette_signature_matrix: heatmap of signature matrix.</li>
+<li>scMappR_vignette_signature_matrix_downregulated_DEGs: heatmap of signature matrix overlapping downregulated DEGs.</li>
+<li>scMappR_vignette_signature_matrix_upregulated_DEGs: heatmap of signature matrix overlapping upregulated DEGs.</li>
+<li>scMappR_vignetteabs_cwFC: heatmap of absolute valued cwFold-changes (up- and down-regulated DEGs).</li>
+<li>scMappR_vignettecwFC_signature_matrix_upregulated_DEGs: heatmap of absolute valued cwFold-changes (up- and down-regulated DEGs) overlapping with the signature matrix.</li>
+</ul>
 </div>
 <div id="additional-pathway-enrichments-of-cwfold-changes" class="section level3">
 <h3>Additional pathway enrichments of cwFold-changes</h3>

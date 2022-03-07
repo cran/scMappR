@@ -66,7 +66,8 @@
 #' max_proportion_change <- 10
 #' print_plots <- FALSE
 #' theSpecies <- "human"
-#' norm <- deconvolute_and_contextualize(bulk_normalized, odds_ratio_in, bulk_DE_cors,
+#' cwFC <- deconvolute_and_contextualize(count_file = bulk_normalized,
+#'                                     signature_matrix = odds_ratio_in, DEG_list = bulk_DE_cors,
 #'                                     case_grep = case_grep, control_grep = control_grep,
 #'                                      max_proportion_change = max_proportion_change,
 #'                                       print_plots = print_plots, 
@@ -284,6 +285,7 @@ deconvolute_and_contextualize <- function(count_file,signature_matrix, DEG_list,
   wilcox_or <- wilcox_or[,colnames(proportions)]
   wilcox_or_df <- as.data.frame(wilcox_or)
   wilcox_or_signature <- as.data.frame(wilcox_or_signature[,colnames(proportions)])
+  wilcox_or_signature <- wilcox_or_signature[apply(wilcox_or_signature, 1, var) > 0,]
   bulk_in <- norm_counts_i
   
   DEGs <- DEGs[stats::complete.cases(DEGs),]
