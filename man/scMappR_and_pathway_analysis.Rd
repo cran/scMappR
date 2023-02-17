@@ -25,7 +25,8 @@ scMappR_and_pathway_analysis(
   toSave = FALSE,
   newGprofiler = FALSE,
   path = NULL,
-  deconMethod = "DeconRNASeq"
+  deconMethod = "DeconRNASeq",
+  rareCT_filter = TRUE
 )
 }
 \arguments{
@@ -70,6 +71,8 @@ scMappR_and_pathway_analysis(
 \item{path}{If toSave == TRUE, path to the directory where files will be saved.}
 
 \item{deconMethod}{Which RNA-seq deconvolution method to use to estimate cell-type proporitons. Options are "WGCNA", "DCQ", or "DeconRNAseq"}
+
+\item{rareCT_filter}{option to keep cell-types rarer than 0.1 percent of the population (T/F). Setting to FALSE may lead to false-positives.}
 }
 \value{
 List with the following elements:
@@ -87,7 +90,7 @@ Then, assuming there is available internet, it will complete gProfileR of the re
 This function is a wrapper for deconvolute_and_contextualize and pathway_enrich_internal and the primary function within the package.
 }
 \examples{
-
+\donttest{
 data(PBMC_example)
 bulk_DE_cors <- PBMC_example$bulk_DE_cors
 bulk_normalized <- PBMC_example$bulk_normalized
@@ -108,5 +111,6 @@ toOut <- scMappR_and_pathway_analysis(count_file = bulk_normalized,
                                       up_and_downregulated = FALSE, 
                                       internet = FALSE)
 
+}
 
 }

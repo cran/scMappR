@@ -33,7 +33,10 @@ This function can be applied to any scRNA-seq count data, however it can only la
 
 #### Cell-type enrichment of a generic list of genes.
 
-The functions `tissue_by_celltype_enrichment`, `tissue_scMappR_internal`, and `tissue_scMappR_custom` combine these consistently processed scRNAseq count data with gene-set enrichment tools to allow for cell-type marker enrichment of a generic gene list (e.g. GWAS hits). Reference: Sokolowski,D.J., Faykoo-Martinez,M., Erdman,L., Hou,H., Chan,C., Zhu,H., Holmes,M.M., Goldenberg,A. and Wilson,M.D. (2021) Single-cell mapper (scMappR): using scRNA-seq to infer cell-type specificities of differentially expressed genes. NAR Genomics and Bioinformatics. 3(1). Iqab011. doi 10.1093/nargab/lqab011
+The functions `tissue_by_celltype_enrichment`, `tissue_scMappR_internal`, and `tissue_scMappR_custom` combine these consistently processed scRNAseq count data with gene-set enrichment tools to allow for cell-type marker enrichment of a generic gene list (e.g. GWAS hits). 
+
+## Reference
+Sokolowski,D.J., Faykoo-Martinez,M., Erdman,L., Hou,H., Chan,C., Zhu,H., Holmes,M.M., Goldenberg,A. and Wilson,M.D. (2021) Single-cell mapper (scMappR): using scRNA-seq to infer cell-type specificities of differentially expressed genes. NAR Genomics and Bioinformatics. 3(1). Iqab011. doi 10.1093/nargab/lqab011
 
 ## Installation
 
@@ -75,6 +78,11 @@ BiocManager::install("pcaMethods")
 if (!requireNamespace("GSVA", quietly = TRUE))
 BiocManager::install("GSVA")
 
+# For R Version >= 4.2 individuals have reported needing 
+# to also install preprocessCore from bioconductor
+if (!requireNamespace("preprocessCore", quietly = TRUE))
+    BiocManager::install("preprocessCore")
+
 devtools::install_github("wilsonlabgroup/scMappR")
 
 
@@ -97,6 +105,11 @@ BiocManager::install("pcaMethods")
 
 if (!requireNamespace("GSVA", quietly = TRUE))
 BiocManager::install("GSVA")
+
+# For R Version >= 4.2 individuals have reported needing 
+# to also install preprocessCore from bioconductor
+if (!requireNamespace("preprocessCore", quietly = TRUE))
+    BiocManager::install("preprocessCore")
 
 install.packages("scMappR")
 
