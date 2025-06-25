@@ -12,7 +12,7 @@
 
 <meta name="author" content="Dustin Sokolowski" />
 
-<meta name="date" content="2023-06-27" />
+<meta name="date" content="2025-06-25" />
 
 <title>single cell Mapper (scMappR)</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">single cell Mapper (scMappR)</h1>
 <h4 class="author">Dustin Sokolowski</h4>
-<h4 class="date">2023-06-27</h4>
+<h4 class="date">2025-06-25</h4>
 
 
 <div id="TOC">
@@ -422,27 +422,27 @@ CRAN.</p>
 <ol style="list-style-type: decimal">
 <li>Github (Development Version)</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;devtools&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;pcaMethods&quot;</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;GSVA&quot;</span>)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;wilsonlabgroup/scMappR&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;devtools&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;pcaMethods&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;GSVA&quot;</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;wilsonlabgroup/scMappR&quot;</span>)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>CRAN (Stable Release)</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;devtools&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;pcaMethods&quot;</span>)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;GSVA&quot;</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;scMappR&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;devtools&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;pcaMethods&quot;</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;GSVA&quot;</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;scMappR&quot;</span>)</span></code></pre></div>
 </div>
 <div id="downloading-files." class="section level2">
 <h2>Downloading Files.</h2>
@@ -459,7 +459,7 @@ given time. Input “all”, “pVal”, or “OR” to get the matrix of p-valu
 odds-ratios, or both. This function outputs the signature matrices, the
 top 30 cell-type markers for each cell-type, and the predicted cluster
 label from the Fisher’s exact test and GSVA.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>signatures <span class="ot">&lt;-</span> <span class="fu">get_signature_matrices</span>(<span class="at">type =</span> <span class="st">&quot;all&quot;</span>) <span class="co">#return a list of cell-type labels, p-values, and odds-ratios.</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>signatures <span class="ot">&lt;-</span> <span class="fu">get_signature_matrices</span>(<span class="at">type =</span> <span class="st">&quot;all&quot;</span>) <span class="co">#return a list of cell-type labels, p-values, and odds-ratios.</span></span></code></pre></div>
 </div>
 <div id="saving-results." class="section level2">
 <h2>Saving results.</h2>
@@ -557,31 +557,31 @@ matrices themselves from
 <code>get_signature_matrices(type = &quot;OR&quot;)</code>.</p>
 <div id="example" class="section level4">
 <h4>Example</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(PBMC_scMappR) <span class="co"># load data example of PBMC bulk- and cell-sorted RNA-seq data</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>bulk_DE_cors <span class="ot">&lt;-</span> PBMC_example<span class="sc">$</span>bulk_DE_cors <span class="co"># 59 sex-specific DEGs in bulk PBMC (up-regulated = female-biased)</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>bulk_normalized <span class="ot">&lt;-</span> PBMC_example<span class="sc">$</span>bulk_normalized <span class="co"># log CPM normalized bulk RNA-seq data</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>odds_ratio_in <span class="ot">&lt;-</span> PBMC_example<span class="sc">$</span>odds_ratio_in <span class="co"># signature matrix developed from cell-sorted RNA-seq</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>case_grep <span class="ot">&lt;-</span> <span class="st">&quot;_female&quot;</span> <span class="co"># flag for &#39;cases&#39; (up-regulated), index is also acceptable</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>control_grep <span class="ot">&lt;-</span> <span class="st">&quot;_male&quot;</span> <span class="co"># flag for &#39;control&#39; (down-regulated), index is also acceptable</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>max_proportion_change <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># maximum cell-type proportion change -- this is good for cell-types that are uncomon in population and small absolute changes may yield large relative changes</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>theSpecies <span class="ot">&lt;-</span> <span class="st">&quot;human&quot;</span> <span class="co"># these RNA-seq data have human gene symbols (and are also from human)</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co"># When running scMappR, it is strongly recommended to use scMappR_and_pathway analysis with the parameters below.</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>toOut <span class="ot">&lt;-</span> <span class="fu">scMappR_and_pathway_analysis</span>(bulk_normalized, odds_ratio_in, </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>                                      bulk_DE_cors, <span class="at">case_grep =</span> case_grep,</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">control_grep =</span> control_grep, <span class="at">rda_path =</span> <span class="st">&quot;&quot;</span>, </span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">max_proportion_change =</span> <span class="dv">10</span>, <span class="at">print_plots =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">plot_names =</span> <span class="st">&quot;scMappR_vignette_&quot;</span>, <span class="at">theSpecies =</span> <span class="st">&quot;human&quot;</span>, </span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">output_directory =</span> <span class="st">&quot;scMappR_vignette_&quot;</span>,</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">sig_matrix_size =</span> <span class="dv">3000</span>, <span class="at">up_and_downregulated =</span> <span class="cn">TRUE</span>, </span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">internet =</span> <span class="cn">TRUE</span>, <span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">data</span>(PBMC_scMappR) <span class="co"># load data example of PBMC bulk- and cell-sorted RNA-seq data</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>bulk_DE_cors <span class="ot">&lt;-</span> PBMC_example<span class="sc">$</span>bulk_DE_cors <span class="co"># 59 sex-specific DEGs in bulk PBMC (up-regulated = female-biased)</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>bulk_normalized <span class="ot">&lt;-</span> PBMC_example<span class="sc">$</span>bulk_normalized <span class="co"># log CPM normalized bulk RNA-seq data</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>odds_ratio_in <span class="ot">&lt;-</span> PBMC_example<span class="sc">$</span>odds_ratio_in <span class="co"># signature matrix developed from cell-sorted RNA-seq</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>case_grep <span class="ot">&lt;-</span> <span class="st">&quot;_female&quot;</span> <span class="co"># flag for &#39;cases&#39; (up-regulated), index is also acceptable</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>control_grep <span class="ot">&lt;-</span> <span class="st">&quot;_male&quot;</span> <span class="co"># flag for &#39;control&#39; (down-regulated), index is also acceptable</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>max_proportion_change <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="co"># maximum cell-type proportion change -- this is good for cell-types that are uncomon in population and small absolute changes may yield large relative changes</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>theSpecies <span class="ot">&lt;-</span> <span class="st">&quot;human&quot;</span> <span class="co"># these RNA-seq data have human gene symbols (and are also from human)</span></span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a><span class="co"># When running scMappR, it is strongly recommended to use scMappR_and_pathway analysis with the parameters below.</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>toOut <span class="ot">&lt;-</span> <span class="fu">scMappR_and_pathway_analysis</span>(bulk_normalized, odds_ratio_in, </span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>                                      bulk_DE_cors, <span class="at">case_grep =</span> case_grep,</span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>                                      <span class="at">control_grep =</span> control_grep, <span class="at">rda_path =</span> <span class="st">&quot;&quot;</span>, </span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>                                      <span class="at">max_proportion_change =</span> <span class="dv">10</span>, <span class="at">print_plots =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>                                      <span class="at">plot_names =</span> <span class="st">&quot;scMappR_vignette_&quot;</span>, <span class="at">theSpecies =</span> <span class="st">&quot;human&quot;</span>, </span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>                                      <span class="at">output_directory =</span> <span class="st">&quot;scMappR_vignette_&quot;</span>,</span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a>                                      <span class="at">sig_matrix_size =</span> <span class="dv">3000</span>, <span class="at">up_and_downregulated =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a>                                      <span class="at">internet =</span> <span class="cn">TRUE</span>, <span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
 </div>
 <div id="output" class="section level4">
 <h4>Output</h4>
@@ -652,9 +652,9 @@ of each cell-type.</p>
 <h4>Example</h4>
 <p>In this example, we are extending the output from the
 <code>scMappR_and_pathway_analysis</code> function above.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>twoOutFiles <span class="ot">&lt;-</span> <span class="fu">two_method_pathway_enrichment</span>(bulk_DE_cors, <span class="st">&quot;human&quot;</span>,</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">scMappR_vals =</span> toOut<span class="sc">$</span>cellWeighted_Foldchange, <span class="at">background_genes =</span> <span class="fu">rownames</span>(bulk_normalized), </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">output_directory =</span> <span class="st">&quot;newfun_test&quot;</span>,<span class="at">plot_names =</span> <span class="st">&quot;nonreranked_&quot;</span>, <span class="at">toSave =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>twoOutFiles <span class="ot">&lt;-</span> <span class="fu">two_method_pathway_enrichment</span>(bulk_DE_cors, <span class="st">&quot;human&quot;</span>,</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="at">scMappR_vals =</span> toOut<span class="sc">$</span>cellWeighted_Foldchange, <span class="at">background_genes =</span> <span class="fu">rownames</span>(bulk_normalized), </span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="at">output_directory =</span> <span class="st">&quot;newfun_test&quot;</span>,<span class="at">plot_names =</span> <span class="st">&quot;nonreranked_&quot;</span>, <span class="at">toSave =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 <div id="output-1" class="section level4">
 <h4>Output</h4>
@@ -709,7 +709,7 @@ measured in bulk.</p>
 <h4>Example</h4>
 <p>In this example, we are extending the output from the
 <code>scMappR_and_pathway_analysis</code> function above.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>evaluated <span class="ot">&lt;-</span> <span class="fu">cwFoldChange_evaluate</span>(toOut<span class="sc">$</span>cellWeighted_Foldchange, toOut<span class="sc">$</span>cellType_Proportions, bulk_DE_cors)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>evaluated <span class="ot">&lt;-</span> <span class="fu">cwFoldChange_evaluate</span>(toOut<span class="sc">$</span>cellWeighted_Foldchange, toOut<span class="sc">$</span>cellType_Proportions, bulk_DE_cors)</span></code></pre></div>
 </div>
 <div id="output-2" class="section level4">
 <h4>Output</h4>
@@ -771,25 +771,25 @@ matrix in the tissue.</p>
 <h3>No custom signature matrix:</h3>
 <div id="example-3" class="section level4">
 <h4>Example</h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(POA_example) <span class="co"># region to preoptic area</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_Rank_signature <span class="co"># signature matrix </span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>rowname <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(Signature) <span class="co"># get signature</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(Signature) <span class="ot">&lt;-</span> rowname<span class="sc">$</span>rowname</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(Signature)[<span class="dv">1</span><span class="sc">:</span><span class="dv">60</span>]</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>rda_path1 <span class="ot">=</span> <span class="st">&quot;&quot;</span> <span class="co"># data directory (if it exists)</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify tissues available for tissue_scMappR_internal</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(scMappR_tissues)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;Hypothalamus&quot;</span> <span class="sc">%in%</span> <span class="fu">toupper</span>(scMappR_tissues)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>internal <span class="ot">&lt;-</span> <span class="fu">tissue_scMappR_internal</span>(genes, <span class="st">&quot;mouse&quot;</span>, <span class="at">output_directory =</span> <span class="st">&quot;scMappR_Test_Internal&quot;</span>, </span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="at">tissue =</span> <span class="st">&quot;hypothalamus&quot;</span>, <span class="at">rda_path =</span> rda_path1, <span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">data</span>(POA_example) <span class="co"># region to preoptic area</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>Signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_Rank_signature <span class="co"># signature matrix </span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>rowname <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(Signature) <span class="co"># get signature</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="fu">rownames</span>(Signature) <span class="ot">&lt;-</span> rowname<span class="sc">$</span>rowname</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(Signature)[<span class="dv">1</span><span class="sc">:</span><span class="dv">60</span>]</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>rda_path1 <span class="ot">=</span> <span class="st">&quot;&quot;</span> <span class="co"># data directory (if it exists)</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co"># Identify tissues available for tissue_scMappR_internal</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="fu">data</span>(scMappR_tissues)</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="st">&quot;Hypothalamus&quot;</span> <span class="sc">%in%</span> <span class="fu">toupper</span>(scMappR_tissues)</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>internal <span class="ot">&lt;-</span> <span class="fu">tissue_scMappR_internal</span>(genes, <span class="st">&quot;mouse&quot;</span>, <span class="at">output_directory =</span> <span class="st">&quot;scMappR_Test_Internal&quot;</span>, </span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a><span class="at">tissue =</span> <span class="st">&quot;hypothalamus&quot;</span>, <span class="at">rda_path =</span> rda_path1, <span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
 </div>
 <div id="output-3" class="section level4">
 <h4>Output</h4>
@@ -857,19 +857,19 @@ filling the matrix is not rank, users will need to change the
 will transform the p-values into Ranks.</p>
 <div id="example-4" class="section level4">
 <h4>Example</h4>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Acquiring the gene list</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(POA_example)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_Rank_signature</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>rowname <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(Signature)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(Signature) <span class="ot">&lt;-</span> rowname<span class="sc">$</span>rowname</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(Signature)[<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>]</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">#running tisue_scMappR_custom</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>internal <span class="ot">&lt;-</span> <span class="fu">tissue_scMappR_custom</span>(genes,Signature,<span class="at">output_directory =</span> <span class="st">&quot;scMappR_Test_custom&quot;</span>, <span class="at">toSave =</span> F)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># Acquiring the gene list</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="fu">data</span>(POA_example)</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>Signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_Rank_signature</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>rowname <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(Signature)</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="fu">rownames</span>(Signature) <span class="ot">&lt;-</span> rowname<span class="sc">$</span>rowname</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(Signature)[<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>]</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a> </span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="co">#running tisue_scMappR_custom</span></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>internal <span class="ot">&lt;-</span> <span class="fu">tissue_scMappR_custom</span>(genes,Signature,<span class="at">output_directory =</span> <span class="st">&quot;scMappR_Test_custom&quot;</span>, <span class="at">toSave =</span> F)</span></code></pre></div>
 </div>
 <div id="output-4" class="section level4">
 <h4>Output</h4>
@@ -923,17 +923,17 @@ Users can also download all cell-type markers by setting
 <h4>Example</h4>
 <p>Here, we will investigate the tissue x cell-type enrichment of the
 top 100 genes in the Preoptic area signature matrix.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(POA_example)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>POA_generes <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_generes</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>POA_OR_signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_OR_signature</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>POA_Rank_signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_Rank_signature</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Signature <span class="ot">&lt;-</span> POA_Rank_signature</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>rowname <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(Signature)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(Signature) <span class="ot">&lt;-</span> rowname<span class="sc">$</span>rowname</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(Signature)[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>]</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">tissue_by_celltype_enrichment</span>(<span class="at">gene_list =</span> genes, </span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="at">species =</span> <span class="st">&quot;mouse&quot;</span>,<span class="at">p_thresh =</span> <span class="fl">0.05</span>, <span class="at">isect_size =</span> <span class="dv">3</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">data</span>(POA_example)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>POA_generes <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_generes</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>POA_OR_signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_OR_signature</span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>POA_Rank_signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_Rank_signature</span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>Signature <span class="ot">&lt;-</span> POA_Rank_signature</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>rowname <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(Signature)</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="fu">rownames</span>(Signature) <span class="ot">&lt;-</span> rowname<span class="sc">$</span>rowname</span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(Signature)[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>]</span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>enriched <span class="ot">&lt;-</span> <span class="fu">tissue_by_celltype_enrichment</span>(<span class="at">gene_list =</span> genes, </span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a><span class="at">species =</span> <span class="st">&quot;mouse&quot;</span>,<span class="at">p_thresh =</span> <span class="fl">0.05</span>, <span class="at">isect_size =</span> <span class="dv">3</span>)</span></code></pre></div>
 </div>
 <div id="three-types-of-outputs." class="section level3">
 <h3>Three types of outputs.</h3>
@@ -969,13 +969,13 @@ what naming-preferences options described here: “brain”, “epithelial”,
 “endothelial”, “blood”, “connective”,“eye”, “epidermis”, “Digestive”,
 “Immune”, “pancreas”, “liver”, “reproductive”, “kidney”,
 “respiratory”</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sm)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>toProcess <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">example =</span> sm)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>tst1 <span class="ot">&lt;-</span> <span class="fu">process_dgTMatrix_lists</span>(toProcess, <span class="at">name =</span> <span class="st">&quot;testProcess&quot;</span>, <span class="at">species_name =</span> <span class="st">&quot;mouse&quot;</span>,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="at">rda_path =</span> <span class="st">&quot;&quot;</span>, </span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">saveSCObject =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">data</span>(sm)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a>toProcess <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">example =</span> sm)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>tst1 <span class="ot">&lt;-</span> <span class="fu">process_dgTMatrix_lists</span>(toProcess, <span class="at">name =</span> <span class="st">&quot;testProcess&quot;</span>, <span class="at">species_name =</span> <span class="st">&quot;mouse&quot;</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="at">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="at">rda_path =</span> <span class="st">&quot;&quot;</span>, </span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">saveSCObject =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
 <p>It is recommended to set <code>toSave == TRUE</code>, allowing for
 important data objects to be saved. Here, the above function is repeated
 with <code>toSave == TRUE</code> and <code>saveSCObject == TRUE</code>,
@@ -1019,27 +1019,27 @@ anchors feature to combine runs. Here, each run is a different element
 of the <code>dgTMatrix_list</code> parameter.</p>
 <p>Making multiple run scRNA-seq data. As seen in many cases, the first
 dataset is identified with “.1” and the second with “.2”</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># generating scRNA-seq data with multiple runs.</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sm)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>sm1 <span class="ot">&lt;-</span> sm2 <span class="ot">&lt;-</span> sm</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(sm1) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">colnames</span>(sm1), <span class="st">&quot;.1&quot;</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(sm2) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">colnames</span>(sm2),<span class="st">&quot;.2&quot;</span>)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>combined_counts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sm1,sm2)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># generating scRNA-seq data with multiple runs.</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">data</span>(sm)</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>sm1 <span class="ot">&lt;-</span> sm2 <span class="ot">&lt;-</span> sm</span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="fu">colnames</span>(sm1) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">colnames</span>(sm1), <span class="st">&quot;.1&quot;</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="fu">colnames</span>(sm2) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">colnames</span>(sm2),<span class="st">&quot;.2&quot;</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>combined_counts <span class="ot">&lt;-</span> <span class="fu">cbind</span>(sm1,sm2)</span></code></pre></div>
 <p>Combining datasets with the integration anchors batch correction</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>toProcess <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) {</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  toProcess[[<span class="fu">paste0</span>(<span class="st">&quot;example&quot;</span>,i)]] <span class="ot">&lt;-</span> combined_counts[,<span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;.&quot;</span>,i), <span class="fu">colnames</span>(combined_counts))]</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>tst1 <span class="ot">&lt;-</span> <span class="fu">process_dgTMatrix_lists</span>(toProcess, <span class="at">name =</span> <span class="st">&quot;testProcess&quot;</span>, <span class="at">species_name =</span> <span class="st">&quot;mouse&quot;</span>,</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="at">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="at">rda_path =</span> <span class="st">&quot;&quot;</span>, </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">saveSCObject =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>toProcess <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) {</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  toProcess[[<span class="fu">paste0</span>(<span class="st">&quot;example&quot;</span>,i)]] <span class="ot">&lt;-</span> combined_counts[,<span class="fu">grep</span>(<span class="fu">paste0</span>(<span class="st">&quot;.&quot;</span>,i), <span class="fu">colnames</span>(combined_counts))]</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>}</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>tst1 <span class="ot">&lt;-</span> <span class="fu">process_dgTMatrix_lists</span>(toProcess, <span class="at">name =</span> <span class="st">&quot;testProcess&quot;</span>, <span class="at">species_name =</span> <span class="st">&quot;mouse&quot;</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="at">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="at">rda_path =</span> <span class="st">&quot;&quot;</span>, </span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">saveSCObject =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
 <p>If you do not want to use the integration anchors feature and process
 the scRNA-seq data as if it were one run, then keep all of these data in
 the same dgCMatrix matrix.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>tst1 <span class="ot">&lt;-</span> <span class="fu">process_dgTMatrix_lists</span>(combined_counts, <span class="at">name =</span> <span class="st">&quot;testProcess&quot;</span>, <span class="at">species_name =</span> <span class="st">&quot;mouse&quot;</span>,</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="at">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="at">rda_path =</span> <span class="st">&quot;&quot;</span>, </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">saveSCObject =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>tst1 <span class="ot">&lt;-</span> <span class="fu">process_dgTMatrix_lists</span>(combined_counts, <span class="at">name =</span> <span class="st">&quot;testProcess&quot;</span>, <span class="at">species_name =</span> <span class="st">&quot;mouse&quot;</span>,</span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a><span class="at">naming_preference =</span> <span class="st">&quot;eye&quot;</span>, <span class="at">rda_path =</span> <span class="st">&quot;&quot;</span>, </span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a><span class="at">toSave =</span> <span class="cn">TRUE</span>, <span class="at">saveSCObject =</span> <span class="cn">TRUE</span>, <span class="at">path =</span> <span class="fu">tempdir</span>())</span></code></pre></div>
 </div>
 <div id="processing-scrna-seq-count-data-from-a-different-species." class="section level3">
 <h3>Processing scRNA-seq count data from a different species.</h3>
@@ -1065,51 +1065,51 @@ how to make this signature matrix from:</p>
 <h3>Signature matrix from Seurat object with named cell-type</h3>
 <p>Generating the Seurat Object for example and making up cell-types.
 This example will be used from 1-2.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(sm)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>toProcess <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">sm =</span> sm)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>seurat_example <span class="ot">&lt;-</span> <span class="fu">process_from_count</span>(toProcess, <span class="st">&quot;test_vignette&quot;</span>,<span class="at">theSpecies  =</span> <span class="st">&quot;mouse&quot;</span>)</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(seurat_example<span class="sc">@</span>active.ident) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Myoblast&quot;</span>, <span class="st">&quot;Neutrophil&quot;</span>, <span class="st">&quot;cardiomyoblast&quot;</span>, <span class="st">&quot;Mesothelial&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">data</span>(sm)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>toProcess <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">sm =</span> sm)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>seurat_example <span class="ot">&lt;-</span> <span class="fu">process_from_count</span>(toProcess, <span class="st">&quot;test_vignette&quot;</span>,<span class="at">theSpecies  =</span> <span class="st">&quot;mouse&quot;</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a><span class="fu">levels</span>(seurat_example<span class="sc">@</span>active.ident) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Myoblast&quot;</span>, <span class="st">&quot;Neutrophil&quot;</span>, <span class="st">&quot;cardiomyoblast&quot;</span>, <span class="st">&quot;Mesothelial&quot;</span>)</span></code></pre></div>
 <ol style="list-style-type: decimal">
 <li>A Seurat object with named cell-types. Markers for each cell-type
 are stored in the <code>generes</code> object and each signature matrix
 is in <code>gene_out</code>.</li>
 </ol>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>    generes <span class="ot">&lt;-</span> <span class="fu">seurat_to_generes</span>(<span class="at">pbmc =</span> seurat_example, <span class="at">test =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    gene_out <span class="ot">&lt;-</span> <span class="fu">generes_to_heatmap</span>(generes, <span class="at">make_names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>    generes <span class="ot">&lt;-</span> <span class="fu">seurat_to_generes</span>(<span class="at">pbmc =</span> seurat_example, <span class="at">test =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>    gene_out <span class="ot">&lt;-</span> <span class="fu">generes_to_heatmap</span>(generes, <span class="at">make_names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>A count matrix with named cell-types.</li>
 </ol>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create the cell-type ids and matrix</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>Cell_type_id <span class="ot">&lt;-</span> seurat_example<span class="sc">@</span>active.ident</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>count_file <span class="ot">&lt;-</span> sm</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>rownames_example <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(count_file)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(count_file) <span class="ot">&lt;-</span> rownames_example<span class="sc">$</span>rowname</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># make seurat object</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>seurat_example <span class="ot">&lt;-</span> <span class="fu">process_from_count</span>(count_file, <span class="st">&quot;test_vignette&quot;</span>,<span class="at">theSpecies  =</span> <span class="st">&quot;mouse&quot;</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Intersect column names (cell-types) with labelled CTs</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>inters <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">colnames</span>(seurat_example), <span class="fu">names</span>(Cell_type_id))</span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>seurat_example_inter <span class="ot">&lt;-</span> seurat_example[,inters]</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>Cell_type_id_inter <span class="ot">&lt;-</span> Cell_type_id[inters]</span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>seurat_example_inter<span class="sc">@</span>active.ident <span class="ot">&lt;-</span> Cell_type_id_inter</span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Making signature matrices</span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    generes <span class="ot">&lt;-</span> <span class="fu">seurat_to_generes</span>(<span class="at">pbmc =</span> seurat_example_inter, <span class="at">test =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    gene_out <span class="ot">&lt;-</span> <span class="fu">generes_to_heatmap</span>(generes, <span class="at">make_names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co">#Create the cell-type ids and matrix</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>Cell_type_id <span class="ot">&lt;-</span> seurat_example<span class="sc">@</span>active.ident</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>count_file <span class="ot">&lt;-</span> sm</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>rownames_example <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(count_file)</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a><span class="fu">rownames</span>(count_file) <span class="ot">&lt;-</span> rownames_example<span class="sc">$</span>rowname</span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a><span class="co"># make seurat object</span></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>seurat_example <span class="ot">&lt;-</span> <span class="fu">process_from_count</span>(count_file, <span class="st">&quot;test_vignette&quot;</span>,<span class="at">theSpecies  =</span> <span class="st">&quot;mouse&quot;</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co"># Intersect column names (cell-types) with labelled CTs</span></span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a>inters <span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">colnames</span>(seurat_example), <span class="fu">names</span>(Cell_type_id))</span>
+<span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a>seurat_example_inter <span class="ot">&lt;-</span> seurat_example[,inters]</span>
+<span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" tabindex="-1"></a>Cell_type_id_inter <span class="ot">&lt;-</span> Cell_type_id[inters]</span>
+<span id="cb16-20"><a href="#cb16-20" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" tabindex="-1"></a>seurat_example_inter<span class="sc">@</span>active.ident <span class="ot">&lt;-</span> Cell_type_id_inter</span>
+<span id="cb16-22"><a href="#cb16-22" tabindex="-1"></a></span>
+<span id="cb16-23"><a href="#cb16-23" tabindex="-1"></a><span class="co"># Making signature matrices</span></span>
+<span id="cb16-24"><a href="#cb16-24" tabindex="-1"></a></span>
+<span id="cb16-25"><a href="#cb16-25" tabindex="-1"></a>    generes <span class="ot">&lt;-</span> <span class="fu">seurat_to_generes</span>(<span class="at">pbmc =</span> seurat_example_inter, <span class="at">test =</span> <span class="st">&quot;wilcox&quot;</span>)</span>
+<span id="cb16-26"><a href="#cb16-26" tabindex="-1"></a></span>
+<span id="cb16-27"><a href="#cb16-27" tabindex="-1"></a>    gene_out <span class="ot">&lt;-</span> <span class="fu">generes_to_heatmap</span>(generes, <span class="at">make_names =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="manually-making-graphics." class="section level2">
@@ -1121,54 +1121,54 @@ code for <code>plotBP</code> is provided. Inputs are a matrix called
 column names log10 and term_name respectively.</p>
 <div id="barplots" class="section level3">
 <h3>Barplots</h3>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># making an example matrix</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>term_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;one&quot;</span>, <span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>log10 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">4</span>, <span class="fl">2.1</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>ordered_back_all <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(term_name,log10))</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#plotting</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a> g <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(ordered_back_all, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> stats<span class="sc">::</span><span class="fu">reorder</span>(term_name, </span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>        log10), <span class="at">y =</span> log10)) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, </span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">&quot;turquoise&quot;</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">coord_flip</span>() <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;-log10(Padj)&quot;</span>, </span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">&quot;Gene Ontology&quot;</span>)</span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> g <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">theme</span>(<span class="at">axis.text.x =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">face =</span> <span class="cn">NULL</span>, </span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">35</span>), <span class="at">axis.text.y =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">face =</span> <span class="cn">NULL</span>, </span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">35</span>), <span class="at">axis.title =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, </span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">&quot;black&quot;</span>))</span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(y)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># making an example matrix</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>term_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;one&quot;</span>, <span class="st">&quot;two&quot;</span>, <span class="st">&quot;three&quot;</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>log10 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.5</span>, <span class="dv">4</span>, <span class="fl">2.1</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>ordered_back_all <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(term_name,log10))</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#plotting</span></span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a> g <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(ordered_back_all, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> stats<span class="sc">::</span><span class="fu">reorder</span>(term_name, </span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>        log10), <span class="at">y =</span> log10)) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, </span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a>        <span class="at">fill =</span> <span class="st">&quot;turquoise&quot;</span>) <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">coord_flip</span>() <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;-log10(Padj)&quot;</span>, </span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a>        <span class="at">x =</span> <span class="st">&quot;Gene Ontology&quot;</span>)</span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a>    y <span class="ot">&lt;-</span> g <span class="sc">+</span> ggplot2<span class="sc">::</span><span class="fu">theme</span>(<span class="at">axis.text.x =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">face =</span> <span class="cn">NULL</span>, </span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">35</span>), <span class="at">axis.text.y =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">face =</span> <span class="cn">NULL</span>, </span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">angle =</span> <span class="dv">35</span>), <span class="at">axis.title =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, </span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a>        <span class="at">color =</span> <span class="st">&quot;black&quot;</span>))</span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a>    </span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a><span class="fu">print</span>(y)</span></code></pre></div>
 </div>
 <div id="heatmaps" class="section level3">
 <h3>Heatmaps</h3>
 <p>Here, the heatmaps are for plotting cwFold-changes and cell-type
 proportions. The same heatmap is used so just an example of one is
 given.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating a heatmap</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Acquiring the gene list</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(POA_example)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>Signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_Rank_signature</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>rowname <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(Signature)</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(Signature) <span class="ot">&lt;-</span> rowname<span class="sc">$</span>rowname</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(Signature)[<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>]</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="co">#running tisue_scMappR_custom</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>internal <span class="ot">&lt;-</span> <span class="fu">tissue_scMappR_custom</span>(genes,Signature,<span class="at">output_directory =</span> <span class="st">&quot;scMappR_Test_custom&quot;</span>, <span class="at">toSave =</span> F)</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>toPlot <span class="ot">&lt;-</span> internal<span class="sc">$</span>gene_list_heatmap<span class="sc">$</span>geneHeat</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="co">#Plotting the heatmap</span></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>cex <span class="ot">=</span> <span class="fl">0.2</span> <span class="co"># size of genes</span></span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>myheatcol <span class="ot">&lt;-</span> grDevices<span class="sc">::</span><span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;orange&quot;</span>))(<span class="dv">256</span>)</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    pheatmap<span class="sc">::</span><span class="fu">pheatmap</span>(<span class="fu">as.matrix</span>(toPlot), <span class="at">color =</span> myheatcol, <span class="at">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="at">fontsize_row =</span> cex, <span class="at">fontsize_col =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="co"># Generating a heatmap</span></span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="co"># Acquiring the gene list</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="fu">data</span>(POA_example)</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>Signature <span class="ot">&lt;-</span> POA_example<span class="sc">$</span>POA_Rank_signature</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>rowname <span class="ot">&lt;-</span> <span class="fu">get_gene_symbol</span>(Signature)</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="fu">rownames</span>(Signature) <span class="ot">&lt;-</span> rowname<span class="sc">$</span>rowname</span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(Signature)[<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>]</span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a> </span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co">#running tisue_scMappR_custom</span></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a>internal <span class="ot">&lt;-</span> <span class="fu">tissue_scMappR_custom</span>(genes,Signature,<span class="at">output_directory =</span> <span class="st">&quot;scMappR_Test_custom&quot;</span>, <span class="at">toSave =</span> F)</span>
+<span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a>toPlot <span class="ot">&lt;-</span> internal<span class="sc">$</span>gene_list_heatmap<span class="sc">$</span>geneHeat</span>
+<span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" tabindex="-1"></a><span class="co">#Plotting the heatmap</span></span>
+<span id="cb18-21"><a href="#cb18-21" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" tabindex="-1"></a>cex <span class="ot">=</span> <span class="fl">0.2</span> <span class="co"># size of genes</span></span>
+<span id="cb18-23"><a href="#cb18-23" tabindex="-1"></a></span>
+<span id="cb18-24"><a href="#cb18-24" tabindex="-1"></a>myheatcol <span class="ot">&lt;-</span> grDevices<span class="sc">::</span><span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;lightblue&quot;</span>, <span class="st">&quot;white&quot;</span>, <span class="st">&quot;orange&quot;</span>))(<span class="dv">256</span>)</span>
+<span id="cb18-25"><a href="#cb18-25" tabindex="-1"></a>    pheatmap<span class="sc">::</span><span class="fu">pheatmap</span>(<span class="fu">as.matrix</span>(toPlot), <span class="at">color =</span> myheatcol, <span class="at">scale =</span> <span class="st">&quot;row&quot;</span>, <span class="at">fontsize_row =</span> cex, <span class="at">fontsize_col =</span> <span class="dv">10</span>)</span></code></pre></div>
 </div>
 </div>
 
